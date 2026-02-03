@@ -1,0 +1,36 @@
+---@meta
+---@diagnostic disable
+
+---@class ScannerDataType
+---@field None ScannerDataType 0
+---@field Name ScannerDataType 1
+---@field Level ScannerDataType 2
+---@field Health ScannerDataType 3
+---@field Rarity ScannerDataType 4
+---@field WeaponBasic ScannerDataType 5
+---@field WeaponDetailed ScannerDataType 6
+---@field BountySystem ScannerDataType 7
+---@field Vulnerabilities ScannerDataType 8
+---@field Faction ScannerDataType 9
+---@field Attitude ScannerDataType 10
+---@field SquadInfo ScannerDataType 11
+---@field Resistances ScannerDataType 12
+---@field Abilities ScannerDataType 13
+---@field Requirements ScannerDataType 14
+---@field Description ScannerDataType 15
+---@field DeviceStatus ScannerDataType 16
+---@field NetworkStatus ScannerDataType 17
+---@field NetworkLevel ScannerDataType 18
+---@field DeviceConnections ScannerDataType 19
+---@field QuestEntry ScannerDataType 20
+---@field VehicleName ScannerDataType 21
+---@field VehicleManufacturer ScannerDataType 22
+---@field VehicleProductionYears ScannerDataType 23
+---@field VehicleDriveLayout ScannerDataType 24
+---@field VehicleHorsepower ScannerDataType 25
+---@field VehicleMass ScannerDataType 26
+---@field VehicleState ScannerDataType 27
+---@field VehicleInfo ScannerDataType 28
+---@field QuickHackDescription ScannerDataType 29
+ScannerDataType = {}
+

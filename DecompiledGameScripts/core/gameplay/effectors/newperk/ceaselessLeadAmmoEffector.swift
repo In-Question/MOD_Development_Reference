@@ -1,0 +1,29 @@
+
+public class CeaselessLeadAmmoEffector extends Effector {
+
+  public let m_percentToRefund: Float;
+
+  protected func Initialize(record: TweakDBID, game: GameInstance, parentRecord: TweakDBID) -> Void {
+    this.m_percentToRefund = TweakDBInterface.GetFloat(record + t".percentToRefund", 0.00);
+  }
+
+  protected func ActionOn(owner: ref<GameObject>) -> Void {
+    this.ProcessAction(owner);
+  }
+
+  protected func RepeatedAction(owner: ref<GameObject>) -> Void {
+    this.ProcessAction(owner);
+  }
+
+  private final func ProcessAction(owner: ref<GameObject>) -> Void {
+    let refundEvent: ref<SetAmmoCountEvent>;
+    let weapon: wref<WeaponObject> = ScriptedPuppet.GetWeaponRight(owner);
+    if IsDefined(weapon) && WeaponObject.HasAvailableAmmoInInventory(weapon) && WeaponObject.GetMagazineCapacity(weapon) > WeaponObject.GetMagazineAmmoCount(weapon) && Cast<Float>(WeaponObject.GetMagazineCapacity(weapon)) * this.m_percentToRefund >= 1.00 {
+      refundEvent = new SetAmmoCountEvent();
+      refundEvent.ammoTypeID = WeaponObject.GetAmmoType(weapon);
+      refundEvent.count = Cast<Uint32>(Cast<Float>(WeaponObject.GetMagazineCapacity(weapon)) * this.m_percentToRefund) + WeaponObject.GetMagazineAmmoCount(weapon);
+      weapon.QueueEvent(refundEvent);
+      GameObject.PlaySoundEvent(owner, n"w_gun_perk_ceaseless_lead");
+    };
+  }
+}

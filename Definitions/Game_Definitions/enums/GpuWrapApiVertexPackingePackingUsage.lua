@@ -1,0 +1,32 @@
+---@meta
+---@diagnostic disable
+
+---@class GpuWrapApiVertexPackingePackingUsage
+---@field PS_Invalid GpuWrapApiVertexPackingePackingUsage -1
+---@field PS_SysPosition GpuWrapApiVertexPackingePackingUsage 0
+---@field PS_Position GpuWrapApiVertexPackingePackingUsage 1
+---@field PS_Normal GpuWrapApiVertexPackingePackingUsage 2
+---@field PS_Tangent GpuWrapApiVertexPackingePackingUsage 3
+---@field PS_Binormal GpuWrapApiVertexPackingePackingUsage 4
+---@field PS_TexCoord GpuWrapApiVertexPackingePackingUsage 5
+---@field PS_Color GpuWrapApiVertexPackingePackingUsage 6
+---@field PS_SkinIndices GpuWrapApiVertexPackingePackingUsage 7
+---@field PS_SkinWeights GpuWrapApiVertexPackingePackingUsage 8
+---@field PS_DestructionIndices GpuWrapApiVertexPackingePackingUsage 9
+---@field PS_MultilayerPaint GpuWrapApiVertexPackingePackingUsage 10
+---@field PS_InstanceTransform GpuWrapApiVertexPackingePackingUsage 11
+---@field PS_InstanceLODParams GpuWrapApiVertexPackingePackingUsage 12
+---@field PS_InstanceSkinningData GpuWrapApiVertexPackingePackingUsage 13
+---@field PS_PatchSize GpuWrapApiVertexPackingePackingUsage 14
+---@field PS_PatchBias GpuWrapApiVertexPackingePackingUsage 15
+---@field PS_ExtraData GpuWrapApiVertexPackingePackingUsage 16
+---@field PS_VehicleDmgNormal GpuWrapApiVertexPackingePackingUsage 17
+---@field PS_VehicleDmgPosition GpuWrapApiVertexPackingePackingUsage 18
+---@field PS_PositionDelta GpuWrapApiVertexPackingePackingUsage 19
+---@field PS_LightBlockerIntensity GpuWrapApiVertexPackingePackingUsage 20
+---@field PS_BoneIndex GpuWrapApiVertexPackingePackingUsage 21
+---@field PS_Padding GpuWrapApiVertexPackingePackingUsage 22
+---@field PS_PatchOffset GpuWrapApiVertexPackingePackingUsage 23
+---@field PS_Max GpuWrapApiVertexPackingePackingUsage 24
+GpuWrapApiVertexPackingePackingUsage = {}
+

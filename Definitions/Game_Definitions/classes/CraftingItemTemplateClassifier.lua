@@ -1,0 +1,25 @@
+---@meta
+---@diagnostic disable
+
+---@class CraftingItemTemplateClassifier : inkVirtualItemTemplateClassifierWrapper
+CraftingItemTemplateClassifier = {}
+
+---@return CraftingItemTemplateClassifier
+function CraftingItemTemplateClassifier.new() return end
+
+---@param props table
+---@return CraftingItemTemplateClassifier
+function CraftingItemTemplateClassifier.new(props) return end
+
+---@param data Variant
+---@return ECraftingIconPositioning
+function CraftingItemTemplateClassifier.GetIconPosition(data) return end
+
+---@param data Variant
+---@return Bool
+function CraftingItemTemplateClassifier.IsSmall(data) return end
+
+---@param data Variant
+---@return Uint32
+function CraftingItemTemplateClassifier:ClassifyItem(data) return end
+

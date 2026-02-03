@@ -1,0 +1,23 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataAttackType
+---@field ChargedWhipAttack gamedataAttackType 0
+---@field Direct gamedataAttackType 1
+---@field Effect gamedataAttackType 2
+---@field Explosion gamedataAttackType 3
+---@field ForceKill gamedataAttackType 4
+---@field GuardBreak gamedataAttackType 5
+---@field Hack gamedataAttackType 6
+---@field Melee gamedataAttackType 7
+---@field PressureWave gamedataAttackType 8
+---@field QuickMelee gamedataAttackType 9
+---@field Ranged gamedataAttackType 10
+---@field Reflect gamedataAttackType 11
+---@field StrongMelee gamedataAttackType 12
+---@field Thrown gamedataAttackType 13
+---@field WhipAttack gamedataAttackType 14
+---@field Count gamedataAttackType 15
+---@field Invalid gamedataAttackType 16
+gamedataAttackType = {}
+

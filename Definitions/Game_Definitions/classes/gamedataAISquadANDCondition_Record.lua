@@ -1,0 +1,31 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataAISquadANDCondition_Record : gamedataAITicketCheck_Record
+gamedataAISquadANDCondition_Record = {}
+
+---@return gamedataAISquadANDCondition_Record
+function gamedataAISquadANDCondition_Record.new() return end
+
+---@param props table
+---@return gamedataAISquadANDCondition_Record
+function gamedataAISquadANDCondition_Record.new(props) return end
+
+---@return gamedataAITicketCheck_Record[]
+function gamedataAISquadANDCondition_Record:AND() return end
+
+---@param item gamedataAITicketCheck_Record
+---@return Bool
+function gamedataAISquadANDCondition_Record:ANDContains(item) return end
+
+---@return Int32
+function gamedataAISquadANDCondition_Record:GetANDCount() return end
+
+---@param index Int32
+---@return gamedataAITicketCheck_Record
+function gamedataAISquadANDCondition_Record:GetANDItem(index) return end
+
+---@param index Int32
+---@return gamedataAITicketCheck_Record
+function gamedataAISquadANDCondition_Record:GetANDItemHandle(index) return end
+

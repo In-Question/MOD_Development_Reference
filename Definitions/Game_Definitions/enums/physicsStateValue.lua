@@ -1,0 +1,23 @@
+---@meta
+---@diagnostic disable
+
+---@class physicsStateValue
+---@field Position physicsStateValue 1
+---@field Rotation physicsStateValue 2
+---@field Transform physicsStateValue 3
+---@field LinearVelocity physicsStateValue 4
+---@field AngularVelocity physicsStateValue 5
+---@field LinearSpeed physicsStateValue 6
+---@field TouchesGround physicsStateValue 10
+---@field TouchesWalls physicsStateValue 11
+---@field ImpulseAccumulator physicsStateValue 12
+---@field IsSleeping physicsStateValue 13
+---@field Mass physicsStateValue 16
+---@field Volume physicsStateValue 18
+---@field IsSimulated physicsStateValue 20
+---@field IsKinematic physicsStateValue 21
+---@field TimeDeltaOverride physicsStateValue 27
+---@field SimulationFilter physicsStateValue 32
+---@field Radius physicsStateValue 30
+physicsStateValue = {}
+

@@ -1,0 +1,49 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataAffiliation
+---@field AfterlifeMercs gamedataAffiliation 0
+---@field Aldecaldos gamedataAffiliation 1
+---@field Animals gamedataAffiliation 2
+---@field Arasaka gamedataAffiliation 3
+---@field Barghest gamedataAffiliation 4
+---@field Biotechnica gamedataAffiliation 5
+---@field CityCouncil gamedataAffiliation 6
+---@field Civilian gamedataAffiliation 7
+---@field Classified gamedataAffiliation 8
+---@field KangTao gamedataAffiliation 9
+---@field Maelstrom gamedataAffiliation 10
+---@field MaelstromAndroid gamedataAffiliation 11
+---@field Militech gamedataAffiliation 12
+---@field NCPD gamedataAffiliation 13
+---@field NUSA gamedataAffiliation 14
+---@field NetWatch gamedataAffiliation 15
+---@field News54 gamedataAffiliation 16
+---@field OA gamedataAffiliation 17
+---@field RecordingAgency gamedataAffiliation 18
+---@field SSI gamedataAffiliation 19
+---@field Scavengers gamedataAffiliation 20
+---@field ScavengersAndroid gamedataAffiliation 21
+---@field SixthStreet gamedataAffiliation 22
+---@field SixthStreetAndroid gamedataAffiliation 23
+---@field SouthCalifornia gamedataAffiliation 24
+---@field TheMox gamedataAffiliation 25
+---@field TraumaTeam gamedataAffiliation 26
+---@field TygerClaws gamedataAffiliation 27
+---@field Unaffiliated gamedataAffiliation 28
+---@field UnaffiliatedCorpo gamedataAffiliation 29
+---@field Unknown gamedataAffiliation 30
+---@field Valentinos gamedataAffiliation 31
+---@field VoodooBoys gamedataAffiliation 32
+---@field Wraiths gamedataAffiliation 33
+---@field WraithsAndroid gamedataAffiliation 34
+---@field Zetatech gamedataAffiliation 35
+---@field corpbud gamedataAffiliation 36
+---@field crimson_harvest gamedataAffiliation 37
+---@field growl gamedataAffiliation 38
+---@field highriders gamedataAffiliation 39
+---@field private_press gamedataAffiliation 40
+---@field Count gamedataAffiliation 41
+---@field Invalid gamedataAffiliation 42
+gamedataAffiliation = {}
+

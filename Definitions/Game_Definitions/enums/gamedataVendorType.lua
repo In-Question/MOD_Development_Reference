@@ -1,0 +1,27 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataVendorType
+---@field Armorsmith gamedataVendorType 0
+---@field Clothes gamedataVendorType 1
+---@field Clothing gamedataVendorType 2
+---@field Cyberware gamedataVendorType 3
+---@field Drinks gamedataVendorType 4
+---@field DropPoint gamedataVendorType 5
+---@field Food gamedataVendorType 6
+---@field GrilledFood gamedataVendorType 7
+---@field Gunsmith gamedataVendorType 8
+---@field Junk gamedataVendorType 9
+---@field Kiosk gamedataVendorType 10
+---@field Market gamedataVendorType 11
+---@field Medical gamedataVendorType 12
+---@field PackedFood gamedataVendorType 13
+---@field RipperDoc gamedataVendorType 14
+---@field SkillTrainer gamedataVendorType 15
+---@field Tech gamedataVendorType 16
+---@field TechJunk gamedataVendorType 17
+---@field VendingMachine gamedataVendorType 18
+---@field Count gamedataVendorType 19
+---@field Invalid gamedataVendorType 20
+gamedataVendorType = {}
+

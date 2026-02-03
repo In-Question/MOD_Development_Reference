@@ -1,0 +1,25 @@
+---@meta
+---@diagnostic disable
+
+---@class IMaterialDataProviderDescEParameterType
+---@field PT_None IMaterialDataProviderDescEParameterType 0
+---@field PT_Texture IMaterialDataProviderDescEParameterType 1
+---@field PT_Color IMaterialDataProviderDescEParameterType 2
+---@field PT_Cube IMaterialDataProviderDescEParameterType 3
+---@field PT_Vector IMaterialDataProviderDescEParameterType 4
+---@field PT_Scalar IMaterialDataProviderDescEParameterType 5
+---@field PT_Bool IMaterialDataProviderDescEParameterType 6
+---@field PT_TextureArray IMaterialDataProviderDescEParameterType 7
+---@field PT_StructBuffer IMaterialDataProviderDescEParameterType 8
+---@field PT_Cpu_NameU64 IMaterialDataProviderDescEParameterType 9
+---@field PT_SkinProfile IMaterialDataProviderDescEParameterType 10
+---@field PT_MultilayerSetup IMaterialDataProviderDescEParameterType 11
+---@field PT_MultilayerMask IMaterialDataProviderDescEParameterType 12
+---@field PT_HairProfile IMaterialDataProviderDescEParameterType 13
+---@field PT_FoliageProfile IMaterialDataProviderDescEParameterType 14
+---@field PT_TerrainSetup IMaterialDataProviderDescEParameterType 15
+---@field PT_Gradient IMaterialDataProviderDescEParameterType 16
+---@field PT_DynamicTexture IMaterialDataProviderDescEParameterType 17
+---@field PT_MAX IMaterialDataProviderDescEParameterType 18
+IMaterialDataProviderDescEParameterType = {}
+

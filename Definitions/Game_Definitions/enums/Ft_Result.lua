@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class Ft_Result
+---@field Success Ft_Result 0
+---@field GettingPlayerGameObjectFailed Ft_Result 1
+---@field GetPSMBlackboardFailed Ft_Result 2
+---@field GetStatsPoolFailed Ft_Result 3
+---@field NoEnemyFoundInSpawner Ft_Result 4
+---@field NoEnemyFoundInPool Ft_Result 5
+---@field NoEntitiesFoundInSpawner Ft_Result 6
+---@field NoEnemyTargeted Ft_Result 7
+---@field FailedToSelectGrapple Ft_Result 8
+---@field FailedToSelectTakedown Ft_Result 9
+---@field TakedownWithoutGrappleAttempt Ft_Result 10
+---@field NoInteractionAvailable Ft_Result 11
+---@field RequestedInteractionNotAvailable Ft_Result 12
+---@field OutOfRange Ft_Result 13
+---@field TargetNotInEnemyPool Ft_Result 14
+---@field DescriptorFormatError Ft_Result 15
+Ft_Result = {}
+

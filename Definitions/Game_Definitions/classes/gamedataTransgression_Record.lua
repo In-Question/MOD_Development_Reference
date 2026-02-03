@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataTransgression_Record : gamedataTweakDBRecord
+gamedataTransgression_Record = {}
+
+---@return gamedataTransgression_Record
+function gamedataTransgression_Record.new() return end
+
+---@param props table
+---@return gamedataTransgression_Record
+function gamedataTransgression_Record.new(props) return end
+
+---@return Float
+function gamedataTransgression_Record:DrawWeight() return end
+
+---@return String
+function gamedataTransgression_Record:LocalizedDescription() return end
+
+---@return Float
+function gamedataTransgression_Record:Severity() return end
+

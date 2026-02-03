@@ -1,0 +1,23 @@
+---@meta
+---@diagnostic disable
+
+---@class animCoverAction
+---@field NoAction animCoverAction 0
+---@field LeanLeft animCoverAction 1
+---@field LeanRight animCoverAction 2
+---@field StepOutLeft animCoverAction 3
+---@field StepOutRight animCoverAction 4
+---@field LeanOver animCoverAction 5
+---@field StepUp animCoverAction 6
+---@field EnterCover animCoverAction 7
+---@field SlideTo animCoverAction 8
+---@field Vault animCoverAction 9
+---@field LeaveCover animCoverAction 10
+---@field BlindfireLeft animCoverAction 11
+---@field BlindfireRight animCoverAction 12
+---@field BlindfireOver animCoverAction 13
+---@field OverheadStepOutLeft animCoverAction 14
+---@field OverheadStepOutRight animCoverAction 15
+---@field OverheadStepUp animCoverAction 16
+animCoverAction = {}
+

@@ -1,0 +1,33 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataVehicleModel
+---@field Aerondight gamedataVehicleModel 0
+---@field Alvarado gamedataVehicleModel 1
+---@field Basilisk gamedataVehicleModel 2
+---@field Bratsk gamedataVehicleModel 3
+---@field Colby gamedataVehicleModel 4
+---@field Columbus gamedataVehicleModel 5
+---@field Cortes gamedataVehicleModel 6
+---@field Deleon gamedataVehicleModel 7
+---@field Emperor gamedataVehicleModel 8
+---@field Galena gamedataVehicleModel 9
+---@field GalenaNomad gamedataVehicleModel 10
+---@field Hearse gamedataVehicleModel 11
+---@field Hozuki gamedataVehicleModel 12
+---@field Kusanagi gamedataVehicleModel 13
+---@field Mackinaw gamedataVehicleModel 14
+---@field Maimai gamedataVehicleModel 15
+---@field Merrimac gamedataVehicleModel 16
+---@field Octant gamedataVehicleModel 17
+---@field Riptide gamedataVehicleModel 18
+---@field Shion gamedataVehicleModel 19
+---@field Supron gamedataVehicleModel 20
+---@field Thrax gamedataVehicleModel 21
+---@field Turbo gamedataVehicleModel 22
+---@field Type66 gamedataVehicleModel 23
+---@field Zeya gamedataVehicleModel 24
+---@field Count gamedataVehicleModel 25
+---@field Invalid gamedataVehicleModel 26
+gamedataVehicleModel = {}
+

@@ -1,0 +1,34 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataMovementParam_Record : gamedataTweakDBRecord
+gamedataMovementParam_Record = {}
+
+---@return gamedataMovementParam_Record
+function gamedataMovementParam_Record.new() return end
+
+---@param props table
+---@return gamedataMovementParam_Record
+function gamedataMovementParam_Record.new(props) return end
+
+---@return Float
+function gamedataMovementParam_Record:Acceleration() return end
+
+---@return Float
+function gamedataMovementParam_Record:Deceleration() return end
+
+---@return String
+function gamedataMovementParam_Record:EnumComment() return end
+
+---@return CName
+function gamedataMovementParam_Record:EnumName() return end
+
+---@return Float
+function gamedataMovementParam_Record:MaxSpeed() return end
+
+---@return Float
+function gamedataMovementParam_Record:RotationSpeed() return end
+
+---@return gamedataMovementType
+function gamedataMovementParam_Record:Type() return end
+

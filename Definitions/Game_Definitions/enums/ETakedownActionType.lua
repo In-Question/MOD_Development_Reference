@@ -1,0 +1,24 @@
+---@meta
+---@diagnostic disable
+
+---@class ETakedownActionType
+---@field GrappleFailed ETakedownActionType 0
+---@field Grapple ETakedownActionType 1
+---@field Takedown ETakedownActionType 2
+---@field TakedownNonLethal ETakedownActionType 3
+---@field TakedownNetrunner ETakedownActionType 4
+---@field TakedownMassiveTarget ETakedownActionType 5
+---@field AerialTakedown ETakedownActionType 6
+---@field LeapToTarget ETakedownActionType 7
+---@field Struggle ETakedownActionType 8
+---@field BreakFree ETakedownActionType 9
+---@field TargetDead ETakedownActionType 10
+---@field KillTarget ETakedownActionType 11
+---@field SpareTarget ETakedownActionType 12
+---@field ForceShove ETakedownActionType 13
+---@field BossTakedown ETakedownActionType 14
+---@field DisposalTakedown ETakedownActionType 15
+---@field DisposalTakedownNonLethal ETakedownActionType 16
+---@field None ETakedownActionType 17
+ETakedownActionType = {}
+

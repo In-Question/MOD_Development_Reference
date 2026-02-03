@@ -1,0 +1,25 @@
+---@meta
+---@diagnostic disable
+
+---@class meshMeshParamBendedRoad : meshMeshParameter
+---@field occInds Uint16[]
+---@field occVerts Vector4[]
+---@field occSkinWeights Vector4[]
+---@field occSkinInds Color[]
+---@field collInds Uint16[][]
+---@field collVerts Vector3[][]
+---@field collSkinWeights Vector4[][]
+---@field collSkinInds Color[][]
+---@field collMaterialName String[]
+---@field collFilterPresetName String[]
+---@field collFaceMatInds Uint16[][]
+---@field collFaceMaterialNames String[][]
+meshMeshParamBendedRoad = {}
+
+---@return meshMeshParamBendedRoad
+function meshMeshParamBendedRoad.new() return end
+
+---@param props table
+---@return meshMeshParamBendedRoad
+function meshMeshParamBendedRoad.new(props) return end
+

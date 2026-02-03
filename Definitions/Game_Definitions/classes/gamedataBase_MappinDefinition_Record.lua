@@ -1,0 +1,25 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataBase_MappinDefinition_Record : gamedataTweakDBRecord
+gamedataBase_MappinDefinition_Record = {}
+
+---@return gamedataBase_MappinDefinition_Record
+function gamedataBase_MappinDefinition_Record.new() return end
+
+---@param props table
+---@return gamedataBase_MappinDefinition_Record
+function gamedataBase_MappinDefinition_Record.new(props) return end
+
+---@return Bool
+function gamedataBase_MappinDefinition_Record:ShowInWorld() return end
+
+---@return Bool
+function gamedataBase_MappinDefinition_Record:ShowOnMap() return end
+
+---@return Bool
+function gamedataBase_MappinDefinition_Record:ShowOnMinimap() return end
+
+---@return Float
+function gamedataBase_MappinDefinition_Record:VisibilityRange() return end
+

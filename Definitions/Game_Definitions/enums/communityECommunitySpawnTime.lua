@@ -1,0 +1,34 @@
+---@meta
+---@diagnostic disable
+
+---@class communityECommunitySpawnTime
+---@field Morning communityECommunitySpawnTime 0
+---@field Day communityECommunitySpawnTime 1
+---@field Evening communityECommunitySpawnTime 2
+---@field Night communityECommunitySpawnTime 3
+---@field Midnight communityECommunitySpawnTime 4
+---@field 1_00 communityECommunitySpawnTime 5
+---@field 2_00 communityECommunitySpawnTime 6
+---@field 3_00 communityECommunitySpawnTime 7
+---@field 4_00 communityECommunitySpawnTime 8
+---@field 5_00 communityECommunitySpawnTime 9
+---@field 6_00 communityECommunitySpawnTime 10
+---@field 7_00 communityECommunitySpawnTime 11
+---@field 8_00 communityECommunitySpawnTime 12
+---@field 9_00 communityECommunitySpawnTime 13
+---@field 10_00 communityECommunitySpawnTime 14
+---@field 11_00 communityECommunitySpawnTime 15
+---@field 12_00___Noon communityECommunitySpawnTime 16
+---@field 13_00 communityECommunitySpawnTime 17
+---@field 14_00 communityECommunitySpawnTime 18
+---@field 15_00 communityECommunitySpawnTime 19
+---@field 16_00 communityECommunitySpawnTime 20
+---@field 17_00 communityECommunitySpawnTime 21
+---@field 18_00 communityECommunitySpawnTime 22
+---@field 19_00 communityECommunitySpawnTime 23
+---@field 20_00 communityECommunitySpawnTime 24
+---@field 21_00 communityECommunitySpawnTime 25
+---@field 22_00 communityECommunitySpawnTime 26
+---@field 23_00 communityECommunitySpawnTime 27
+communityECommunitySpawnTime = {}
+

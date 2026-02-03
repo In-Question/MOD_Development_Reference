@@ -1,0 +1,23 @@
+---@meta
+---@diagnostic disable
+
+---@class AICombatSectorType
+---@field ToBackLeft AICombatSectorType 0
+---@field ToBackMid AICombatSectorType 1
+---@field ToBackRight AICombatSectorType 2
+---@field ToLeft AICombatSectorType 3
+---@field ToMid AICombatSectorType 4
+---@field ToRight AICombatSectorType 5
+---@field FromLeft AICombatSectorType 6
+---@field FromMid AICombatSectorType 7
+---@field FromRight AICombatSectorType 8
+---@field FromBackLeft AICombatSectorType 9
+---@field FromBackMid AICombatSectorType 10
+---@field FromBackRight AICombatSectorType 11
+---@field BeyondToLeft AICombatSectorType 12
+---@field BeyondToRight AICombatSectorType 13
+---@field BeyondFromLeft AICombatSectorType 14
+---@field BeyondFromRight AICombatSectorType 15
+---@field Unknown AICombatSectorType 16
+AICombatSectorType = {}
+

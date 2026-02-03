@@ -1,0 +1,80 @@
+---@meta
+---@diagnostic disable
+
+---@class gameuiICharacterCustomizationSystem : gameIGameSystem
+---@field puppetPreviewGameController gameuiCharacterCreationPuppetPreviewGameController
+gameuiICharacterCustomizationSystem = {}
+
+---@param option gameuiCharacterCustomizationOption
+---@param newValue Uint32
+function gameuiICharacterCustomizationSystem:ApplyChangeToOption(option, newValue) return end
+
+---@param editTag gameuiCharacterCustomizationEditTag
+function gameuiICharacterCustomizationSystem:ApplyEditTag(editTag) return end
+
+---@param presetName CName|string
+function gameuiICharacterCustomizationSystem:ApplyUIPreset(presetName) return end
+
+---@return Bool
+function gameuiICharacterCustomizationSystem:CancelFinalizedStateUpdate() return end
+
+---@return Bool
+function gameuiICharacterCustomizationSystem:ClearState() return end
+
+---@return Bool
+function gameuiICharacterCustomizationSystem:FinalizeState() return end
+
+---@param presetName CName|string
+---@return gameuiCharacterCustomizationOption[]
+function gameuiICharacterCustomizationSystem:GetArmsOptions(presetName) return end
+
+---@param presetName CName|string
+---@return gameuiCharacterCustomizationOption[]
+function gameuiICharacterCustomizationSystem:GetBodyOptions(presetName) return end
+
+---@param presetName CName|string
+---@return gameuiCharacterCustomizationOption[]
+function gameuiICharacterCustomizationSystem:GetHeadOptions(presetName) return end
+
+---@return gameuiICharacterCustomizationState
+function gameuiICharacterCustomizationSystem:GetState() return end
+
+---@param head Bool
+---@param body Bool
+---@param arms Bool
+---@param headPreset CName|string
+---@param bodyPreset CName|string
+---@param armsPreset CName|string
+---@return gameuiCharacterCustomizationOption[]
+function gameuiICharacterCustomizationSystem:GetUnitedOptions(head, body, arms, headPreset, bodyPreset, armsPreset) return end
+
+---@param entity entEntity
+---@return Bool
+function gameuiICharacterCustomizationSystem:HasCharacterCustomizationComponent(entity) return end
+
+function gameuiICharacterCustomizationSystem:InitializeOptionsFromFinalizedState() return end
+
+---@return Bool
+function gameuiICharacterCustomizationSystem:InitializeState() return end
+
+---@return Bool
+function gameuiICharacterCustomizationSystem:IsNudityAllowed() return end
+
+---@return Bool
+function gameuiICharacterCustomizationSystem:IsTransgenderAllowed() return end
+
+function gameuiICharacterCustomizationSystem:RandomizeOptions() return end
+
+---@return Bool
+function gameuiICharacterCustomizationSystem:ReFinalizeState() return end
+
+function gameuiICharacterCustomizationSystem:TriggerVoiceToneSample() return end
+
+---@return gameuiCharacterCreationPuppetPreviewGameController
+function gameuiICharacterCustomizationSystem:GetPuppetPreviewGameController() return end
+
+---@param puppetPreviewGameController gameuiCharacterCreationPuppetPreviewGameController
+function gameuiICharacterCustomizationSystem:RegisterPuppetPreviewGameController(puppetPreviewGameController) return end
+
+function gameuiICharacterCustomizationSystem:UnregisterPuppetPreviewGameController() return end
+

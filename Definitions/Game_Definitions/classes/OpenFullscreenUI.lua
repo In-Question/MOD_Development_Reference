@@ -1,0 +1,39 @@
+---@meta
+---@diagnostic disable
+
+---@class OpenFullscreenUI : ActionBool
+OpenFullscreenUI = {}
+
+---@return OpenFullscreenUI
+function OpenFullscreenUI.new() return end
+
+---@param props table
+---@return OpenFullscreenUI
+function OpenFullscreenUI.new(props) return end
+
+---@param device ScriptableDeviceComponentPS
+---@return Bool
+function OpenFullscreenUI.IsAvailable(device) return end
+
+---@param clearance gamedeviceClearance
+---@return Bool
+function OpenFullscreenUI.IsClearanceValid(clearance) return end
+
+---@param context gameGetActionsContext
+---@return Bool
+function OpenFullscreenUI.IsContextValid(context) return end
+
+---@param device ScriptableDeviceComponentPS
+---@param context gameGetActionsContext
+---@return Bool
+function OpenFullscreenUI.IsDefaultConditionMet(device, context) return end
+
+---@return String
+function OpenFullscreenUI:GetTweakDBChoiceRecord() return end
+
+---@param isZoomInteraction Bool
+function OpenFullscreenUI:SetProperties(isZoomInteraction) return end
+
+---@return Bool
+function OpenFullscreenUI:ShouldConnect() return end
+

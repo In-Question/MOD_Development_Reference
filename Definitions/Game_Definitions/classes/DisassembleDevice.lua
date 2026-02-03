@@ -1,0 +1,31 @@
+---@meta
+---@diagnostic disable
+
+---@class DisassembleDevice : ActionBool
+DisassembleDevice = {}
+
+---@return DisassembleDevice
+function DisassembleDevice.new() return end
+
+---@param props table
+---@return DisassembleDevice
+function DisassembleDevice.new(props) return end
+
+---@param device ScriptableDeviceComponentPS
+---@return Bool
+function DisassembleDevice.IsAvailable(device) return end
+
+---@param clearance gamedeviceClearance
+---@return Bool
+function DisassembleDevice.IsClearanceValid(clearance) return end
+
+---@param device ScriptableDeviceComponentPS
+---@param context gameGetActionsContext
+---@return Bool
+function DisassembleDevice.IsDefaultConditionMet(device, context) return end
+
+---@return String
+function DisassembleDevice:GetTweakDBChoiceRecord() return end
+
+function DisassembleDevice:SetProperties() return end
+

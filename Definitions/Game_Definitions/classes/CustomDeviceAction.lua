@@ -1,0 +1,42 @@
+---@meta
+---@diagnostic disable
+
+---@class CustomDeviceAction : ActionBool
+CustomDeviceAction = {}
+
+---@return CustomDeviceAction
+function CustomDeviceAction.new() return end
+
+---@param props table
+---@return CustomDeviceAction
+function CustomDeviceAction.new(props) return end
+
+---@param device ScriptableDeviceComponentPS
+---@param actionData SDeviceActionCustomData
+---@return Bool
+function CustomDeviceAction.IsAvailable(device, actionData) return end
+
+---@param clearance gamedeviceClearance
+---@return Bool
+function CustomDeviceAction.IsClearanceValid(clearance) return end
+
+---@param device ScriptableDeviceComponentPS
+---@param context gameGetActionsContext
+---@param actionData SDeviceActionCustomData
+---@return Bool
+function CustomDeviceAction.IsDefaultConditionMet(device, context, actionData) return end
+
+---@return Float
+function CustomDeviceAction:GetActivationTime() return end
+
+---@param clearance gamedeviceClearance
+---@return Bool
+function CustomDeviceAction:IsCustomClearanceValid(clearance) return end
+
+---@param id TweakDBID|string
+function CustomDeviceAction:SetObjectActionID(id) return end
+
+---@param customActionName CName|string
+---@param displayName CName|string
+function CustomDeviceAction:SetProperties(customActionName, displayName) return end
+

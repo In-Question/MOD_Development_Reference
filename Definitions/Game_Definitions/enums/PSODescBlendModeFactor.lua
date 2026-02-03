@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class PSODescBlendModeFactor
+---@field FAC_Zero PSODescBlendModeFactor 0
+---@field FAC_One PSODescBlendModeFactor 1
+---@field FAC_SrcColor PSODescBlendModeFactor 2
+---@field FAC_InvSrcColor PSODescBlendModeFactor 3
+---@field FAC_SrcAlpha PSODescBlendModeFactor 4
+---@field FAC_InvSrcAlpha PSODescBlendModeFactor 5
+---@field FAC_DestColor PSODescBlendModeFactor 6
+---@field FAC_InvDestColor PSODescBlendModeFactor 7
+---@field FAC_DestAlpha PSODescBlendModeFactor 8
+---@field FAC_InvDestAlpha PSODescBlendModeFactor 9
+---@field FAC_BlendFactor PSODescBlendModeFactor 10
+---@field FAC_InvBlendFactor PSODescBlendModeFactor 11
+---@field FAC_Src1Color PSODescBlendModeFactor 12
+---@field FAC_InvSrc1Color PSODescBlendModeFactor 13
+---@field FAC_Src1Alpha PSODescBlendModeFactor 14
+---@field FAC_InvSrc1Alpha PSODescBlendModeFactor 15
+PSODescBlendModeFactor = {}
+

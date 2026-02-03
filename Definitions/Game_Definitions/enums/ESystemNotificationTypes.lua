@@ -1,0 +1,41 @@
+---@meta
+---@diagnostic disable
+
+---@class ESystemNotificationTypes
+---@field DiscOperationIndicator ESystemNotificationTypes 0
+---@field GenericNotModal ESystemNotificationTypes 1
+---@field AchievmentDebug ESystemNotificationTypes 2
+---@field GenericMenuInfo ESystemNotificationTypes 3
+---@field GenericYesNo ESystemNotificationTypes 4
+---@field Generic ESystemNotificationTypes 5
+---@field ExitGame ESystemNotificationTypes 6
+---@field StartNewGame ESystemNotificationTypes 7
+---@field NoDiscSpace ESystemNotificationTypes 8
+---@field OverwriteSaveFile ESystemNotificationTypes 9
+---@field OverwriteSaveFileXbCompatWarning ESystemNotificationTypes 10
+---@field LoadSaveFileInGame ESystemNotificationTypes 11
+---@field LoadSaveFile ESystemNotificationTypes 12
+---@field DeleteSaveFile ESystemNotificationTypes 13
+---@field TransferSaveFile ESystemNotificationTypes 14
+---@field CorruptedSaveFile ESystemNotificationTypes 15
+---@field UnreachableCloudFile ESystemNotificationTypes 16
+---@field RegionMismatchSaveFile ESystemNotificationTypes 17
+---@field NoPlayerProfile ESystemNotificationTypes 18
+---@field GameSaved ESystemNotificationTypes 19
+---@field SaveFailed ESystemNotificationTypes 20
+---@field UnavailableForGuest ESystemNotificationTypes 21
+---@field EnableTelemetry ESystemNotificationTypes 22
+---@field PointOfNoReturn ESystemNotificationTypes 23
+---@field PointOfNoReturnWithReward ESystemNotificationTypes 24
+---@field PointOfNoReturnLootAdded ESystemNotificationTypes 25
+---@field GenericMenuError ESystemNotificationTypes 26
+---@field ControllerReconnected ESystemNotificationTypes 27
+---@field ControllerDisconnected ESystemNotificationTypes 28
+---@field TrialPeriodEnded ESystemNotificationTypes 29
+---@field TrialPeriodTimer ESystemNotificationTypes 30
+---@field FailedToRemoveTransferredSave ESystemNotificationTypes 31
+---@field LoadModdedSaveFile ESystemNotificationTypes 32
+---@field MAX ESystemNotificationTypes 33
+---@field FirstModalHighPriority ESystemNotificationTypes 27
+ESystemNotificationTypes = {}
+

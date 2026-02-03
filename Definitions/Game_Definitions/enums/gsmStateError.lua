@@ -1,0 +1,24 @@
+---@meta
+---@diagnostic disable
+
+---@class gsmStateError
+---@field StateError_OK gsmStateError 0
+---@field StateError_SettingsCorrupted gsmStateError 1
+---@field StateError_SettingsCorrupted_Save gsmStateError 2
+---@field StateError_ProfileCorrupted gsmStateError 3
+---@field StateError_ProfileCorrupted_Save gsmStateError 4
+---@field StateError_CannotInitializeContext gsmStateError 5
+---@field StateError_CantLoadGameDefinition gsmStateError 6
+---@field StateError_CantInitializeSession gsmStateError 7
+---@field StateError_CantLoadSave_CantLoadFile gsmStateError 8
+---@field StateError_CantLoadSave_CantCreateLoadStream gsmStateError 9
+---@field StateError_CantLoadSave_CensorshipLevelMismatch gsmStateError 10
+---@field StateError_CantLoadSave_RegionMismatch gsmStateError 11
+---@field StateError_CantLoadSave_CensorshipOptionalNudity gsmStateError 12
+---@field StateError_CantLoadSave_VersionMismatch gsmStateError 13
+---@field StateError_CantLoadSave_Corrupted gsmStateError 14
+---@field StateError_CantLoadSave_SessionDescInvalid gsmStateError 15
+---@field StateError_CantLoadSave_CantLoadCloudFile gsmStateError 16
+---@field StateError_CantLoadSave_AdditionalContentIDsMismatch gsmStateError 17
+gsmStateError = {}
+

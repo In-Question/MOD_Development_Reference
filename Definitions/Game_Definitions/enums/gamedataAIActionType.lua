@@ -1,0 +1,28 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataAIActionType
+---@field BackUp gamedataAIActionType 0
+---@field BattleCry gamedataAIActionType 1
+---@field Block gamedataAIActionType 2
+---@field CallOff gamedataAIActionType 3
+---@field Charge gamedataAIActionType 4
+---@field Crouch gamedataAIActionType 5
+---@field Dash gamedataAIActionType 6
+---@field GrenadeThrow gamedataAIActionType 7
+---@field GroupReaction gamedataAIActionType 8
+---@field Investigate gamedataAIActionType 9
+---@field Melee gamedataAIActionType 10
+---@field Peek gamedataAIActionType 11
+---@field Quickhack gamedataAIActionType 12
+---@field Reprimand gamedataAIActionType 13
+---@field Search gamedataAIActionType 14
+---@field Shoot gamedataAIActionType 15
+---@field Sync gamedataAIActionType 16
+---@field TakeCover gamedataAIActionType 17
+---@field Takedown gamedataAIActionType 18
+---@field Taunt gamedataAIActionType 19
+---@field Count gamedataAIActionType 20
+---@field Invalid gamedataAIActionType 21
+gamedataAIActionType = {}
+

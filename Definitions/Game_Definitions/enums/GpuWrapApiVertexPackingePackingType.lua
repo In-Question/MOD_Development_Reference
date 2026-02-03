@@ -1,0 +1,39 @@
+---@meta
+---@diagnostic disable
+
+---@class GpuWrapApiVertexPackingePackingType
+---@field PT_Invalid GpuWrapApiVertexPackingePackingType -1
+---@field PT_Float1 GpuWrapApiVertexPackingePackingType 0
+---@field PT_Float2 GpuWrapApiVertexPackingePackingType 1
+---@field PT_Float3 GpuWrapApiVertexPackingePackingType 2
+---@field PT_Float4 GpuWrapApiVertexPackingePackingType 3
+---@field PT_Float16_2 GpuWrapApiVertexPackingePackingType 4
+---@field PT_Float16_4 GpuWrapApiVertexPackingePackingType 5
+---@field PT_UShort1 GpuWrapApiVertexPackingePackingType 6
+---@field PT_UShort2 GpuWrapApiVertexPackingePackingType 7
+---@field PT_UShort4 GpuWrapApiVertexPackingePackingType 8
+---@field PT_UShort4N GpuWrapApiVertexPackingePackingType 9
+---@field PT_Short1 GpuWrapApiVertexPackingePackingType 10
+---@field PT_Short2 GpuWrapApiVertexPackingePackingType 11
+---@field PT_Short4 GpuWrapApiVertexPackingePackingType 12
+---@field PT_Short4N GpuWrapApiVertexPackingePackingType 13
+---@field PT_UInt1 GpuWrapApiVertexPackingePackingType 14
+---@field PT_UInt2 GpuWrapApiVertexPackingePackingType 15
+---@field PT_UInt3 GpuWrapApiVertexPackingePackingType 16
+---@field PT_UInt4 GpuWrapApiVertexPackingePackingType 17
+---@field PT_Int1 GpuWrapApiVertexPackingePackingType 18
+---@field PT_Int2 GpuWrapApiVertexPackingePackingType 19
+---@field PT_Int3 GpuWrapApiVertexPackingePackingType 20
+---@field PT_Int4 GpuWrapApiVertexPackingePackingType 21
+---@field PT_Color GpuWrapApiVertexPackingePackingType 22
+---@field PT_UByte1 GpuWrapApiVertexPackingePackingType 23
+---@field PT_UByte1F GpuWrapApiVertexPackingePackingType 24
+---@field PT_UByte4 GpuWrapApiVertexPackingePackingType 25
+---@field PT_UByte4N GpuWrapApiVertexPackingePackingType 26
+---@field PT_Byte4N GpuWrapApiVertexPackingePackingType 27
+---@field PT_Dec4 GpuWrapApiVertexPackingePackingType 28
+---@field PT_Index16 GpuWrapApiVertexPackingePackingType 29
+---@field PT_Index32 GpuWrapApiVertexPackingePackingType 30
+---@field PT_Max GpuWrapApiVertexPackingePackingType 31
+GpuWrapApiVertexPackingePackingType = {}
+

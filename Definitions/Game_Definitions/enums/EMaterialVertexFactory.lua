@@ -1,0 +1,39 @@
+---@meta
+---@diagnostic disable
+
+---@class EMaterialVertexFactory
+---@field MVF_Terrain EMaterialVertexFactory 1
+---@field MVF_MeshStatic EMaterialVertexFactory 2
+---@field MVF_MeshSkinned EMaterialVertexFactory 3
+---@field MVF_MeshExtSkinned EMaterialVertexFactory 4
+---@field MVF_GarmentMeshSkinned EMaterialVertexFactory 5
+---@field MVF_GarmentMeshExtSkinned EMaterialVertexFactory 6
+---@field MVF_MeshSpeedTree EMaterialVertexFactory 7
+---@field MVF_ParticleBilboard EMaterialVertexFactory 8
+---@field MVF_ParticleParallel EMaterialVertexFactory 9
+---@field MVF_ParticleMotionBlur EMaterialVertexFactory 10
+---@field MVF_ParticleSphereAligned EMaterialVertexFactory 11
+---@field MVF_ParticleVerticalFixed EMaterialVertexFactory 12
+---@field MVF_ParticleTrail EMaterialVertexFactory 13
+---@field MVF_ParticleFacingTrail EMaterialVertexFactory 14
+---@field MVF_ParticleScreen EMaterialVertexFactory 15
+---@field MVF_ParticleBeam EMaterialVertexFactory 16
+---@field MVF_ParticleFacingBeam EMaterialVertexFactory 17
+---@field MVF_Decal EMaterialVertexFactory 18
+---@field MVF_Debug EMaterialVertexFactory 19
+---@field MVF_DrawBuffer EMaterialVertexFactory 20
+---@field MVF_Fullscreen EMaterialVertexFactory 21
+---@field MVF_MeshSkinnedVehicle EMaterialVertexFactory 22
+---@field MVF_MeshStaticVehicle EMaterialVertexFactory 23
+---@field MVF_MeshProcedural EMaterialVertexFactory 24
+---@field MVF_MeshDestructible EMaterialVertexFactory 25
+---@field MVF_MeshDestructibleSkinned EMaterialVertexFactory 26
+---@field MVF_MeshSkinnedLightBlockers EMaterialVertexFactory 27
+---@field MVF_MeshExtSkinnedLightBlockers EMaterialVertexFactory 28
+---@field MVF_GarmentMeshSkinnedLightBlockers EMaterialVertexFactory 29
+---@field MVF_GarmentMeshExtSkinnedLightBlockers EMaterialVertexFactory 30
+---@field MVF_MeshSkinnedSingleBone EMaterialVertexFactory 31
+---@field MVF_MeshProxy EMaterialVertexFactory 32
+---@field MVF_MeshWindowProxy EMaterialVertexFactory 33
+EMaterialVertexFactory = {}
+

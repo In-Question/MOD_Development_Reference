@@ -1,0 +1,26 @@
+---@meta
+---@diagnostic disable
+
+---@class inkWidgetsSet : IScriptable
+inkWidgetsSet = {}
+
+---@return inkWidgetsSet
+function inkWidgetsSet.new() return end
+
+---@param props table
+---@return inkWidgetsSet
+function inkWidgetsSet.new(props) return end
+
+---@param other inkWidgetsSet
+---@return inkWidgetsSet
+function inkWidgetsSet:FromSet(other) return end
+
+---@return inkWidget[]
+function inkWidgetsSet:Get() return end
+
+---@param widget inkWidget
+---@param selectionRule inkSelectionRule
+---@param param String
+---@return inkWidgetsSet
+function inkWidgetsSet:Select(widget, selectionRule, param) return end
+

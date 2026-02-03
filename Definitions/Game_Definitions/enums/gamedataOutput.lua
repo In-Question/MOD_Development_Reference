@@ -1,0 +1,32 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataOutput
+---@field AskToFollowOrder gamedataOutput 0
+---@field AskToHolster gamedataOutput 1
+---@field BackOff gamedataOutput 2
+---@field BodyInvestigate gamedataOutput 3
+---@field Bump gamedataOutput 4
+---@field CallGuard gamedataOutput 5
+---@field CallPolice gamedataOutput 6
+---@field DeviceInvestigate gamedataOutput 7
+---@field Dodge gamedataOutput 8
+---@field DodgeToSide gamedataOutput 9
+---@field FearInPlace gamedataOutput 10
+---@field Flee gamedataOutput 11
+---@field Ignore gamedataOutput 12
+---@field Intruder gamedataOutput 13
+---@field Investigate gamedataOutput 14
+---@field LookAt gamedataOutput 15
+---@field Panic gamedataOutput 16
+---@field PlayerCall gamedataOutput 17
+---@field ProjectileInvestigate gamedataOutput 18
+---@field Reprimand gamedataOutput 19
+---@field SquadCall gamedataOutput 20
+---@field Surrender gamedataOutput 21
+---@field TurnAt gamedataOutput 22
+---@field WalkAway gamedataOutput 23
+---@field Count gamedataOutput 24
+---@field Invalid gamedataOutput 25
+gamedataOutput = {}
+

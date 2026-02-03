@@ -1,0 +1,66 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataAITicketType
+---@field BackUp gamedataAITicketType 0
+---@field BattleCry gamedataAITicketType 1
+---@field Block gamedataAITicketType 2
+---@field CallOff gamedataAITicketType 3
+---@field CatchUp gamedataAITicketType 4
+---@field CatchUpToMeleePlayerOnHard gamedataAITicketType 5
+---@field CatchUpToMeleePlayerOnVeryHard gamedataAITicketType 6
+---@field Charge gamedataAITicketType 7
+---@field CloseRing gamedataAITicketType 8
+---@field CloseRing1stFilter gamedataAITicketType 9
+---@field CloseRing2ndFilter gamedataAITicketType 10
+---@field Crouch gamedataAITicketType 11
+---@field DefaultRing gamedataAITicketType 12
+---@field Dodge gamedataAITicketType 13
+---@field Equip gamedataAITicketType 14
+---@field EquipMelee gamedataAITicketType 15
+---@field ExtremeRing gamedataAITicketType 16
+---@field ExtremeRing1stFilter gamedataAITicketType 17
+---@field ExtremeRing2ndFilter gamedataAITicketType 18
+---@field FarRing gamedataAITicketType 19
+---@field FarRing1stFilter gamedataAITicketType 20
+---@field FarRing2ndFilter gamedataAITicketType 21
+---@field GoToCover gamedataAITicketType 22
+---@field GrenadeThrow gamedataAITicketType 23
+---@field GrenadeThrow_Hard gamedataAITicketType 24
+---@field GrenadeThrow_VeryHard gamedataAITicketType 25
+---@field GroupReaction gamedataAITicketType 26
+---@field Investigate gamedataAITicketType 27
+---@field MediumRing gamedataAITicketType 28
+---@field MediumRing1stFilter gamedataAITicketType 29
+---@field MediumRing2ndFilter gamedataAITicketType 30
+---@field Melee gamedataAITicketType 31
+---@field MeleeApproach gamedataAITicketType 32
+---@field MeleeRing gamedataAITicketType 33
+---@field MeleeRing1stFilter gamedataAITicketType 34
+---@field MeleeRing2ndFilter gamedataAITicketType 35
+---@field MeleeSupport gamedataAITicketType 36
+---@field OpticalCamo_Hard gamedataAITicketType 37
+---@field OpticalCamo_VeryHard gamedataAITicketType 38
+---@field Peek gamedataAITicketType 39
+---@field QuickMelee gamedataAITicketType 40
+---@field Quickhack gamedataAITicketType 41
+---@field Quickhack_Hard gamedataAITicketType 42
+---@field Quickhack_VeryHard gamedataAITicketType 43
+---@field Reload gamedataAITicketType 44
+---@field Reprimand gamedataAITicketType 45
+---@field Search gamedataAITicketType 46
+---@field Shoot gamedataAITicketType 47
+---@field SimpleCombat gamedataAITicketType 48
+---@field SimpleCombatMovement gamedataAITicketType 49
+---@field SmokeGrenadeThrow gamedataAITicketType 50
+---@field Strafe gamedataAITicketType 51
+---@field StrafeEvade gamedataAITicketType 52
+---@field Sync gamedataAITicketType 53
+---@field TakeCover gamedataAITicketType 54
+---@field Takedown gamedataAITicketType 55
+---@field Taunt gamedataAITicketType 56
+---@field TauntBackground gamedataAITicketType 57
+---@field Count gamedataAITicketType 58
+---@field Invalid gamedataAITicketType 59
+gamedataAITicketType = {}
+

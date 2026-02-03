@@ -1,0 +1,26 @@
+---@meta
+---@diagnostic disable
+
+---@class gametargetingSystemSearchFilterMaskValue
+---@field Obj_Player gametargetingSystemSearchFilterMaskValue 1
+---@field Obj_Puppet gametargetingSystemSearchFilterMaskValue 2
+---@field Obj_Sensor gametargetingSystemSearchFilterMaskValue 4
+---@field Obj_Device gametargetingSystemSearchFilterMaskValue 8
+---@field Obj_Other gametargetingSystemSearchFilterMaskValue 16
+---@field Att_Friendly gametargetingSystemSearchFilterMaskValue 32
+---@field Att_Hostile gametargetingSystemSearchFilterMaskValue 64
+---@field Att_Neutral gametargetingSystemSearchFilterMaskValue 128
+---@field Sp_AimAssistEnabled gametargetingSystemSearchFilterMaskValue 256
+---@field Sp_Aggressive gametargetingSystemSearchFilterMaskValue 512
+---@field St_Alive gametargetingSystemSearchFilterMaskValue 2048
+---@field St_Dead gametargetingSystemSearchFilterMaskValue 4096
+---@field St_NotDefeated gametargetingSystemSearchFilterMaskValue 8192
+---@field St_Defeated gametargetingSystemSearchFilterMaskValue 16384
+---@field St_Conscious gametargetingSystemSearchFilterMaskValue 32768
+---@field St_Unconscious gametargetingSystemSearchFilterMaskValue 65536
+---@field St_TurnedOn gametargetingSystemSearchFilterMaskValue 131072
+---@field St_TurnedOff gametargetingSystemSearchFilterMaskValue 262144
+---@field St_QuickHackable gametargetingSystemSearchFilterMaskValue 524288
+---@field St_AliveAndActive gametargetingSystemSearchFilterMaskValue 174080
+gametargetingSystemSearchFilterMaskValue = {}
+

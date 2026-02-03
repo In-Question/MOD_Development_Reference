@@ -1,0 +1,32 @@
+---@meta
+---@diagnostic disable
+
+---@class AimAssistSettingConfig
+---@field Default AimAssistSettingConfig 0
+---@field Scanning AimAssistSettingConfig 1
+---@field LeftHandCyberwareCharge AimAssistSettingConfig 2
+---@field LeftHandCyberware AimAssistSettingConfig 3
+---@field MeleeCombat AimAssistSettingConfig 4
+---@field MeleeCombatIdle AimAssistSettingConfig 5
+---@field AimingLimbCyber AimAssistSettingConfig 6
+---@field AimingLimbCyberZoomLevel1 AimAssistSettingConfig 7
+---@field AimingLimbCyberZoomLevel2 AimAssistSettingConfig 8
+---@field Aiming AimAssistSettingConfig 9
+---@field QuickMelee AimAssistSettingConfig 10
+---@field VehicleCombat AimAssistSettingConfig 11
+---@field Sprinting AimAssistSettingConfig 12
+---@field LimbCyber AimAssistSettingConfig 13
+---@field Vehicle AimAssistSettingConfig 14
+---@field DriverCombat AimAssistSettingConfig 15
+---@field DriverCombatAiming AimAssistSettingConfig 16
+---@field DriverCombatTPP AimAssistSettingConfig 17
+---@field DriverCombatMissiles AimAssistSettingConfig 18
+---@field DriverCombatMissilesAiming AimAssistSettingConfig 19
+---@field DriverCombatMeleeTPP AimAssistSettingConfig 20
+---@field ZoomLevel1 AimAssistSettingConfig 21
+---@field ZoomLevel2 AimAssistSettingConfig 22
+---@field Exhausted AimAssistSettingConfig 23
+---@field Off AimAssistSettingConfig 24
+---@field Count AimAssistSettingConfig 25
+AimAssistSettingConfig = {}
+

@@ -1,0 +1,26 @@
+---@meta
+---@diagnostic disable
+
+---@class ETextureCompression
+---@field TCM_None ETextureCompression 0
+---@field TCM_DXTNoAlpha ETextureCompression 1
+---@field TCM_DXTAlpha ETextureCompression 2
+---@field TCM_RGBE ETextureCompression 3
+---@field TCM_Normalmap ETextureCompression 4
+---@field TCM_Normals_DEPRECATED ETextureCompression 5
+---@field TCM_NormalsHigh_DEPRECATED ETextureCompression 6
+---@field TCM_NormalsGloss_DEPRECATED ETextureCompression 7
+---@field TCM_TileMap ETextureCompression 8
+---@field TCM_DXTAlphaLinear ETextureCompression 9
+---@field TCM_QualityR ETextureCompression 10
+---@field TCM_QualityRG ETextureCompression 11
+---@field TCM_QualityColor ETextureCompression 12
+---@field TCM_HalfHDR_Unsigned ETextureCompression 13
+---@field TCM_HalfHDR_Signed ETextureCompression 14
+---@field TCM_Max ETextureCompression 15
+---@field TCM_Normals ETextureCompression 5
+---@field TCM_NormalsHigh ETextureCompression 6
+---@field TCM_NormalsGloss ETextureCompression 7
+---@field TCM_HalfHDR ETextureCompression 13
+ETextureCompression = {}
+

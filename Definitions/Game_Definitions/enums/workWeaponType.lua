@@ -1,0 +1,28 @@
+---@meta
+---@diagnostic disable
+
+---@class workWeaponType
+---@field Any workWeaponType 0
+---@field Ranged workWeaponType 1
+---@field OneHandedRanged workWeaponType 2
+---@field AssaultRifle workWeaponType 3
+---@field Hammer workWeaponType 8
+---@field Handgun workWeaponType 9
+---@field HeavyMachineGun workWeaponType 10
+---@field Katana workWeaponType 11
+---@field Knife workWeaponType 12
+---@field LightMachineGun workWeaponType 13
+---@field LongBlade workWeaponType 14
+---@field Melee workWeaponType 16
+---@field OneHandedClub workWeaponType 17
+---@field PrecisionRifle workWeaponType 18
+---@field Revolver workWeaponType 19
+---@field Rifle workWeaponType 20
+---@field ShortBlade workWeaponType 21
+---@field Shotgun workWeaponType 22
+---@field ShotgunDual workWeaponType 23
+---@field SniperRifle workWeaponType 24
+---@field SubmachineGun workWeaponType 25
+---@field TwoHandedClub workWeaponType 27
+workWeaponType = {}
+

@@ -1,0 +1,19 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataAttack_Landing_Record : gamedataAttack_GameEffect_Record
+gamedataAttack_Landing_Record = {}
+
+---@return gamedataAttack_Landing_Record
+function gamedataAttack_Landing_Record.new() return end
+
+---@param props table
+---@return gamedataAttack_Landing_Record
+function gamedataAttack_Landing_Record.new(props) return end
+
+---@return gamedataLandingFxPackage_Record
+function gamedataAttack_Landing_Record:FxPackage() return end
+
+---@return gamedataLandingFxPackage_Record
+function gamedataAttack_Landing_Record:FxPackageHandle() return end
+

@@ -1,0 +1,75 @@
+---@meta
+---@diagnostic disable
+
+---@class gameuiHackingMinigameLogicController : inkWidgetLogicController
+---@field grid inkUniformGridWidgetReference
+---@field buffer inkCompoundWidgetReference
+---@field programs inkCompoundWidgetReference
+---@field timer inkTextWidgetReference
+---@field timerProgressBar inkWidgetReference
+---@field accessInformationText inkTextWidgetReference
+---@field activatedTraps inkCompoundWidgetReference
+---@field gridVerticalHiglight inkWidgetReference
+---@field gridHorizontalHiglight inkWidgetReference
+---@field programsColumnHiglight inkWidgetReference
+---@field successScreenWidget inkCompoundWidgetReference
+---@field failScreenWidget inkCompoundWidgetReference
+---@field successExitTerminalText inkTextWidgetReference
+---@field failedExitTerminalText inkTextWidgetReference
+---@field successExitButton inkWidgetReference
+---@field failureExitButton inkWidgetReference
+---@field resetButton inkWidgetReference
+---@field introAnimName CName
+---@field loopAnimName CName
+---@field cursorAnimName CName
+---@field higlightAnimName CName
+---@field gameWonAnimName CName
+---@field gameLostAnimName CName
+---@field terminalShutdownAnimName CName
+---@field trapActivatedAnimName CName
+---@field programSucceedAnimName CName
+---@field programFailedAnimName CName
+---@field programResetFromFailedAnimName CName
+---@field gridCellHoverAnimName CName
+---@field gridCellClickFlashAnimName CName
+---@field bufferCellHoverAnimName CName
+---@field bufferCellClickFlashAnimName CName
+---@field programCellClickFlashAnimName CName
+---@field activatedTrapIconLibraryName CName
+---@field bufferCellLibraryName CName
+---@field programCellLibraryName CName
+---@field gridCellLibraryName CName
+---@field programEntryLibraryName CName
+---@field trapIconsContainerRelativePath CName
+---@field bufferCellTextWidgetRelativePath CName
+---@field programCellTextWidgetRelativePath CName
+---@field gridCellTrapIconWidgetRelativePath CName
+---@field gridCellTrapIconContainerRelativePath CName
+---@field gridCellTextWidgetRelativePath CName
+---@field gridCellProgramHighlightRelativePath CName
+---@field programEntryTextWidgetRelativePath CName
+---@field programEntryNoteWidgetRelativePath CName
+---@field programEntryInstructionContainerRelativePath CName
+---@field programEntryIconPath CName
+---@field cursorWidgetRelativePath CName
+---@field gridCellDefaultStateName CName
+---@field gridCellHoveredStateName CName
+---@field gridCellSelectedStateName CName
+---@field gridCellDisabledStateName CName
+---@field programSucceedStateName CName
+---@field programFailedStateName CName
+---@field programCellReadyStateName CName
+---@field programCellHighlightStateName CName
+---@field mainHiglightBarStateName CName
+---@field secondaryHiglightBarStateName CName
+---@field inactiveHiglightBarStateName CName
+---@field gridCellDisabledSymbol String
+gameuiHackingMinigameLogicController = {}
+
+---@return gameuiHackingMinigameLogicController
+function gameuiHackingMinigameLogicController.new() return end
+
+---@param props table
+---@return gameuiHackingMinigameLogicController
+function gameuiHackingMinigameLogicController.new(props) return end
+

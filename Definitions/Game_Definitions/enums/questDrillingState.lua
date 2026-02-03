@@ -1,0 +1,9 @@
+---@meta
+---@diagnostic disable
+
+---@class questDrillingState
+---@field Undefined questDrillingState 0
+---@field Started questDrillingState 1
+---@field Finished questDrillingState 2
+questDrillingState = {}
+

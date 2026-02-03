@@ -1,0 +1,41 @@
+---@meta
+---@diagnostic disable
+
+---@class GpuWrapApiBufferGroup
+---@field System GpuWrapApiBufferGroup 0
+---@field MeshResource GpuWrapApiBufferGroup 1
+---@field MeshCustom GpuWrapApiBufferGroup 2
+---@field AutoSpawner GpuWrapApiBufferGroup 3
+---@field Debug GpuWrapApiBufferGroup 4
+---@field DPL GpuWrapApiBufferGroup 5
+---@field Weather GpuWrapApiBufferGroup 6
+---@field ReflectionProbe GpuWrapApiBufferGroup 7
+---@field Skinning GpuWrapApiBufferGroup 8
+---@field Lights GpuWrapApiBufferGroup 9
+---@field Video GpuWrapApiBufferGroup 10
+---@field Particles GpuWrapApiBufferGroup 11
+---@field GIManagerLitProbes GpuWrapApiBufferGroup 12
+---@field GIManagerLookup GpuWrapApiBufferGroup 13
+---@field GIManagerInterpolation GpuWrapApiBufferGroup 14
+---@field GIManagerLitBricks GpuWrapApiBufferGroup 15
+---@field GIManagerLights GpuWrapApiBufferGroup 16
+---@field GIManagerEnvVolume GpuWrapApiBufferGroup 17
+---@field GIProxyBrick GpuWrapApiBufferGroup 18
+---@field GIProxySurfel GpuWrapApiBufferGroup 19
+---@field GIProxyProbes GpuWrapApiBufferGroup 20
+---@field GIProxyFactors GpuWrapApiBufferGroup 21
+---@field GIProxyAcceleration GpuWrapApiBufferGroup 22
+---@field Raytracing GpuWrapApiBufferGroup 23
+---@field RaytracingUpload GpuWrapApiBufferGroup 24
+---@field RaytracingAS GpuWrapApiBufferGroup 25
+---@field RaytracingOMM GpuWrapApiBufferGroup 26
+---@field Decals GpuWrapApiBufferGroup 27
+---@field Instances GpuWrapApiBufferGroup 28
+---@field Materials GpuWrapApiBufferGroup 29
+---@field Multilayer GpuWrapApiBufferGroup 30
+---@field FrameResources GpuWrapApiBufferGroup 31
+---@field Misc GpuWrapApiBufferGroup 32
+---@field MorphTargets GpuWrapApiBufferGroup 33
+---@field MAX GpuWrapApiBufferGroup 34
+GpuWrapApiBufferGroup = {}
+

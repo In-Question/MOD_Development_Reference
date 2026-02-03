@@ -1,0 +1,69 @@
+---@meta
+---@diagnostic disable
+
+---@class worldAdvertisementLightData
+---@field transform Transform
+---@field isEnabled Bool
+---@field lightName CName
+---@field useAutoHideDistance Bool
+---@field autoHideDistance Float
+---@field type ELightType
+---@field color Color
+---@field radius Float
+---@field unit ELightUnit
+---@field intensity Float
+---@field EV Float
+---@field temperature Float
+---@field lightChannel rendLightChannel
+---@field sceneDiffuse Bool
+---@field sceneSpecularScale Uint8
+---@field directional Bool
+---@field roughnessBias Int8
+---@field scaleGI Uint8
+---@field scaleEnvProbes Uint8
+---@field useInTransparents Bool
+---@field scaleVolFog Uint8
+---@field useInParticles Bool
+---@field attenuation rendLightAttenuation
+---@field clampAttenuation Bool
+---@field group rendLightGroup
+---@field areaShape EAreaLightShape
+---@field areaTwoSided Bool
+---@field spotCapsule Bool
+---@field sourceRadius Float
+---@field capsuleLength Float
+---@field areaRectSideA Float
+---@field areaRectSideB Float
+---@field innerAngle Float
+---@field outerAngle Float
+---@field softness Float
+---@field enableLocalShadows Bool
+---@field enableLocalShadowsForceStaticsOnly Bool
+---@field contactShadows rendContactShadowReciever
+---@field shadowAngle Float
+---@field shadowRadius Float
+---@field shadowFadeDistance Float
+---@field shadowFadeRange Float
+---@field shadowSoftnessMode ELightShadowSoftnessMode
+---@field rayTracedShadowsPlatform rendRayTracedShadowsPlatform
+---@field rayTracingLightSourceRadius Float
+---@field rayTracingContactShadowRange Float
+---@field iesProfile CIESDataResource
+---@field flicker rendSLightFlickering
+---@field envColorGroup EEnvColorGroup
+---@field colorGroupSaturation Uint8
+---@field portalAngleCutoff Uint8
+---@field allowDistantLight Bool
+---@field rayTracingIntensityScale Float
+---@field pathTracingLightUsage rendEPathTracingLightUsage
+---@field pathTracingOverrideScaleGI Bool
+---@field rtxdiShadowStartingDistance Float
+worldAdvertisementLightData = {}
+
+---@return worldAdvertisementLightData
+function worldAdvertisementLightData.new() return end
+
+---@param props table
+---@return worldAdvertisementLightData
+function worldAdvertisementLightData.new(props) return end
+

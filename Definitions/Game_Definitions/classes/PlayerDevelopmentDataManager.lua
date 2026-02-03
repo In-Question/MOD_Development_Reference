@@ -1,0 +1,240 @@
+---@meta
+---@diagnostic disable
+
+---@class PlayerDevelopmentDataManager : IScriptable
+---@field player PlayerPuppet
+---@field playerDevSystem PlayerDevelopmentSystem
+---@field parentGameCtrl gameuiWidgetGameController
+PlayerDevelopmentDataManager = {}
+
+---@return PlayerDevelopmentDataManager
+function PlayerDevelopmentDataManager.new() return end
+
+---@param props table
+---@return PlayerDevelopmentDataManager
+function PlayerDevelopmentDataManager.new(props) return end
+
+---@param utility gamedataPerkUtility
+---@return String
+function PlayerDevelopmentDataManager.PerkUtilityToString(utility) return end
+
+---@return Bool
+function PlayerDevelopmentDataManager:CheckRespecCost() return end
+
+---@param attribute SAttribute
+---@return AttributeData
+function PlayerDevelopmentDataManager:FillAttributeData(attribute) return end
+
+---@param perkArea gamedataPerkArea
+---@param proficiency gamedataProficiencyType
+---@param attributeRecord gamedataAttribute_Record
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return AreaDisplayData
+function PlayerDevelopmentDataManager:GetAreaDisplayData(perkArea, proficiency, attributeRecord, playerDevelopmentData) return end
+
+---@param perkArea gamedataPerkArea
+---@param proficiency gamedataProficiencyType
+---@param attributeId TweakDBID|string
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return AreaDisplayData
+function PlayerDevelopmentDataManager:GetAreaDisplayData(perkArea, proficiency, attributeId, playerDevelopmentData) return end
+
+---@param attributeID TweakDBID|string
+---@return AttributeData
+function PlayerDevelopmentDataManager:GetAttribute(attributeID) return end
+
+---@param attributeId TweakDBID|string
+---@return AttributeDisplayData
+function PlayerDevelopmentDataManager:GetAttributeData(attributeId) return end
+
+---@param recordID TweakDBID|string
+---@return PerkMenuAttribute
+function PlayerDevelopmentDataManager:GetAttributeEnumFromRecordID(recordID) return end
+
+---@param attributeType gamedataStatType
+---@return AttributeData
+function PlayerDevelopmentDataManager:GetAttributeFromType(attributeType) return end
+
+---@param attribute PerkMenuAttribute
+---@return Int32
+function PlayerDevelopmentDataManager:GetAttributeLevel(attribute) return end
+
+---@return Int32
+function PlayerDevelopmentDataManager:GetAttributePoints() return end
+
+---@param proficiency gamedataProficiencyType
+---@return gamedataAttribute_Record
+function PlayerDevelopmentDataManager:GetAttributeRecordFromProficiency(proficiency) return end
+
+---@param attribute PerkMenuAttribute
+---@return TweakDBID
+function PlayerDevelopmentDataManager:GetAttributeRecordIDFromEnum(attribute) return end
+
+---@return AttributeData[]
+function PlayerDevelopmentDataManager:GetAttributes() return end
+
+---@param perkType gamedataNewPerkType
+---@param perkArea gamedataNewPerkSlotType
+---@param proficiency gamedataProficiencyType
+---@param attributeId TweakDBID|string
+---@param isRipperdoc Bool
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return NewPerkDisplayData
+function PlayerDevelopmentDataManager:GetNewPerkDisplayData(perkType, perkArea, proficiency, attributeId, isRipperdoc, playerDevelopmentData) return end
+
+---@param perkType gamedataNewPerkType
+---@param perkArea gamedataNewPerkSlotType
+---@param proficiency gamedataProficiencyType
+---@param attributeRecord gamedataAttribute_Record
+---@param isRipperdoc Bool
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return NewPerkDisplayData
+function PlayerDevelopmentDataManager:GetNewPerkDisplayData(perkType, perkArea, proficiency, attributeRecord, isRipperdoc, playerDevelopmentData) return end
+
+---@param proficiencyRecord gamedataProficiency_Record
+---@return LevelRewardDisplayData[]
+function PlayerDevelopmentDataManager:GetPassiveBonusDisplayData(proficiencyRecord) return end
+
+---@param perkType gamedataPerkType
+---@param perkArea gamedataPerkArea
+---@param proficiency gamedataProficiencyType
+---@param attributeId TweakDBID|string
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return PerkDisplayData
+function PlayerDevelopmentDataManager:GetPerkDisplayData(perkType, perkArea, proficiency, attributeId, playerDevelopmentData) return end
+
+---@param perkType gamedataPerkType
+---@param perkArea gamedataPerkArea
+---@param proficiency gamedataProficiencyType
+---@param attributeRecord gamedataAttribute_Record
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return PerkDisplayData
+function PlayerDevelopmentDataManager:GetPerkDisplayData(perkType, perkArea, proficiency, attributeRecord, playerDevelopmentData) return end
+
+---@param type gamedataPerkType
+---@return Int32
+function PlayerDevelopmentDataManager:GetPerkLevel(type) return end
+
+---@return Int32
+function PlayerDevelopmentDataManager:GetPerkPoints() return end
+
+---@return PlayerPuppet
+function PlayerDevelopmentDataManager:GetPlayer() return end
+
+---@return PlayerDevelopmentData
+function PlayerDevelopmentDataManager:GetPlayerDevelopmentData() return end
+
+---@return PlayerDevelopmentSystem
+function PlayerDevelopmentDataManager:GetPlayerDevelopmentSystem() return end
+
+---@param proficiency gamedataProficiencyType
+---@return ProficiencyDisplayData
+function PlayerDevelopmentDataManager:GetProficiencyDisplayData(proficiency) return end
+
+---@param proficiency gamedataProficiencyType
+---@param attributeId TweakDBID|string
+---@return ProficiencyDisplayData
+function PlayerDevelopmentDataManager:GetProficiencyDisplayData(proficiency, attributeId) return end
+
+---@param proficiency gamedataProficiencyType
+---@param attributeRecord gamedataAttribute_Record
+---@return ProficiencyDisplayData
+function PlayerDevelopmentDataManager:GetProficiencyDisplayData(proficiency, attributeRecord) return end
+
+---@param proficiencyRecord gamedataProficiency_Record
+---@param attributeRecord gamedataAttribute_Record
+---@return ProficiencyDisplayData
+function PlayerDevelopmentDataManager:GetProficiencyDisplayData(proficiencyRecord, attributeRecord) return end
+
+---@param proficiency gamedataProficiencyType
+---@return gamedataProficiency_Record
+function PlayerDevelopmentDataManager:GetProficiencyRecord(proficiency) return end
+
+---@param attributeRecord gamedataAttribute_Record
+---@param proficiency gamedataProficiencyType
+---@return gamedataProficiency_Record
+function PlayerDevelopmentDataManager:GetProficiencyRecord(attributeRecord, proficiency) return end
+
+---@param proficiency gamedataProficiencyType
+---@return ProficiencyDisplayData
+function PlayerDevelopmentDataManager:GetProficiencyWithData(proficiency) return end
+
+---@return Int32
+function PlayerDevelopmentDataManager:GetSpentPerkPoints() return end
+
+---@return Int32
+function PlayerDevelopmentDataManager:GetSpentTraitPoints() return end
+
+---@return Int32
+function PlayerDevelopmentDataManager:GetSpyPerkPoints() return end
+
+---@return Int32
+function PlayerDevelopmentDataManager:GetTotalRespecCost() return end
+
+---@param traitRecordId TweakDBID|string
+---@param attributeId TweakDBID|string
+---@param proficiency gamedataProficiencyType
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return TraitDisplayData
+function PlayerDevelopmentDataManager:GetTraitDisplayData(traitRecordId, attributeId, proficiency, playerDevelopmentData) return end
+
+---@param traitType gamedataTraitType
+---@param attributeId TweakDBID|string
+---@param proficiency gamedataProficiencyType
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return TraitDisplayData
+function PlayerDevelopmentDataManager:GetTraitDisplayData(traitType, attributeId, proficiency, playerDevelopmentData) return end
+
+---@param traitRecord gamedataTrait_Record
+---@param attributeRecord gamedataAttribute_Record
+---@param proficiency gamedataProficiencyType
+---@param playerDevelopmentData PlayerDevelopmentData
+---@return TraitDisplayData
+function PlayerDevelopmentDataManager:GetTraitDisplayData(traitRecord, attributeRecord, proficiency, playerDevelopmentData) return end
+
+---@param showNotification Bool
+---@return Bool
+function PlayerDevelopmentDataManager:HasAvailableAttributePoints(showNotification) return end
+
+---@param player PlayerPuppet
+---@param parentGameCtrl gameuiWidgetGameController
+function PlayerDevelopmentDataManager:Initialize(player, parentGameCtrl) return end
+
+---@param attribute PerkMenuAttribute
+---@return Bool
+function PlayerDevelopmentDataManager:IsAttributeUpgradeable(attribute) return end
+
+---@param perkType gamedataNewPerkType
+---@return Bool
+function PlayerDevelopmentDataManager:IsEspionageMilestonePerk(perkType) return end
+
+---@param perkType gamedataNewPerkType
+---@return Bool
+function PlayerDevelopmentDataManager:IsEspionagePerk(perkType) return end
+
+---@param data NewPerkDisplayData
+---@return Bool
+function PlayerDevelopmentDataManager:IsNewPerkRefundable(data) return end
+
+---@param data BasePerkDisplayData
+---@param showNotification Bool
+---@return Bool
+function PlayerDevelopmentDataManager:IsPerkUpgradeable(data, showNotification) return end
+
+---@param attributeId TweakDBID|string
+function PlayerDevelopmentDataManager:NotifyAttributeUpdate(attributeId) return end
+
+function PlayerDevelopmentDataManager:UpdateData() return end
+
+---@param data AttributeData
+function PlayerDevelopmentDataManager:UpgradeAttribute(data) return end
+
+---@param type gamedataStatType
+function PlayerDevelopmentDataManager:UpgradeAttribute(type) return end
+
+---@param data PerkDisplayData
+function PlayerDevelopmentDataManager:UpgradePerk(data) return end
+
+---@param data TraitDisplayData
+function PlayerDevelopmentDataManager:UpgradeTrait(data) return end
+

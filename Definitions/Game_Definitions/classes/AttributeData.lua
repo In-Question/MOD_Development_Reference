@@ -1,0 +1,25 @@
+---@meta
+---@diagnostic disable
+
+---@class AttributeData : IDisplayData
+---@field label String
+---@field icon String
+---@field id TweakDBID
+---@field value Int32
+---@field maxValue Int32
+---@field description String
+---@field availableToUpgrade Bool
+---@field type gamedataStatType
+AttributeData = {}
+
+---@return AttributeData
+function AttributeData.new() return end
+
+---@param props table
+---@return AttributeData
+function AttributeData.new(props) return end
+
+---@param manager PlayerDevelopmentDataManager
+---@return BasePerksMenuTooltipData
+function AttributeData:CreateTooltipData(manager) return end
+

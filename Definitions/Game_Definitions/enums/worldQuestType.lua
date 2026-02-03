@@ -1,0 +1,29 @@
+---@meta
+---@diagnostic disable
+
+---@class worldQuestType
+---@field MainQuest worldQuestType 0
+---@field SideQuest worldQuestType 1
+---@field StreetStory worldQuestType 2
+---@field MinorActivities worldQuestType 3
+---@field MiniWorldStories worldQuestType 4
+---@field CyberJunkie worldQuestType 5
+---@field Courier worldQuestType 6
+---@field CourierQuestGiver worldQuestType 7
+---@field StuntChallenges worldQuestType 8
+---@field StuntChallengesQuestGiver worldQuestType 9
+---@field AirDrop worldQuestType 10
+---@field BlackMarket worldQuestType 11
+---@field Food worldQuestType 12
+---@field TechStore worldQuestType 13
+---@field Clothing worldQuestType 14
+---@field Medpoint worldQuestType 15
+---@field WeaponShop worldQuestType 16
+---@field Ripperdoc worldQuestType 17
+---@field CyberwareShop worldQuestType 18
+---@field MeleeWeaponVendor worldQuestType 19
+---@field Netrunner worldQuestType 20
+---@field Outpost worldQuestType 21
+---@field GangWatch worldQuestType 22
+worldQuestType = {}
+

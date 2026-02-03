@@ -1,0 +1,55 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataStatPoolType
+---@field AccumulatedDoT gamedataStatPoolType 0
+---@field Adrenaline gamedataStatPoolType 1
+---@field Aggressiveness gamedataStatPoolType 2
+---@field Armor gamedataStatPoolType 3
+---@field BerserkCharge gamedataStatPoolType 4
+---@field BleedingTrigger gamedataStatPoolType 5
+---@field BurningTrigger gamedataStatPoolType 6
+---@field CPUPower gamedataStatPoolType 7
+---@field CWMaskCharges gamedataStatPoolType 8
+---@field CallReinforcementProgress gamedataStatPoolType 9
+---@field CyberdeckOverclock gamedataStatPoolType 10
+---@field Durability gamedataStatPoolType 11
+---@field E3_BossWeakSpotHealth gamedataStatPoolType 12
+---@field ElectrocutedTrigger gamedataStatPoolType 13
+---@field Fear gamedataStatPoolType 14
+---@field GrenadesCharges gamedataStatPoolType 15
+---@field HealingItemsCharges gamedataStatPoolType 16
+---@field Health gamedataStatPoolType 17
+---@field HitShapeArmor gamedataStatPoolType 18
+---@field JenkinsHelper gamedataStatPoolType 19
+---@field LeftArmHealth gamedataStatPoolType 20
+---@field LeftLegHealth gamedataStatPoolType 21
+---@field Memory gamedataStatPoolType 22
+---@field OpticalCamoCharges gamedataStatPoolType 23
+---@field Overshield gamedataStatPoolType 24
+---@field Oxygen gamedataStatPoolType 25
+---@field PhoneCallDuration gamedataStatPoolType 26
+---@field Poise gamedataStatPoolType 27
+---@field PoisonTrigger gamedataStatPoolType 28
+---@field ProjectileLauncherCharges gamedataStatPoolType 29
+---@field QuickHackDuration gamedataStatPoolType 30
+---@field QuickHackUpload gamedataStatPoolType 31
+---@field ReprimandEscalation gamedataStatPoolType 32
+---@field RightLegHealth gamedataStatPoolType 33
+---@field SandevistanCharge gamedataStatPoolType 34
+---@field Stamina gamedataStatPoolType 35
+---@field StunTrigger gamedataStatPoolType 36
+---@field ThrowRecovery gamedataStatPoolType 37
+---@field TimeBank gamedataStatPoolType 38
+---@field UnlockProgress gamedataStatPoolType 39
+---@field VehicleMissileLauncherCharges gamedataStatPoolType 40
+---@field WeakspotHealth gamedataStatPoolType 41
+---@field WeaponCharge gamedataStatPoolType 42
+---@field WeaponOverheat gamedataStatPoolType 43
+---@field CPOShockedTrigger gamedataStatPoolType 44
+---@field CPO_Armor gamedataStatPoolType 45
+---@field CPO_NPC_Importance gamedataStatPoolType 46
+---@field Count gamedataStatPoolType 47
+---@field Invalid gamedataStatPoolType 48
+gamedataStatPoolType = {}
+

@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class AICoverExposureMethod
+---@field Standing_Step_Left AICoverExposureMethod 0
+---@field Standing_Step_Right AICoverExposureMethod 1
+---@field Standing_Lean_Left AICoverExposureMethod 2
+---@field Standing_Lean_Right AICoverExposureMethod 3
+---@field Crouching_Step_Left AICoverExposureMethod 4
+---@field Crouching_Step_Right AICoverExposureMethod 5
+---@field Crouching_Lean_Left AICoverExposureMethod 6
+---@field Crouching_Lean_Right AICoverExposureMethod 7
+---@field Lean_Over AICoverExposureMethod 8
+---@field Stand_Up AICoverExposureMethod 9
+---@field Standing_Blind_Left AICoverExposureMethod 10
+---@field Standing_Blind_Right AICoverExposureMethod 11
+---@field Crouching_Blind_Left AICoverExposureMethod 12
+---@field Crouching_Blind_Right AICoverExposureMethod 13
+---@field Crouching_Blind_Top AICoverExposureMethod 14
+---@field Count AICoverExposureMethod 15
+AICoverExposureMethod = {}
+

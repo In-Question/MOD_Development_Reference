@@ -1,0 +1,29 @@
+---@meta
+---@diagnostic disable
+
+---@class gamePSMMeleeWeapon
+---@field NotReady gamePSMMeleeWeapon 0
+---@field Equipping gamePSMMeleeWeapon 1
+---@field Idle gamePSMMeleeWeapon 2
+---@field Safe gamePSMMeleeWeapon 3
+---@field PublicSafe gamePSMMeleeWeapon 4
+---@field Parried gamePSMMeleeWeapon 5
+---@field Hold gamePSMMeleeWeapon 6
+---@field ChargedHold gamePSMMeleeWeapon 7
+---@field Block gamePSMMeleeWeapon 8
+---@field Targeting gamePSMMeleeWeapon 9
+---@field Deflect gamePSMMeleeWeapon 10
+---@field ComboAttack gamePSMMeleeWeapon 11
+---@field FinalAttack gamePSMMeleeWeapon 12
+---@field StrongAttack gamePSMMeleeWeapon 13
+---@field SafeAttack gamePSMMeleeWeapon 14
+---@field BlockAttack gamePSMMeleeWeapon 15
+---@field SprintAttack gamePSMMeleeWeapon 16
+---@field CrouchAttack gamePSMMeleeWeapon 17
+---@field JumpAttack gamePSMMeleeWeapon 18
+---@field ThrowAttack gamePSMMeleeWeapon 19
+---@field DeflectAttack gamePSMMeleeWeapon 20
+---@field EquipAttack gamePSMMeleeWeapon 21
+---@field Default gamePSMMeleeWeapon 22
+gamePSMMeleeWeapon = {}
+

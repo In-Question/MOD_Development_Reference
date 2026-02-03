@@ -1,0 +1,19 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataShooterSpiderDrone_Record : gamedataShooterAI_Record
+gamedataShooterSpiderDrone_Record = {}
+
+---@return gamedataShooterSpiderDrone_Record
+function gamedataShooterSpiderDrone_Record.new() return end
+
+---@param props table
+---@return gamedataShooterSpiderDrone_Record
+function gamedataShooterSpiderDrone_Record.new(props) return end
+
+---@return Float
+function gamedataShooterSpiderDrone_Record:AttackDistance() return end
+
+---@return Float
+function gamedataShooterSpiderDrone_Record:AttackSpeed() return end
+

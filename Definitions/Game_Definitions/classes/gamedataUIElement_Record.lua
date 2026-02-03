@@ -1,0 +1,31 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataUIElement_Record : gamedataTweakDBRecord
+gamedataUIElement_Record = {}
+
+---@return gamedataUIElement_Record
+function gamedataUIElement_Record.new() return end
+
+---@param props table
+---@return gamedataUIElement_Record
+function gamedataUIElement_Record.new(props) return end
+
+---@return gamedataUICondition_Record[]
+function gamedataUIElement_Record:CustomConditions() return end
+
+---@param item gamedataUICondition_Record
+---@return Bool
+function gamedataUIElement_Record:CustomConditionsContains(item) return end
+
+---@return Int32
+function gamedataUIElement_Record:GetCustomConditionsCount() return end
+
+---@param index Int32
+---@return gamedataUICondition_Record
+function gamedataUIElement_Record:GetCustomConditionsItem(index) return end
+
+---@param index Int32
+---@return gamedataUICondition_Record
+function gamedataUIElement_Record:GetCustomConditionsItemHandle(index) return end
+

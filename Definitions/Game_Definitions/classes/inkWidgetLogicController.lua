@@ -1,0 +1,248 @@
+---@meta
+---@diagnostic disable
+
+---@class inkWidgetLogicController : inkIWidgetLogicController
+inkWidgetLogicController = {}
+
+---@return inkWidgetLogicController
+function inkWidgetLogicController.new() return end
+
+---@param props table
+---@return inkWidgetLogicController
+function inkWidgetLogicController.new(props) return end
+
+---@param spawnData inkAsyncSpawnData
+---@param callbackObject IScriptable
+---@param callbackFunctionName CName|string
+---@return inkAsyncSpawnRequest
+function inkWidgetLogicController:AsyncSpawnFromExternal(spawnData, callbackObject, callbackFunctionName) return end
+
+---@param spawnData inkAsyncSpawnData
+---@param callbackObject IScriptable
+---@param callbackFunctionName CName|string
+---@return inkAsyncSpawnRequest
+function inkWidgetLogicController:AsyncSpawnFromLocal(spawnData, callbackObject, callbackFunctionName) return end
+
+---@param eventName CName|string
+function inkWidgetLogicController:CallCustomCallback(eventName) return end
+
+---@param widgetNamePath CName|string
+---@return inkWidgetLogicController
+function inkWidgetLogicController:GetChildControllerByPath(widgetNamePath) return end
+
+---@param widgetNamePath CName|string
+---@return inkWidget
+function inkWidgetLogicController:GetChildWidgetByPath(widgetNamePath) return end
+
+---@param path inkWidgetPath
+---@return inkWidgetLogicController
+function inkWidgetLogicController:GetController(path) return end
+
+---@param controllerType CName|string
+---@param path inkWidgetPath
+---@return inkWidgetLogicController
+function inkWidgetLogicController:GetControllerByBaseType(controllerType, path) return end
+
+---@param controllerType CName|string
+---@param path inkWidgetPath
+---@return inkWidgetLogicController
+function inkWidgetLogicController:GetControllerByType(controllerType, path) return end
+
+---@param path inkWidgetPath
+---@return inkWidgetLogicController[]
+function inkWidgetLogicController:GetControllers(path) return end
+
+---@param controllerType CName|string
+---@param path inkWidgetPath
+---@return inkWidgetLogicController[]
+function inkWidgetLogicController:GetControllersByType(controllerType, path) return end
+
+---@param path inkWidgetPath
+---@return Int32
+function inkWidgetLogicController:GetNumControllers(path) return end
+
+---@param controllerType CName|string
+---@param path inkWidgetPath
+---@return Int32
+function inkWidgetLogicController:GetNumControllersOfType(controllerType, path) return end
+
+---@return inkCompoundWidget
+function inkWidgetLogicController:GetRootCompoundWidget() return end
+
+---@return inkWidget
+function inkWidgetLogicController:GetRootWidget() return end
+
+---@param path inkWidgetPath
+---@return inkWidget
+function inkWidgetLogicController:GetWidget(path) return end
+
+---@param resourcePath redResourceReferenceScriptToken
+---@param libraryID CName|string
+---@return Bool
+function inkWidgetLogicController:HasExternalLibrary(resourcePath, libraryID) return end
+
+---@param libraryID CName|string
+---@return Bool
+function inkWidgetLogicController:HasLocalLibrary(libraryID) return end
+
+---@param animationName CName|string
+---@param playbackOptions inkanimPlaybackOptions
+---@return inkanimProxy
+function inkWidgetLogicController:PlayLibraryAnimation(animationName, playbackOptions) return end
+
+---@param animationName CName|string
+---@param target inkWidget
+---@param playbackOptions inkanimPlaybackOptions
+---@return inkanimProxy
+function inkWidgetLogicController:PlayLibraryAnimationOnAutoSelectedTargets(animationName, target, playbackOptions) return end
+
+---@param animationName CName|string
+---@param targets inkWidgetsSet
+---@param playbackOptions inkanimPlaybackOptions
+---@return inkanimProxy
+function inkWidgetLogicController:PlayLibraryAnimationOnTargets(animationName, targets, playbackOptions) return end
+
+---@param rStrength inkRumbleStrength
+---@param rType inkRumbleType
+---@param rPosition inkRumblePosition
+function inkWidgetLogicController:PlayRumble(rStrength, rType, rPosition) return end
+
+---@param eventName CName|string
+function inkWidgetLogicController:PlayRumbleByName(eventName) return end
+
+---@param rStrength inkRumbleStrength
+function inkWidgetLogicController:PlayRumbleLoop(rStrength) return end
+
+---@param widgetName CName|string
+---@param eventName CName|string
+---@param actionKey CName|string
+function inkWidgetLogicController:PlaySound(widgetName, eventName, actionKey) return end
+
+---@param evt redEvent
+function inkWidgetLogicController:QueueBroadcastEvent(evt) return end
+
+---@param evt redEvent
+function inkWidgetLogicController:QueueEvent(evt) return end
+
+---@param eventName CName|string
+---@param object IScriptable
+---@param functionName CName|string
+function inkWidgetLogicController:RegisterToCallback(eventName, object, functionName) return end
+
+---@param eventName CName|string
+---@param object IScriptable
+---@param functionName CName|string
+function inkWidgetLogicController:RegisterToGlobalInputCallback(eventName, object, functionName) return end
+
+---@param newParent inkCompoundWidget
+---@param index Int32
+function inkWidgetLogicController:Reparent(newParent, index) return end
+
+---@param context CName|string
+---@param data inkUserData
+function inkWidgetLogicController:SetCursorContext(context, data) return end
+
+---@param widget inkWidget
+---@param time Float
+function inkWidgetLogicController:SetCursorOverWidget(widget, time) return end
+
+---@param data inkGameNotificationData
+---@return inkGameNotificationToken
+function inkWidgetLogicController:ShowGameNotification(data) return end
+
+---@param parentWidget inkWidget
+---@param resourcePath redResourceReferenceScriptToken
+---@param libraryID CName|string
+---@return inkWidget
+function inkWidgetLogicController:SpawnFromExternal(parentWidget, resourcePath, libraryID) return end
+
+---@param parentWidget inkWidget
+---@param libraryID CName|string
+---@return inkWidget
+function inkWidgetLogicController:SpawnFromLocal(parentWidget, libraryID) return end
+
+---@param rStrength inkRumbleStrength
+function inkWidgetLogicController:StopRumbleLoop(rStrength) return end
+
+---@param eventName CName|string
+---@param object IScriptable
+---@param functionName CName|string
+function inkWidgetLogicController:UnregisterFromCallback(eventName, object, functionName) return end
+
+---@param eventName CName|string
+---@param object IScriptable
+---@param functionName CName|string
+function inkWidgetLogicController:UnregisterFromGlobalInputCallback(eventName, object, functionName) return end
+
+---@param parentWidget inkWidget
+---@param resourcePath redResourceReferenceScriptToken
+---@param libraryID CName|string
+---@param callbackObject IScriptable
+---@param callbackFunctionName CName|string
+---@param userData IScriptable
+---@return inkAsyncSpawnRequest
+function inkWidgetLogicController:AsyncSpawnFromExternal(parentWidget, resourcePath, libraryID, callbackObject, callbackFunctionName, userData) return end
+
+---@param parentWidget inkWidget
+---@param libraryID CName|string
+---@param callbackObject IScriptable
+---@param callbackFunctionName CName|string
+---@param userData IScriptable
+---@return inkAsyncSpawnRequest
+function inkWidgetLogicController:AsyncSpawnFromLocal(parentWidget, libraryID, callbackObject, callbackFunctionName, userData) return end
+
+---@param parentWidget inkWidget
+---@param id CName|string
+---@param path redResourceReferenceScriptToken
+---@return inkWidget
+function inkWidgetLogicController:CreateWidget(parentWidget, id, path) return end
+
+---@param parentWidget inkWidget
+---@param id CName|string
+---@param path redResourceReferenceScriptToken
+---@param spawnData AsyncSpawnData
+---@return Bool
+function inkWidgetLogicController:CreateWidgetAsync(parentWidget, id, path, spawnData) return end
+
+---@param parentWidget inkWidget
+---@param widgetRecord gamedataWidgetDefinition_Record
+---@param screenTypeRecord gamedataDeviceScreenType_Record
+---@param styleRecord gamedataWidgetStyle_Record
+---@param id CName|string
+---@param path redResourceReferenceScriptToken
+---@return SWidgetPackageBase
+function inkWidgetLogicController:FindWidgetDataInLibrary(parentWidget, widgetRecord, screenTypeRecord, styleRecord, id, path) return end
+
+---@param parentWidget inkWidget
+---@param widgetRecord gamedataWidgetDefinition_Record
+---@param screenTypeRecord gamedataDeviceScreenType_Record
+---@param styleRecord gamedataWidgetStyle_Record
+---@param id CName|string
+---@param path redResourceReferenceScriptToken
+---@return inkWidget
+function inkWidgetLogicController:FindWidgetInLibrary(parentWidget, widgetRecord, screenTypeRecord, styleRecord, id, path) return end
+
+---@param widgetNamePath CName|string
+---@return inkWidgetLogicController
+function inkWidgetLogicController:GetController(widgetNamePath) return end
+
+---@param widgetNamePath CName|string
+---@return inkWidget
+function inkWidgetLogicController:GetWidget(widgetNamePath) return end
+
+---@param imageRef inkImageWidgetReference
+---@param textureID TweakDBID|string
+function inkWidgetLogicController:SetTexture(imageRef, textureID) return end
+
+---@param imageWidget inkImageWidget
+---@param textureRecord gamedataUIIcon_Record
+function inkWidgetLogicController:SetTexture(imageWidget, textureRecord) return end
+
+---@param imageRef inkImageWidgetReference
+---@param textureRecord gamedataUIIcon_Record
+function inkWidgetLogicController:SetTexture(imageRef, textureRecord) return end
+
+---@param imageWidget inkImageWidget
+---@param textureID TweakDBID|string
+function inkWidgetLogicController:SetTexture(imageWidget, textureID) return end
+

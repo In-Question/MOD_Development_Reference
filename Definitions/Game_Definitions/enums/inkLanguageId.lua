@@ -1,0 +1,27 @@
+---@meta
+---@diagnostic disable
+
+---@class inkLanguageId
+---@field EN inkLanguageId 0
+---@field PL inkLanguageId 1
+---@field JP inkLanguageId 2
+---@field DE inkLanguageId 3
+---@field ES inkLanguageId 4
+---@field MX inkLanguageId 5
+---@field KR inkLanguageId 6
+---@field IT inkLanguageId 7
+---@field FR inkLanguageId 8
+---@field RU inkLanguageId 9
+---@field PR inkLanguageId 10
+---@field ZH_CN inkLanguageId 11
+---@field TW inkLanguageId 12
+---@field CZ inkLanguageId 13
+---@field HU inkLanguageId 14
+---@field AR inkLanguageId 15
+---@field TR inkLanguageId 16
+---@field TH inkLanguageId 17
+---@field HT inkLanguageId 18
+---@field UA inkLanguageId 20
+---@field DEBUG inkLanguageId 21
+inkLanguageId = {}
+

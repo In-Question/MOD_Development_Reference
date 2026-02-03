@@ -1,0 +1,38 @@
+---@meta
+---@diagnostic disable
+
+---@class EquipmentManipulationAction
+---@field Undefined EquipmentManipulationAction 0
+---@field RequestActiveMeleeware EquipmentManipulationAction 1
+---@field RequestActiveWeapon EquipmentManipulationAction 2
+---@field RequestSlotActiveWeapon EquipmentManipulationAction 3
+---@field RequestLastUsedWeapon EquipmentManipulationAction 4
+---@field RequestFirstMeleeWeapon EquipmentManipulationAction 5
+---@field RequestLastUsedMeleeWeapon EquipmentManipulationAction 6
+---@field RequestLastUsedOrFirstAvailableWeapon EquipmentManipulationAction 7
+---@field RequestLastUsedOrFirstAvailableRangedWeapon EquipmentManipulationAction 8
+---@field RequestLastUsedOrFirstAvailableMeleeWeapon EquipmentManipulationAction 9
+---@field RequestLastUsedOrFirstAvailableOneHandedRangedWeapon EquipmentManipulationAction 10
+---@field RequestLastUsedOrFirstAvailableDriverCombatRangedWeapon EquipmentManipulationAction 11
+---@field RequestLastUsedOrFirstAvailableDriverCombatBikeWeapon EquipmentManipulationAction 12
+---@field RequestHeavyWeapon EquipmentManipulationAction 13
+---@field CycleWeaponWheelItem EquipmentManipulationAction 14
+---@field CycleNextWeaponWheelItem EquipmentManipulationAction 15
+---@field CyclePreviousWeaponWheelItem EquipmentManipulationAction 16
+---@field RequestConsumable EquipmentManipulationAction 17
+---@field RequestGadget EquipmentManipulationAction 18
+---@field RequestFists EquipmentManipulationAction 19
+---@field RequestLeftHandCyberware EquipmentManipulationAction 20
+---@field UnequipWeapon EquipmentManipulationAction 21
+---@field UnequipConsumable EquipmentManipulationAction 22
+---@field UnequipGadget EquipmentManipulationAction 23
+---@field UnequipLeftHandCyberware EquipmentManipulationAction 24
+---@field UnequipAll EquipmentManipulationAction 25
+---@field ReequipWeapon EquipmentManipulationAction 26
+---@field RequestWeaponSlot1 EquipmentManipulationAction 27
+---@field RequestWeaponSlot2 EquipmentManipulationAction 28
+---@field RequestWeaponSlot3 EquipmentManipulationAction 29
+---@field RequestWeaponSlot4 EquipmentManipulationAction 30
+---@field RequestNextThrowableWeapon EquipmentManipulationAction 31
+EquipmentManipulationAction = {}
+

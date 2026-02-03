@@ -1,0 +1,23 @@
+---@meta
+---@diagnostic disable
+
+---@class vehicleEQuestVehicleDoorState
+---@field ForceOpen vehicleEQuestVehicleDoorState 0
+---@field ForceClose vehicleEQuestVehicleDoorState 1
+---@field OpenAll vehicleEQuestVehicleDoorState 2
+---@field CloseAll vehicleEQuestVehicleDoorState 3
+---@field ForceLock vehicleEQuestVehicleDoorState 4
+---@field ForceUnlock vehicleEQuestVehicleDoorState 5
+---@field LockAll vehicleEQuestVehicleDoorState 6
+---@field EnableInteraction vehicleEQuestVehicleDoorState 7
+---@field DisableInteraction vehicleEQuestVehicleDoorState 8
+---@field DisableAllInteractions vehicleEQuestVehicleDoorState 9
+---@field ResetInteractions vehicleEQuestVehicleDoorState 10
+---@field ResetVehicle vehicleEQuestVehicleDoorState 11
+---@field OpenAllRegular vehicleEQuestVehicleDoorState 12
+---@field QuestLock vehicleEQuestVehicleDoorState 13
+---@field QuestLockAll vehicleEQuestVehicleDoorState 14
+---@field Count vehicleEQuestVehicleDoorState 15
+---@field Invalid vehicleEQuestVehicleDoorState 16
+vehicleEQuestVehicleDoorState = {}
+

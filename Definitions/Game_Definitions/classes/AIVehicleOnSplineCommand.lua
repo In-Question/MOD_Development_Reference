@@ -1,0 +1,31 @@
+---@meta
+---@diagnostic disable
+
+---@class AIVehicleOnSplineCommand : AIVehicleCommand
+---@field splineRef NodeRef
+---@field secureTimeOut Float
+---@field driveBackwards Bool
+---@field reverseSpline Bool
+---@field startFromClosest Bool
+---@field forcedStartSpeed Float
+---@field stopAtPathEnd Bool
+---@field keepDistanceBool Bool
+---@field keepDistanceCompanion gameObject
+---@field keepDistanceDistance Float
+---@field rubberBandingBool Bool
+---@field rubberBandingTargetRef gameObject
+---@field rubberBandingMinDistance Float
+---@field rubberBandingMaxDistance Float
+---@field rubberBandingStopAndWait Bool
+---@field rubberBandingTeleportToCatchUp Bool
+---@field rubberBandingStayInFront Bool
+---@field audioCurvesParam vehicleAudioCurvesParam
+AIVehicleOnSplineCommand = {}
+
+---@return AIVehicleOnSplineCommand
+function AIVehicleOnSplineCommand.new() return end
+
+---@param props table
+---@return AIVehicleOnSplineCommand
+function AIVehicleOnSplineCommand.new(props) return end
+

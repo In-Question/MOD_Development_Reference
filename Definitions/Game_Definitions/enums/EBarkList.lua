@@ -1,0 +1,30 @@
+---@meta
+---@diagnostic disable
+
+---@class EBarkList
+---@field vo_enemy_reaction_surprised_combat_start EBarkList 0
+---@field vo_enemy_reaction_generic_cursing EBarkList 1
+---@field vo_enemy_reaction_jammed_weapon EBarkList 2
+---@field vo_enemy_reaction_impact_hit EBarkList 3
+---@field vo_enemy_reaction_stagger_hit EBarkList 4
+---@field vo_enemy_reaction_crippled_arm EBarkList 5
+---@field vo_enemy_reaction_crippled_leg EBarkList 6
+---@field vo_enemy_reaction_death EBarkList 7
+---@field vo_enemy_group_call_to_combat EBarkList 8
+---@field vo_enemy_group_call_for_help EBarkList 9
+---@field vo_enemy_group_order_go_to_cover EBarkList 10
+---@field vo_enemy_group_order_flank_target EBarkList 11
+---@field vo_enemy_group_order_suppressing_fire EBarkList 12
+---@field vo_enemy_answer_to_order_suppressing_fire EBarkList 13
+---@field vo_enemy_group_notification_reloading EBarkList 14
+---@field vo_enemy_group_notification_squad_member_died EBarkList 15
+---@field vo_enemy_group_notification_grenade_nearby EBarkList 16
+---@field vo_enemy_group_notification_target_using_sandevistan EBarkList 17
+---@field vo_enemy_group_notification_target_using_kerenzikov EBarkList 18
+---@field vo_enemy_answer_to_notification_target_using_sandevistan EBarkList 19
+---@field vo_enemy_answer_to_notification_target_using_kerenzikov EBarkList 20
+---@field vo_enemy_group_generic_combat_question EBarkList 21
+---@field vo_enemy_answer_to_generic_combat_question EBarkList 22
+---@field vo_enemy_group_boost_combat_morale EBarkList 23
+EBarkList = {}
+

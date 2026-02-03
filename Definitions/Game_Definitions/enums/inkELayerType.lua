@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class inkELayerType
+---@field Watermarks inkELayerType 0
+---@field WaitingSign inkELayerType 1
+---@field SystemNotifications inkELayerType 2
+---@field Loading inkELayerType 3
+---@field GameNotifications inkELayerType 4
+---@field Menu inkELayerType 5
+---@field Video inkELayerType 6
+---@field HUD inkELayerType 7
+---@field Editor inkELayerType 8
+---@field World inkELayerType 9
+---@field Offscreen inkELayerType 10
+---@field Advertisements inkELayerType 11
+---@field StreetSigns inkELayerType 12
+---@field PhotoMode inkELayerType 13
+---@field Debug inkELayerType 14
+---@field MAX inkELayerType 15
+inkELayerType = {}
+

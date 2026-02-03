@@ -1,0 +1,36 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataArchetypeType
+---@field AndroidMeleeT1 gamedataArchetypeType 0
+---@field AndroidMeleeT2 gamedataArchetypeType 1
+---@field AndroidRangedT2 gamedataArchetypeType 2
+---@field FastMeleeT2 gamedataArchetypeType 3
+---@field FastMeleeT3 gamedataArchetypeType 4
+---@field FastRangedT2 gamedataArchetypeType 5
+---@field FastRangedT3 gamedataArchetypeType 6
+---@field FastShotgunnerT2 gamedataArchetypeType 7
+---@field FastShotgunnerT3 gamedataArchetypeType 8
+---@field FastSniperT3 gamedataArchetypeType 9
+---@field FriendlyGenericRangedT3 gamedataArchetypeType 10
+---@field GenericMeleeT1 gamedataArchetypeType 11
+---@field GenericMeleeT2 gamedataArchetypeType 12
+---@field GenericRangedT1 gamedataArchetypeType 13
+---@field GenericRangedT2 gamedataArchetypeType 14
+---@field GenericRangedT3 gamedataArchetypeType 15
+---@field HeavyMeleeT2 gamedataArchetypeType 16
+---@field HeavyMeleeT3 gamedataArchetypeType 17
+---@field HeavyRangedT2 gamedataArchetypeType 18
+---@field HeavyRangedT3 gamedataArchetypeType 19
+---@field NetrunnerT1 gamedataArchetypeType 20
+---@field NetrunnerT2 gamedataArchetypeType 21
+---@field NetrunnerT3 gamedataArchetypeType 22
+---@field ShotgunnerT2 gamedataArchetypeType 23
+---@field ShotgunnerT3 gamedataArchetypeType 24
+---@field SniperT2 gamedataArchetypeType 25
+---@field TechieT2 gamedataArchetypeType 26
+---@field TechieT3 gamedataArchetypeType 27
+---@field Count gamedataArchetypeType 28
+---@field Invalid gamedataArchetypeType 29
+gamedataArchetypeType = {}
+

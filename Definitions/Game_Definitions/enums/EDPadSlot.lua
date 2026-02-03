@@ -1,0 +1,23 @@
+---@meta
+---@diagnostic disable
+
+---@class EDPadSlot
+---@field Left EDPadSlot 0
+---@field Up EDPadSlot 1
+---@field Right EDPadSlot 2
+---@field Down EDPadSlot 3
+---@field LeftDouble EDPadSlot 4
+---@field UpDouble EDPadSlot 5
+---@field RightDouble EDPadSlot 6
+---@field DownDouble EDPadSlot 7
+---@field WeaponsWheel EDPadSlot 8
+---@field VehicleWheel EDPadSlot 9
+---@field GadgetWheel EDPadSlot 10
+---@field InteractionWheel EDPadSlot 11
+---@field Phone EDPadSlot 12
+---@field CallVehicle EDPadSlot 13
+---@field CycleObjective EDPadSlot 14
+---@field VehicleInsideWheel EDPadSlot 15
+---@field ConsumableWheel EDPadSlot 16
+EDPadSlot = {}
+

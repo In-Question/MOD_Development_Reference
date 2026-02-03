@@ -1,0 +1,23 @@
+---@meta
+---@diagnostic disable
+
+---@class audiobreathingEventTag
+---@field Walk audiobreathingEventTag 0
+---@field Jog audiobreathingEventTag 1
+---@field Run audiobreathingEventTag 2
+---@field Sneak audiobreathingEventTag 3
+---@field Cloth audiobreathingEventTag 4
+---@field FootStepRegular audiobreathingEventTag 5
+---@field FootStepSprint audiobreathingEventTag 6
+---@field LandingRegular audiobreathingEventTag 7
+---@field LandingHard audiobreathingEventTag 8
+---@field LandingVeryHard audiobreathingEventTag 9
+---@field Climb audiobreathingEventTag 10
+---@field Jump audiobreathingEventTag 11
+---@field Player audiobreathingEventTag 12
+---@field Stop audiobreathingEventTag 13
+---@field Drop_Body audiobreathingEventTag 14
+---@field Pick_Up_Body audiobreathingEventTag 15
+---@field Standing_Event audiobreathingEventTag 16
+audiobreathingEventTag = {}
+

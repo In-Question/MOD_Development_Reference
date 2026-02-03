@@ -1,0 +1,34 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataSearchFilterMaskType
+---@field Att_Friendly gamedataSearchFilterMaskType 0
+---@field Att_Hostile gamedataSearchFilterMaskType 1
+---@field Att_Neutral gamedataSearchFilterMaskType 2
+---@field Obj_Device gamedataSearchFilterMaskType 3
+---@field Obj_Other gamedataSearchFilterMaskType 4
+---@field Obj_Player gamedataSearchFilterMaskType 5
+---@field Obj_Puppet gamedataSearchFilterMaskType 6
+---@field Obj_Sensor gamedataSearchFilterMaskType 7
+---@field Sp_Aggressive gamedataSearchFilterMaskType 8
+---@field Sp_AimAssistEnabled gamedataSearchFilterMaskType 9
+---@field Sp_VisibleThroughGeometry gamedataSearchFilterMaskType 10
+---@field St_Alive gamedataSearchFilterMaskType 11
+---@field St_AliveAndActive gamedataSearchFilterMaskType 12
+---@field St_Conscious gamedataSearchFilterMaskType 13
+---@field St_Dead gamedataSearchFilterMaskType 14
+---@field St_DeadOrInactive gamedataSearchFilterMaskType 15
+---@field St_Defeated gamedataSearchFilterMaskType 16
+---@field St_MountedToBike gamedataSearchFilterMaskType 17
+---@field St_MountedToCar gamedataSearchFilterMaskType 18
+---@field St_MountedToVehicle gamedataSearchFilterMaskType 19
+---@field St_NotDefeated gamedataSearchFilterMaskType 20
+---@field St_QuickHackable gamedataSearchFilterMaskType 21
+---@field St_TurnedOff gamedataSearchFilterMaskType 22
+---@field St_TurnedOn gamedataSearchFilterMaskType 23
+---@field St_Unconscious gamedataSearchFilterMaskType 24
+---@field TF_None gamedataSearchFilterMaskType 25
+---@field Count gamedataSearchFilterMaskType 26
+---@field Invalid gamedataSearchFilterMaskType 27
+gamedataSearchFilterMaskType = {}
+

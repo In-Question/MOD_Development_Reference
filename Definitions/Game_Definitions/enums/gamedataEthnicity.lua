@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataEthnicity
+---@field African gamedataEthnicity 0
+---@field AfricanAmerican gamedataEthnicity 1
+---@field AmericanEnglish gamedataEthnicity 2
+---@field Arabic gamedataEthnicity 3
+---@field Brasilian gamedataEthnicity 4
+---@field BritishEnglish gamedataEthnicity 5
+---@field Caribbean gamedataEthnicity 6
+---@field Chinese gamedataEthnicity 7
+---@field Default gamedataEthnicity 8
+---@field Indian gamedataEthnicity 9
+---@field Japanese gamedataEthnicity 10
+---@field Mexican gamedataEthnicity 11
+---@field NativeAmerican gamedataEthnicity 12
+---@field Russian gamedataEthnicity 13
+---@field Count gamedataEthnicity 14
+---@field Invalid gamedataEthnicity 15
+gamedataEthnicity = {}
+

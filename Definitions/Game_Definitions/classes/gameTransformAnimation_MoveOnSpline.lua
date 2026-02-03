@@ -1,0 +1,18 @@
+---@meta
+---@diagnostic disable
+
+---@class gameTransformAnimation_MoveOnSpline : gameTransformAnimationTrackItemImpl
+---@field splineNode NodeRef
+---@field from Float
+---@field to Float
+---@field rotationMode gameTransformAnimation_MoveOnSplineRotationMode
+---@field movement gameTransformAnimation_Movement
+gameTransformAnimation_MoveOnSpline = {}
+
+---@return gameTransformAnimation_MoveOnSpline
+function gameTransformAnimation_MoveOnSpline.new() return end
+
+---@param props table
+---@return gameTransformAnimation_MoveOnSpline
+function gameTransformAnimation_MoveOnSpline.new(props) return end
+

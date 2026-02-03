@@ -1,0 +1,43 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataAISubActionForceHitReaction_Record : gamedataAISubAction_Record
+gamedataAISubActionForceHitReaction_Record = {}
+
+---@return gamedataAISubActionForceHitReaction_Record
+function gamedataAISubActionForceHitReaction_Record.new() return end
+
+---@param props table
+---@return gamedataAISubActionForceHitReaction_Record
+function gamedataAISubActionForceHitReaction_Record.new(props) return end
+
+---@return Int32
+function gamedataAISubActionForceHitReaction_Record:AnimVariation() return end
+
+---@return Float
+function gamedataAISubActionForceHitReaction_Record:Delay() return end
+
+---@return Int32
+function gamedataAISubActionForceHitReaction_Record:HitBodyPart() return end
+
+---@return Int32
+function gamedataAISubActionForceHitReaction_Record:HitDirection() return end
+
+---@return Int32
+function gamedataAISubActionForceHitReaction_Record:HitIntensity() return end
+
+---@return Int32
+function gamedataAISubActionForceHitReaction_Record:HitSource() return end
+
+---@return Int32
+function gamedataAISubActionForceHitReaction_Record:HitType() return end
+
+---@return Int32
+function gamedataAISubActionForceHitReaction_Record:Stance() return end
+
+---@return gamedataAIActionTarget_Record
+function gamedataAISubActionForceHitReaction_Record:Target() return end
+
+---@return gamedataAIActionTarget_Record
+function gamedataAISubActionForceHitReaction_Record:TargetHandle() return end
+

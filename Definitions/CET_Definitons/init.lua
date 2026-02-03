@@ -1,0 +1,2 @@
+-- Cyber Engine Tweaks Version: 1.27.1
+-- Cyberpunk 2077 Version: 2.01

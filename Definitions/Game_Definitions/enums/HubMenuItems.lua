@@ -1,0 +1,25 @@
+---@meta
+---@diagnostic disable
+
+---@class HubMenuItems
+---@field None HubMenuItems -1
+---@field Default HubMenuItems 0
+---@field Crafting HubMenuItems 1
+---@field Character HubMenuItems 2
+---@field Inventory HubMenuItems 3
+---@field Map HubMenuItems 4
+---@field Journal HubMenuItems 5
+---@field Phone HubMenuItems 6
+---@field Database HubMenuItems 7
+---@field Stats HubMenuItems 8
+---@field Backpack HubMenuItems 9
+---@field HubMenuItems HubMenuItems 10
+---@field Codex HubMenuItems 11
+---@field Shards HubMenuItems 12
+---@field Tarot HubMenuItems 13
+---@field Gear HubMenuItems 14
+---@field Cyberware HubMenuItems 15
+---@field VisualSets HubMenuItems 16
+---@field Count HubMenuItems 17
+HubMenuItems = {}
+

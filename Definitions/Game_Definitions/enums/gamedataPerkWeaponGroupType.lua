@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataPerkWeaponGroupType
+---@field AssaultRiflesPerkWeaponGroup gamedataPerkWeaponGroupType 0
+---@field BladesPerkWeaponGroup gamedataPerkWeaponGroupType 1
+---@field BluntsPerkWeaponGroup gamedataPerkWeaponGroupType 2
+---@field BodyGunsPerkWeaponGroup gamedataPerkWeaponGroupType 3
+---@field CoolGunsPerkWeaponGroup gamedataPerkWeaponGroupType 4
+---@field HandgunsPerkWeaponGroup gamedataPerkWeaponGroupType 5
+---@field LMGsPerkWeaponGroup gamedataPerkWeaponGroupType 6
+---@field PrecisionGunsPerkWeaponGroup gamedataPerkWeaponGroupType 7
+---@field ReflexesGunsPerkWeaponGroup gamedataPerkWeaponGroupType 8
+---@field SMGsPerkWeaponGroup gamedataPerkWeaponGroupType 9
+---@field ShotgunsPerkWeaponGroup gamedataPerkWeaponGroupType 10
+---@field SmartGunsPerkWeaponGroup gamedataPerkWeaponGroupType 11
+---@field TechGunsPerkWeaponGroup gamedataPerkWeaponGroupType 12
+---@field ThrowablePerkWeaponGroup gamedataPerkWeaponGroupType 13
+---@field Count gamedataPerkWeaponGroupType 14
+---@field Invalid gamedataPerkWeaponGroupType 15
+gamedataPerkWeaponGroupType = {}
+

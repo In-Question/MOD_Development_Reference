@@ -1,0 +1,29 @@
+---@meta
+---@diagnostic disable
+
+---@class scnInterruptionPhase
+---@field WaitForInterruption scnInterruptionPhase 0
+---@field WaitForInterrupted scnInterruptionPhase 1
+---@field Interrupted scnInterruptionPhase 2
+---@field ClearTier scnInterruptionPhase 3
+---@field FadeOutLines scnInterruptionPhase 4
+---@field InterruptionVoiceset scnInterruptionPhase 5
+---@field WaitForReturn scnInterruptionPhase 6
+---@field InstallTalkInteraction scnInterruptionPhase 7
+---@field WaitForTalkInteraction scnInterruptionPhase 8
+---@field ReturnVoiceset scnInterruptionPhase 9
+---@field ReturnAnswerVoiceset scnInterruptionPhase 10
+---@field ShowLines scnInterruptionPhase 11
+---@field SyncTime scnInterruptionPhase 12
+---@field RestoreTier scnInterruptionPhase 13
+---@field Returned scnInterruptionPhase 14
+---@field FadeOutLookAt scnInterruptionPhase 15
+---@field FadeInLookAt scnInterruptionPhase 16
+---@field InterruptSignal scnInterruptionPhase 17
+---@field PostInterruptSignalTimeDelay scnInterruptionPhase 18
+---@field ReturnSignal scnInterruptionPhase 19
+---@field PostReturnSignalTimeDelay scnInterruptionPhase 20
+---@field ProcessTalkInteraction scnInterruptionPhase 21
+---@field ClearCommands scnInterruptionPhase 22
+scnInterruptionPhase = {}
+

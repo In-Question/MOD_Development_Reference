@@ -1,0 +1,28 @@
+---@meta
+---@diagnostic disable
+
+---@class EAISquadAction
+---@field Invalid EAISquadAction 0
+---@field Shoot EAISquadAction 1
+---@field Charge EAISquadAction 2
+---@field TakeCover EAISquadAction 3
+---@field Search EAISquadAction 4
+---@field Reprimand EAISquadAction 5
+---@field Investigate EAISquadAction 6
+---@field Melee EAISquadAction 7
+---@field Taunt EAISquadAction 8
+---@field Defend EAISquadAction 9
+---@field Takedown EAISquadAction 10
+---@field Peek EAISquadAction 11
+---@field GrenadeThrow EAISquadAction 12
+---@field Dash EAISquadAction 13
+---@field Sync EAISquadAction 14
+---@field BattleCry EAISquadAction 15
+---@field CallOff EAISquadAction 16
+---@field BackUp EAISquadAction 17
+---@field RangedStrafe EAISquadAction 18
+---@field Quickhack EAISquadAction 19
+---@field GroupReaction EAISquadAction 20
+---@field Crouch EAISquadAction 21
+EAISquadAction = {}
+

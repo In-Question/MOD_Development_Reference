@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class EFocusForcedHighlightType
+---@field INTERACTION EFocusForcedHighlightType 0
+---@field IMPORTANT_INTERACTION EFocusForcedHighlightType 1
+---@field QUEST EFocusForcedHighlightType 2
+---@field DISTRACTION EFocusForcedHighlightType 3
+---@field CLUE EFocusForcedHighlightType 4
+---@field NPC EFocusForcedHighlightType 5
+---@field WEAKSPOT EFocusForcedHighlightType 6
+---@field AOE EFocusForcedHighlightType 7
+---@field ITEM EFocusForcedHighlightType 8
+---@field HOSTILE EFocusForcedHighlightType 9
+---@field FRIENDLY EFocusForcedHighlightType 10
+---@field NEUTRAL EFocusForcedHighlightType 11
+---@field HACKABLE EFocusForcedHighlightType 12
+---@field ENEMY_NETRUNNER EFocusForcedHighlightType 13
+---@field BACKDOOR EFocusForcedHighlightType 14
+---@field INVALID EFocusForcedHighlightType 15
+EFocusForcedHighlightType = {}
+

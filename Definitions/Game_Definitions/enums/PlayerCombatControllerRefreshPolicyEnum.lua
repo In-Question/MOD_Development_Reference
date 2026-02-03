@@ -1,0 +1,8 @@
+---@meta
+---@diagnostic disable
+
+---@class PlayerCombatControllerRefreshPolicyEnum
+---@field Persistent PlayerCombatControllerRefreshPolicyEnum 0
+---@field Eventful PlayerCombatControllerRefreshPolicyEnum 1
+PlayerCombatControllerRefreshPolicyEnum = {}
+

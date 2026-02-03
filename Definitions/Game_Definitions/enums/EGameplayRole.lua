@@ -1,0 +1,37 @@
+---@meta
+---@diagnostic disable
+
+---@class EGameplayRole
+---@field UnAssigned EGameplayRole 0
+---@field None EGameplayRole 1
+---@field Alarm EGameplayRole 2
+---@field ControlNetwork EGameplayRole 3
+---@field ControlOtherDevice EGameplayRole 4
+---@field ControlSelf EGameplayRole 5
+---@field CutPower EGameplayRole 6
+---@field Distract EGameplayRole 7
+---@field DropPoint EGameplayRole 8
+---@field ExplodeLethal EGameplayRole 9
+---@field ExplodeNoneLethal EGameplayRole 10
+---@field Fall EGameplayRole 11
+---@field FastTravel EGameplayRole 12
+---@field GrantInformation EGameplayRole 13
+---@field HazardWarning EGameplayRole 14
+---@field HideBody EGameplayRole 15
+---@field Loot EGameplayRole 16
+---@field OpenPath EGameplayRole 17
+---@field ClearPath EGameplayRole 18
+---@field Push EGameplayRole 19
+---@field ServicePoint EGameplayRole 20
+---@field Shoot EGameplayRole 21
+---@field SpreadGas EGameplayRole 22
+---@field StoreItems EGameplayRole 23
+---@field GenericRole EGameplayRole 24
+---@field ClearPathAd EGameplayRole 25
+---@field DistractVendingMachine EGameplayRole 26
+---@field NPC EGameplayRole 27
+---@field Clue EGameplayRole 28
+---@field PlayerStash EGameplayRole 29
+---@field Wardrobe EGameplayRole 30
+EGameplayRole = {}
+

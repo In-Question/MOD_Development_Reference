@@ -1,0 +1,104 @@
+---@meta
+---@diagnostic disable
+
+---@class gameItemData : IScriptable
+gameItemData = {}
+
+---@param objectAttachedTo gameObject
+function gameItemData:AddStatsOnEquip(objectAttachedTo) return end
+
+---@param type gamedataStatType
+---@return Float
+function gameItemData:GetBareStatValueByType(type) return end
+
+---@return CName[]
+function gameItemData:GetDynamicTags() return end
+
+---@return TweakDBID[]
+function gameItemData:GetEmptySlotsOnItem() return end
+
+---@return ItemID
+function gameItemData:GetID() return end
+
+---@param slotId TweakDBID|string
+---@return gameInnerItemData
+function gameItemData:GetItemPart(slotId) return end
+
+---@return gameInnerItemData[]
+function gameItemData:GetItemParts() return end
+
+---@return gamedataItemType
+function gameItemData:GetItemType() return end
+
+---@return CName
+function gameItemData:GetLocalizedItemType() return end
+
+---@return CName
+function gameItemData:GetName() return end
+
+---@return String
+function gameItemData:GetNameAsString() return end
+
+---@return Int32
+function gameItemData:GetQuantity() return end
+
+---@param type gamedataStatType
+---@return Float
+function gameItemData:GetStatValueByType(type) return end
+
+---@return gameStatsObjectID
+function gameItemData:GetStatsObjectID() return end
+
+---@return gameStatsBundleHandler
+function gameItemData:GetTemporaryStatBundle() return end
+
+---@return GameTime
+function gameItemData:GetTimestamp() return end
+
+---@return TweakDBID[]
+function gameItemData:GetUsedSlotsOnItem() return end
+
+---@return Int32
+function gameItemData:GetVariant() return end
+
+---@param tags CName[]|string[]
+---@return Bool
+function gameItemData:HasAnyOfTags(tags) return end
+
+---@param slotID TweakDBID|string
+---@return Bool
+function gameItemData:HasAttachmentSlot(slotID) return end
+
+---@param slotID TweakDBID|string
+---@return Bool
+function gameItemData:HasPartInSlot(slotID) return end
+
+---@param slotID TweakDBID|string
+---@return Bool
+function gameItemData:HasPlacementSlot(slotID) return end
+
+---@param type gamedataStatType
+---@return Bool
+function gameItemData:HasStatData(type) return end
+
+---@param tag CName|string
+---@return Bool
+function gameItemData:HasTag(tag) return end
+
+---@param ownerID entEntityID
+function gameItemData:ReinitializePlayerStats(ownerID) return end
+
+---@param tag CName|string
+---@return Bool
+function gameItemData:RemoveDynamicTag(tag) return end
+
+---@param tag CName|string
+---@return Bool
+function gameItemData:SetDynamicTag(tag) return end
+
+---@param objectDetachedFrom gameObject
+function gameItemData:SubtractStatsOnUnequip(objectDetachedFrom) return end
+
+---@return Bool
+function gameItemData:UsesVariants() return end
+

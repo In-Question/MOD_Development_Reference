@@ -1,0 +1,38 @@
+---@meta
+---@diagnostic disable
+
+---@class gamePSMDetailedLocomotionStates
+---@field NotInBaseLocomotion gamePSMDetailedLocomotionStates 0
+---@field Stand gamePSMDetailedLocomotionStates 1
+---@field AimWalk gamePSMDetailedLocomotionStates 2
+---@field Crouch gamePSMDetailedLocomotionStates 3
+---@field Sprint gamePSMDetailedLocomotionStates 4
+---@field Slide gamePSMDetailedLocomotionStates 5
+---@field SlideFall gamePSMDetailedLocomotionStates 6
+---@field Dodge gamePSMDetailedLocomotionStates 7
+---@field Climb gamePSMDetailedLocomotionStates 8
+---@field Vault gamePSMDetailedLocomotionStates 9
+---@field Ladder gamePSMDetailedLocomotionStates 10
+---@field LadderSprint gamePSMDetailedLocomotionStates 11
+---@field LadderSlide gamePSMDetailedLocomotionStates 12
+---@field LadderJump gamePSMDetailedLocomotionStates 13
+---@field Fall gamePSMDetailedLocomotionStates 14
+---@field AirThrusters gamePSMDetailedLocomotionStates 15
+---@field AirHover gamePSMDetailedLocomotionStates 16
+---@field SuperheroFall gamePSMDetailedLocomotionStates 17
+---@field Jump gamePSMDetailedLocomotionStates 18
+---@field DoubleJump gamePSMDetailedLocomotionStates 19
+---@field ChargeJump gamePSMDetailedLocomotionStates 20
+---@field HoverJump gamePSMDetailedLocomotionStates 21
+---@field DodgeAir gamePSMDetailedLocomotionStates 22
+---@field RegularLand gamePSMDetailedLocomotionStates 23
+---@field HardLand gamePSMDetailedLocomotionStates 24
+---@field VeryHardLand gamePSMDetailedLocomotionStates 25
+---@field DeathLand gamePSMDetailedLocomotionStates 26
+---@field SuperheroLand gamePSMDetailedLocomotionStates 27
+---@field SuperheroLandRecovery gamePSMDetailedLocomotionStates 28
+---@field Knockdown gamePSMDetailedLocomotionStates 29
+---@field CrouchSprint gamePSMDetailedLocomotionStates 30
+---@field Felled gamePSMDetailedLocomotionStates 31
+gamePSMDetailedLocomotionStates = {}
+

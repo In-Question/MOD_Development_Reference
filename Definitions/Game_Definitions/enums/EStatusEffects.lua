@@ -1,0 +1,28 @@
+---@meta
+---@diagnostic disable
+
+---@class EStatusEffects
+---@field Invalid EStatusEffects 0
+---@field WeaponJammed EStatusEffects 1
+---@field Blind EStatusEffects 2
+---@field SmokeScreen EStatusEffects 3
+---@field Unconscious EStatusEffects 4
+---@field Burning EStatusEffects 5
+---@field Stun EStatusEffects 6
+---@field HeartAttack EStatusEffects 7
+---@field SuicideWithWeapon EStatusEffects 8
+---@field SuicideWithGrenade EStatusEffects 9
+---@field Wounded EStatusEffects 10
+---@field MonowireGrapple EStatusEffects 11
+---@field Exhausted EStatusEffects 12
+---@field Defeated EStatusEffects 13
+---@field Sleep EStatusEffects 14
+---@field Berserker EStatusEffects 15
+---@field Pain EStatusEffects 16
+---@field Sandevistan EStatusEffects 17
+---@field NetwatcherHackStage1 EStatusEffects 18
+---@field NetwatcherHackStage2 EStatusEffects 19
+---@field NetwatcherHackStage3 EStatusEffects 20
+---@field Count EStatusEffects 21
+EStatusEffects = {}
+

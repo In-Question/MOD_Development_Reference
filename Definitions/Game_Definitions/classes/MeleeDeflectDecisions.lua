@@ -1,0 +1,48 @@
+---@meta
+---@diagnostic disable
+
+---@class MeleeDeflectDecisions : MeleeTransition
+MeleeDeflectDecisions = {}
+
+---@return MeleeDeflectDecisions
+function MeleeDeflectDecisions.new() return end
+
+---@param props table
+---@return MeleeDeflectDecisions
+function MeleeDeflectDecisions.new(props) return end
+
+---@param stateContext gamestateMachineStateContextScript
+---@param scriptInterface gamestateMachineGameScriptInterface
+---@return Bool
+function MeleeDeflectDecisions:EnterCondition(stateContext, scriptInterface) return end
+
+---@param stateContext gamestateMachineStateContextScript
+---@param scriptInterface gamestateMachineGameScriptInterface
+---@return Bool
+function MeleeDeflectDecisions:ExitCondition(stateContext, scriptInterface) return end
+
+---@param stateContext gamestateMachineStateContextScript
+---@param scriptInterface gamestateMachineGameScriptInterface
+---@return Bool
+function MeleeDeflectDecisions:IsDeflectSuccessful(stateContext, scriptInterface) return end
+
+---@param stateContext gamestateMachineStateContextScript
+---@param scriptInterface gamestateMachineGameScriptInterface
+---@return Bool
+function MeleeDeflectDecisions:ToMeleeBlock(stateContext, scriptInterface) return end
+
+---@param stateContext gamestateMachineStateContextScript
+---@param scriptInterface gamestateMachineGameScriptInterface
+---@return Bool
+function MeleeDeflectDecisions:ToMeleeComboAttack(stateContext, scriptInterface) return end
+
+---@param stateContext gamestateMachineStateContextScript
+---@param scriptInterface gamestateMachineGameScriptInterface
+---@return Bool
+function MeleeDeflectDecisions:ToMeleeDeflectAttack(stateContext, scriptInterface) return end
+
+---@param stateContext gamestateMachineStateContextScript
+---@param scriptInterface gamestateMachineGameScriptInterface
+---@return Bool
+function MeleeDeflectDecisions:ToMeleeHold(stateContext, scriptInterface) return end
+

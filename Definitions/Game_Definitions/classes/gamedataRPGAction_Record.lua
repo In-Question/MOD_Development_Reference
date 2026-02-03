@@ -1,0 +1,40 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataRPGAction_Record : gamedataTweakDBRecord
+gamedataRPGAction_Record = {}
+
+---@return gamedataRPGAction_Record
+function gamedataRPGAction_Record.new() return end
+
+---@param props table
+---@return gamedataRPGAction_Record
+function gamedataRPGAction_Record.new(props) return end
+
+---@return CName
+function gamedataRPGAction_Record:ActionName() return end
+
+---@return Int32
+function gamedataRPGAction_Record:GetPrereqsCount() return end
+
+---@param index Int32
+---@return gamedataIPrereq_Record
+function gamedataRPGAction_Record:GetPrereqsItem(index) return end
+
+---@param index Int32
+---@return gamedataIPrereq_Record
+function gamedataRPGAction_Record:GetPrereqsItemHandle(index) return end
+
+---@return gamedataIPrereq_Record[]
+function gamedataRPGAction_Record:Prereqs() return end
+
+---@param item gamedataIPrereq_Record
+---@return Bool
+function gamedataRPGAction_Record:PrereqsContains(item) return end
+
+---@return gamedataRewardBase_Record
+function gamedataRPGAction_Record:Reward() return end
+
+---@return gamedataRewardBase_Record
+function gamedataRPGAction_Record:RewardHandle() return end
+

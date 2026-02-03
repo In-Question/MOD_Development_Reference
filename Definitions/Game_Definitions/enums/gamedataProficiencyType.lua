@@ -1,0 +1,28 @@
+---@meta
+---@diagnostic disable
+
+---@class gamedataProficiencyType
+---@field Assault gamedataProficiencyType 0
+---@field Athletics gamedataProficiencyType 1
+---@field Brawling gamedataProficiencyType 2
+---@field ColdBlood gamedataProficiencyType 3
+---@field CombatHacking gamedataProficiencyType 4
+---@field CoolSkill gamedataProficiencyType 5
+---@field Crafting gamedataProficiencyType 6
+---@field Demolition gamedataProficiencyType 7
+---@field Engineering gamedataProficiencyType 8
+---@field Espionage gamedataProficiencyType 9
+---@field Gunslinger gamedataProficiencyType 10
+---@field Hacking gamedataProficiencyType 11
+---@field IntelligenceSkill gamedataProficiencyType 12
+---@field Kenjutsu gamedataProficiencyType 13
+---@field Level gamedataProficiencyType 14
+---@field ReflexesSkill gamedataProficiencyType 15
+---@field Stealth gamedataProficiencyType 16
+---@field StreetCred gamedataProficiencyType 17
+---@field StrengthSkill gamedataProficiencyType 18
+---@field TechnicalAbilitySkill gamedataProficiencyType 19
+---@field Count gamedataProficiencyType 20
+---@field Invalid gamedataProficiencyType 21
+gamedataProficiencyType = {}
+

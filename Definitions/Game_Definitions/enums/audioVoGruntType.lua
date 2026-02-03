@@ -1,0 +1,32 @@
+---@meta
+---@diagnostic disable
+
+---@class audioVoGruntType
+---@field None audioVoGruntType -1
+---@field PainShort audioVoGruntType 23
+---@field PainLong audioVoGruntType 0
+---@field AgroShort audioVoGruntType 1
+---@field AgroLong audioVoGruntType 2
+---@field Effort audioVoGruntType 25
+---@field LongFall audioVoGruntType 3
+---@field Death audioVoGruntType 4
+---@field SilentDeath audioVoGruntType 5
+---@field Grapple audioVoGruntType 6
+---@field GrappleMovement audioVoGruntType 7
+---@field EnvironmentalKnockdown audioVoGruntType 8
+---@field Bump audioVoGruntType 9
+---@field Curious audioVoGruntType 10
+---@field Fear audioVoGruntType 11
+---@field Jump audioVoGruntType 12
+---@field EffortLong audioVoGruntType 13
+---@field DeathShort audioVoGruntType 14
+---@field Greet audioVoGruntType 15
+---@field LaughHard audioVoGruntType 16
+---@field LaughSoft audioVoGruntType 17
+---@field Phone audioVoGruntType 18
+---@field BraindanceExcited audioVoGruntType 19
+---@field BraindanceFearful audioVoGruntType 20
+---@field BraindanceNeutral audioVoGruntType 21
+---@field BraindanceSexual audioVoGruntType 22
+audioVoGruntType = {}
+

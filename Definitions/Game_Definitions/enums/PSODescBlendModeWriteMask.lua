@@ -1,0 +1,22 @@
+---@meta
+---@diagnostic disable
+
+---@class PSODescBlendModeWriteMask
+---@field MASK_None PSODescBlendModeWriteMask 0
+---@field MASK_R PSODescBlendModeWriteMask 1
+---@field MASK_G PSODescBlendModeWriteMask 2
+---@field MASK_B PSODescBlendModeWriteMask 4
+---@field MASK_A PSODescBlendModeWriteMask 8
+---@field MASK_RG PSODescBlendModeWriteMask 3
+---@field MASK_RB PSODescBlendModeWriteMask 5
+---@field MASK_RA PSODescBlendModeWriteMask 9
+---@field MASK_GB PSODescBlendModeWriteMask 6
+---@field MASK_GA PSODescBlendModeWriteMask 10
+---@field MASK_BA PSODescBlendModeWriteMask 12
+---@field MASK_RGB PSODescBlendModeWriteMask 7
+---@field MASK_RGA PSODescBlendModeWriteMask 11
+---@field MASK_RBA PSODescBlendModeWriteMask 13
+---@field MASK_GBA PSODescBlendModeWriteMask 14
+---@field MASK_RGBA PSODescBlendModeWriteMask 15
+PSODescBlendModeWriteMask = {}
+
