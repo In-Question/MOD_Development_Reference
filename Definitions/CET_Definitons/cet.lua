@@ -56,6 +56,11 @@ function Override(typeName, funcName, callback) end
 ---@return T
 function NewObject(typeName) end
 
+---@overload fun(className:string, handlers: table): userdata
+---@param handlers table
+---@return userdata
+function NewProxy(handlers) end
+
 ---@generic T
 ---@param typeName `T`
 ---@return T

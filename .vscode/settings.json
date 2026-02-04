@@ -26,5 +26,5 @@
             ]
         }
     },
-    "Lua.workspace.maxPreload": 10000
+    "Lua.workspace.maxPreload": 20000
 }
