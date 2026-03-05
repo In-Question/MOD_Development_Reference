@@ -350,3 +350,154 @@ DamageSystem.ProcessPipeline(evt){
 如需，我可以继续补：
 - 近战“命中框/判定体”的具体参数来源（TweakDB / Attack_Melee_Record）
 - 近战命中后的 `OnHit` 与 `DamagePipelineFinalized` 的完整路径（更细分分支）
+
+---
+
+## 7. 武士刀飞跃攻击（触发、锁敌、时序、距离增伤）
+
+> 目标：确认“武士刀/剑在强击蓄力后可飞跃到远处目标，且按跃击距离增伤”的完整链路，并厘清“是否会先挥刀后到人”的时序问题。
+
+### 7.1 触发入口（强击蓄力 → Leap 判定）
+
+- 文件：`cyberpunk/player/psm/meleeTransitions.swift`
+  - `MeleeChargedHoldEvents.OnEnter(...)`
+    - 若具备 `CanMeleeLeap` / `CanMeleeLeapInAir`，会临时把武器 `EffectiveRange` 提到 `playerStateMachineMelee.meleeLeap.maxDistToTarget`。
+  - `MeleeLeapDecisions.EnterCondition(...)`
+    - 典型触发：处于 `meleeChargedHold`，释放近战输入后进入 Leap。
+    - 关键门槛：
+      - `CanMeleeLeap`
+      - 空中时需 `CanMeleeLeapInAir`
+      - 目标在 `minDistToTarget ~ maxDistToTarget` 区间
+
+结论：Leap 的硬门控主要是 `Stat Flag`（perk 在数据层通常映射为这些 flag）。
+
+### 7.2 锁敌与可跃击提示（UI 层）
+
+- 文件：`cyberpunk/UI/weapons/crosshairs/crosshairController_Melee.swift`
+  - `OnGamePSMMeleeWeapon(...)`
+    - 仅在 `Wea_Katana/Wea_Sword` 下启用 leap 目标标记逻辑。
+    - `m_currentState == 7`（蓄力态）时刷新标记。
+- 文件：`cyberpunk/UI/weapons/crosshairs/meleeLeapAttackObjectTagger.swift`
+  - `SetVisionOnTargetObj(...)`
+    - 检查 `Reflexes_Inbetween_Right_2`。
+    - 距离必须在 `(m_minDistanceToTarget, GetTargetMaxRange())`。
+
+结论：准星高亮是 UI 层“可跃击性提示”，不等于已造成伤害。
+
+### 7.3 核心时序：游戏如何避免“先挥刀后到位”
+
+这部分是关键。
+
+- 文件：`cyberpunk/player/psm/meleeTransitions.swift`
+  - `MeleeLeapEvents.LeapToTarget(...)`
+    - 先算 `leapDuration`（与位移距离相关）。
+    - 写入 `LeapExitTime`，其计算核心是：
+      - `LeapExitTime = leapDuration - attackStartupDuration`
+      -（刀类/终结有对应分支参数，如 `attackStartupDurationKnives`）
+  - `MeleeLeapDecisions.ToMeleeStrongAttack(...)`
+    - 只有 `GetInStateTime() >= LeapExitTime` 才允许从 Leap 切到 StrongAttack。
+
+也就是说：**Leap 状态会“卡住”强击切入时机，先飞，再进强击前摇**。
+
+### 7.4 强击命中并非入态即生效（第二层延迟）
+
+- 文件：`cyberpunk/player/psm/meleeTransitions.swift`
+  - `MeleeStrongAttackEvents.OnEnterFromMeleeLeap(...)`
+    - 标记为“来自 Leap 的强击进入”。
+  - `MeleeAttackGenericEvents.OnUpdate(...)`
+    - 真正创建攻击判定（`CreateMeleeAttack`）要等到：
+      - `duration >= attackData.attackEffectDelay`
+
+结论：即使已转入 strong attack，伤害判定仍要再等 `attackEffectDelay`。这是防止“动画/位移未对齐就提前命中”的第二道保险。
+
+### 7.5 Leap 执行与距离写入
+
+- 文件：`cyberpunk/player/psm/meleeTransitions.swift`
+  - `MeleeLeapEvents.LeapToTarget(...)`
+    - `AdjustPlayerPosition(...)` 执行位移。
+    - 写入 `PlayerPerkData.LeapedDistance`。
+    - 调用 `PlayerStaminaHelpers.ModifyStaminaBasedOnLeapAttackDistance(...)`。
+
+### 7.6 距离增伤的真实实现点
+
+- 文件：`core/gameplay/effectors/damage/modifyDamageWithLeapedDistance.swift`
+  - `ModifyDamageWithLeapedDistance.RepeatedAction(...)` 读取 `PlayerPerkData.LeapedDistance`。
+  - 使用 `minDistance/maxDistance/maxPercentMult` 施加倍率。
+
+概念公式：
+$$
+DamageMult = 1 + \frac{(MaxMult - 1) \cdot LeapedDistance}{MaxDistance}
+$$
+（受最小距离与封顶条件约束）
+
+结论：距离增伤由 `damage effector` 处理，不是写死在 `DamageSystem` 某个近战 if 分支里。
+
+### 7.7 与 DamageSystem 的边界（补充）
+
+- 文件：`cyberpunk/damage/damageSystem.swift`
+  - `ProcessStatusEffects(...)` 中 `JustLeaped` 主要用于跃击后附加状态效果（例如螳螂刀相关效果）。
+
+这条链路与“按距离线性增伤”是并行关系，不是同一实现点。
+
+### 7.8 武士刀飞跃攻击最终时序（简版）
+
+1. 蓄力进入 `meleeChargedHold`
+2. 满足条件进入 `MeleeLeap`
+3. `LeapToTarget` 计算 `leapDuration`，并设置 `LeapExitTime`
+4. 到 `LeapExitTime` 才切 `MeleeStrongAttack`
+5. 进入强击后，仍需等 `attackEffectDelay` 才创建命中判定
+6. 命中阶段读取 `LeapedDistance`，由 `ModifyDamageWithLeapedDistance` 施加距离增伤
+
+> 备注：`LeapedDistance` 在攻击退出时会被清零（`MeleeAttackGenericEvents.ClearLeapedDistanceBlackboardValue`），因此是单次跃击窗口数据。
+
+### 7.9 让拔刀攻击（EquipAttack）也能飞跃：可行性评估
+
+结论先行：**可行，但分“高保真方案”和“脚本近似方案”两档**。
+
+- 已确认的现状：
+  - `MeleeEquippingDecisions.ToMeleeEquipAttack(...)` 只检查 `IsActionJustHeld(n"MeleeAttack")`。
+  - `MeleeEquipAttackEvents` 继承 `MeleeAttackGenericEvents`，默认不带 `MeleeLeap -> EquipAttack` 专用入口（例如不存在 `OnEnterFromMeleeLeap`）。
+  - 现有 Leap 主链是 `MeleeLeap` 过渡到 `MeleeStrongAttack`。
+
+#### A) 高保真方案（推荐，成本高）
+
+思路：把 EquipAttack 纳入与 StrongAttack 类似的“先 Leap、后 Attack”状态机链路。
+
+需要点：
+
+- 增加（或替换）状态机转场，使 EquipAttack 输入可进入 `MeleeLeap`。
+- 在 Leap 退出时支持转入 `MeleeEquipAttack`（类似当前 `ToMeleeStrongAttack` + `LeapExitTime` 门控）。
+- 给 `MeleeEquipAttackEvents` 增加“来自 Leap”的入态处理（可类比 `MeleeStrongAttackEvents.OnEnterFromMeleeLeap`）。
+
+优点：
+
+- 时序最干净，天然复用 `LeapExitTime` 与 `attackStartupDuration` 的对齐机制。
+
+风险：
+
+- 依赖状态机图/转场关系，很多项目里这部分不完全由脚本单独决定，改动面较大。
+
+#### B) 脚本近似方案（实现快，保真中等）
+
+思路：保留 EquipAttack 入态，但在 `MeleeEquipAttackEvents.OnEnter` 里主动发起位移（`AdjustPlayerPosition/RequestPlayerPositionAdjustment`）并把命中延后。
+
+需要点：
+
+- 复制一段目标选择 + 可达性判断（参考 `MeleeLeapEvents.LeapToTarget`）。
+- 调整 EquipAttack 的攻击记录参数（尤其 `attackEffectDelay`）确保“位移先完成，命中后发生”。
+- 可选：写入 `PlayerPerkData.LeapedDistance`，让距离增伤 effector 也参与。
+
+优点：
+
+- 基本可在脚本/TweakDB层快速落地。
+
+代价：
+
+- 不是真正的 Leap 状态，边界行为（Vault、某些动画分支、与其它状态机协同）可能与原生强击飞跃不完全一致。
+
+#### C) 实战建议
+
+- 若目标是“手感接近官方飞跃强击”：优先 A。
+- 若目标是“先做出能玩的拔刀飞跃版本”：先做 B，再逐步逼近 A。
+
+> 简评：你这个需求在技术上不是“能不能”，而是“要不要改状态机层级”。只在脚本层能做出 70~85% 体验；要 95% 以上一致性，通常要动到转场链路。
