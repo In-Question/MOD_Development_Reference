@@ -15,6 +15,16 @@ local TDK = {}
 local MARKER_COLOR = nil
 local MARKER_TEXT_COLOR = nil
 
+-- 延迟初始化运行期资源（避免 onInit 前调用游戏 API）
+local function initRuntimeResources()
+	if not MARKER_COLOR then
+		MARKER_COLOR = Color.new({ Red = 255, Green = 180, Blue = 60, Alpha = 255 })
+	end
+	if not MARKER_TEXT_COLOR then
+		MARKER_TEXT_COLOR = Color.new({ Red = 255, Green = 220, Blue = 120, Alpha = 255 })
+	end
+end
+
 -- 按配置输出调试日志
 local function log(msg)
 	if CONFIG.debugLog then
@@ -212,6 +222,10 @@ local function drawCachedMarkers()
 		return
 	end
 
+	if not MARKER_COLOR or not MARKER_TEXT_COLOR then
+		return
+	end
+
 	local dvs = getDebugVisualizerSystem()
 	if not dvs then
 		return
@@ -293,52 +307,15 @@ function TDK.TeleportToWeaponSlot(slotNumber)
 		return false
 	end
 
-	log("found position via " .. tostring(source) .. ", pos=(" .. tostring(pos.x) .. ", " .. tostring(pos.y) .. ", " .. tostring(pos.z) .. ")")
-
-	return doTeleport(pos)
-end
-
--- 检测是否按下 R（Reload）
-local function isReloadPressed(scriptInterface)
-	if not scriptInterface or not scriptInterface.IsActionJustPressed then
-		return false
+	local ok = doTeleport(pos)
+	if ok then
+		log("teleported to slot " .. tostring(slotNumber) .. " via " .. tostring(source))
 	end
-	return scriptInterface:IsActionJustPressed("Reload")
+	return ok
 end
 
 registerForEvent("onInit", function()
-	-- 初始化Color
-	MARKER_COLOR = Color.new({ Red = 255, Green = 180, Blue = 60, Alpha = 255 })
-	MARKER_TEXT_COLOR = Color.new({ Red = 255, Green = 220, Blue = 120, Alpha = 255 })
-
-	-- ExitCondition状态记录
-	local lastExitConditionReady = nil
-	local lastExitConditionReloadPressed = nil
-
-	Override("MeleeThrowReloadDecisions", "ExitCondition", function(self, stateContext, scriptInterface, wrappedMethod)
-		local baseReady = wrappedMethod(stateContext, scriptInterface)
-
-		-- 只在状态变化时打印
-		if lastExitConditionReady ~= baseReady then
-			log("ExitCondition: baseReady=" .. tostring(baseReady))
-			lastExitConditionReady = baseReady
-		end
-
-		if not baseReady then
-			return false
-		end
-
-		local reloadPressed = isReloadPressed(scriptInterface)
-
-		-- 只在状态变化时打印
-		if lastExitConditionReloadPressed ~= reloadPressed then
-			log("ExitCondition: reloadPressed=" .. tostring(reloadPressed))
-			lastExitConditionReloadPressed = reloadPressed
-		end
-
-		-- 原条件满足后，必须按 R 才放行
-		return reloadPressed
-	end)
+	initRuntimeResources()
 
 	-- 可选功能：回收态按攻击键时，不再限定"下一把可投掷武器"，而是切"下一把武器"
 	if CONFIG.replaceNextThrowableWithNextWeapon then
