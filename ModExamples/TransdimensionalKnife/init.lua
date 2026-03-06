@@ -12,8 +12,8 @@ local state = {
 
 local TDK = {}
 
-local MARKER_COLOR = Color.new({ Red = 255, Green = 180, Blue = 60, Alpha = 255 })
-local MARKER_TEXT_COLOR = Color.new({ Red = 255, Green = 220, Blue = 120, Alpha = 255 })
+local MARKER_COLOR = nil
+local MARKER_TEXT_COLOR = nil
 
 -- 按配置输出调试日志
 local function log(msg)
@@ -84,11 +84,11 @@ local function getProjectileSourceItemID(projectile)
 	end
 
 	local itemID = weapon:GetItemID()
-	if isValidItemID(itemID) then
-		return itemID
+	if not isValidItemID(itemID) then
+		return nil
 	end
 
-	return nil
+	return itemID
 end
 
 -- 根据武器槽位号（1/2/3）获取装备 ItemID
@@ -107,11 +107,11 @@ local function getItemIDByWeaponSlot(slotNumber)
 		return player:GetEquippedItemIdInArea(equipArea, slotNumber - 1)
 	end)
 
-	if ok and isValidItemID(itemID) then
-		return itemID
+	if not ok or not isValidItemID(itemID) then
+		return nil
 	end
 
-	return nil
+	return itemID
 end
 
 -- 写入/刷新 itemHash 对应的投掷物追踪信息（生命周期只在首次投掷时设置）
@@ -140,6 +140,9 @@ local function bindProjectile(projectile)
 	end
 
 	local itemID = getProjectileSourceItemID(projectile)
+	if not itemID then
+		return
+	end
 
 	local itemHash = getItemHash(itemID)
 	if not itemHash then
@@ -149,6 +152,7 @@ local function bindProjectile(projectile)
 	local pKey = tostring(projectile)
 	state.byProjectileKey[pKey] = itemHash
 	upsertTrackedByHash(itemHash, projectile)
+	log("bound projectile to hash=" .. tostring(itemHash))
 end
 
 -- 在投掷物存活期间持续刷新位置（不续期）
@@ -246,39 +250,53 @@ end
 -- 执行玩家传送
 local function doTeleport(pos)
 	local player = getPlayer()
-	local tf = Game and Game.GetTeleportationFacility and Game.GetTeleportationFacility() or nil
-	if not player or not tf or not pos then
+	if not player then
 		return false
 	end
 
-	local rot = player:GetWorldOrientation():ToEulerAngles()
-	tf:Teleport(player, pos, rot)
+	local tf = Game and Game.GetTeleportationFacility and Game.GetTeleportationFacility() or nil
+	if not tf or not pos then
+		return false
+	end
+
+	local rot = player:GetWorldOrientation()
+	if not rot or not rot.ToEulerAngles then
+		return false
+	end
+
+	local eulerAngles = rot:ToEulerAngles()
+	log("teleporting to pos=(" .. tostring(pos.x) .. ", " .. tostring(pos.y) .. ", " .. tostring(pos.z) .. ")")
+
+	tf:Teleport(player, pos, eulerAngles)
 	return true
 end
 
 -- 对外接口：传送到指定武器槽位对应的投掷物位置
 function TDK.TeleportToWeaponSlot(slotNumber)
+	log("TeleportToWeaponSlot slot=" .. tostring(slotNumber))
+
 	local itemID = getItemIDByWeaponSlot(slotNumber)
 	if not itemID then
-		log("slot " .. tostring(slotNumber) .. " has no valid item")
+		log("no valid item in slot")
 		return false
 	end
 
 	local itemHash = getItemHash(itemID)
-	local pos, source = getTrackedPosByItemHash(itemHash)
-	if not pos then
-		log("slot " .. tostring(slotNumber) .. " has no tracked projectile (TTL " .. tostring(CONFIG.cacheTTL) .. "s)")
+	if not itemHash then
+		log("failed to get itemHash")
 		return false
 	end
 
-	local ok = doTeleport(pos)
-	if ok then
-		log("teleported to slot " .. tostring(slotNumber) .. " via " .. tostring(source))
+	local pos, source = getTrackedPosByItemHash(itemHash)
+	if not pos then
+		log("no tracked position (source=" .. tostring(source) .. ")")
+		return false
 	end
-	return ok
-end
 
-_G.TDK = TDK
+	log("found position via " .. tostring(source) .. ", pos=(" .. tostring(pos.x) .. ", " .. tostring(pos.y) .. ", " .. tostring(pos.z) .. ")")
+
+	return doTeleport(pos)
+end
 
 -- 检测是否按下 R（Reload）
 local function isReloadPressed(scriptInterface)
@@ -289,24 +307,48 @@ local function isReloadPressed(scriptInterface)
 end
 
 registerForEvent("onInit", function()
+	-- 初始化Color
+	MARKER_COLOR = Color.new({ Red = 255, Green = 180, Blue = 60, Alpha = 255 })
+	MARKER_TEXT_COLOR = Color.new({ Red = 255, Green = 220, Blue = 120, Alpha = 255 })
+
+	-- ExitCondition状态记录
+	local lastExitConditionReady = nil
+	local lastExitConditionReloadPressed = nil
+
 	Override("MeleeThrowReloadDecisions", "ExitCondition", function(self, stateContext, scriptInterface, wrappedMethod)
 		local baseReady = wrappedMethod(stateContext, scriptInterface)
+
+		-- 只在状态变化时打印
+		if lastExitConditionReady ~= baseReady then
+			log("ExitCondition: baseReady=" .. tostring(baseReady))
+			lastExitConditionReady = baseReady
+		end
+
 		if not baseReady then
 			return false
 		end
 
+		local reloadPressed = isReloadPressed(scriptInterface)
+
+		-- 只在状态变化时打印
+		if lastExitConditionReloadPressed ~= reloadPressed then
+			log("ExitCondition: reloadPressed=" .. tostring(reloadPressed))
+			lastExitConditionReloadPressed = reloadPressed
+		end
+
 		-- 原条件满足后，必须按 R 才放行
-		return isReloadPressed(scriptInterface)
+		return reloadPressed
 	end)
 
-	-- 可选功能：回收态按攻击键时，不再限定“下一把可投掷武器”，而是切“下一把武器”
+	-- 可选功能：回收态按攻击键时，不再限定"下一把可投掷武器"，而是切"下一把武器"
 	if CONFIG.replaceNextThrowableWithNextWeapon then
 		Override("EquipmentSystemPlayerData", "GetItemIDfromEquipmentManipulationAction", function(self, eqManipulationAction, wrappedMethod)
 			if eqManipulationAction == EquipmentManipulationAction.RequestNextThrowableWeapon then
+				log("GetItemIDfromEquipmentManipulationAction: RequestNextThrowableWeapon -> CycleWeapon")
 				return self:CycleWeapon(true, false)
 			end
 
-			return wrappedMethod(eqManipulationAction) 
+			return wrappedMethod(eqManipulationAction)
 		end)
 	end
 
@@ -326,7 +368,7 @@ registerForEvent("onInit", function()
 end)
 
 registerForEvent("onUpdate", function(deltaTime)
-	purgeExpired((deltaTime or 0.0) / 1000.0)
+	purgeExpired(deltaTime)
 	drawCachedMarkers()
 end)
 

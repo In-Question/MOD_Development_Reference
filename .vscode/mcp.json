@@ -1,9 +1,0 @@
-{
-	"servers": {
-		"Cyber Engine Tweaks": {
-			"url": "https://wiki.redmodding.org/cyber-engine-tweaks/~gitbook/mcp",
-			"type": "http"
-		}
-	},
-	"inputs": []
-}

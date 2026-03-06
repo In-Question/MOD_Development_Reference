@@ -252,6 +252,7 @@ DamageSystem.ProcessPipeline(evt){
   ProcessOneShotProtection(evt)
   if not projectionPipeline{
     DealDamages(evt){
+      // 见下文 5.2.2 节详细分析
       StatPoolsManager.ApplyDamage(evt)   // 实际扣血
       SendDamageEvents(evt){
         instigator.QueueEvent(gameTargetDamageEvent)
@@ -271,6 +272,155 @@ DamageSystem.ProcessPipeline(evt){
   SendDamageRequestToPreventionSystem(evt)
 }
 ```
+
+#### 5.2.2 实际扣血（StatPoolsManager.ApplyDamage）
+
+> 位置：`cyberpunk/damage/statPoolsManager.swift`  
+> 调用链：`DamageSystem.DealDamages` → `StatPoolsManager.ApplyDamage`
+
+**函数签名**
+
+```swift
+public final static func ApplyDamage(
+  hitEvent: ref<gameHitEvent>, 
+  forReal: Bool, 
+  out valuesLost: [SDamageDealt]
+) -> Void
+```
+
+**核心功能**
+
+将计算好的攻击伤害值应用到目标的各个 StatPool（血量池/装甲池/护盾池/部位池等），是整个伤害管线中**真正扣血**的环节。
+
+**处理流程**
+
+1. **遍历所有伤害类型**
+   - `hitEvent.attackComputed.GetAttackValues()` 返回数组，索引对应 `gamedataDamageType`（物理/热能/化学/电击）
+   - 对每种伤害类型分别处理
+
+2. **Boss/MaxTac 伤害上限保护**
+   ```swift
+   // 如果目标是 Boss 或 MaxTac 且不在终结技中
+   if (npcTarget.IsBoss() || Equals(npcTarget.GetNPCRarity(), gamedataNPCRarity.MaxTac)) 
+      && !instigator.GetIsInFastFinisher() {
+     maxPercentDamage = statsSystem.GetStatValue(..., gamedataStatType.MaxPercentDamageTakenPerHit)
+     damageCeiling = maxPercentDamage / 100.0 * Health
+     attackValues[i] = ClampF(attackValues[i], 0.0, damageCeiling)
+   }
+   ```
+   - **作用**：防止单次伤害过高秒杀 Boss
+   - **DoT 修正**：持续伤害会乘以 `maxDamageDoTProportion` 系数（通常 < 1.0）
+   - **多发武器**：伤害上限会除以 `ProjectilesPerShot`
+
+3. **最小伤害值保证**
+   ```swift
+   if attackValues[i] > 0.0 && attackValues[i] < 1.0 {
+     attackValues[i] = 1.0
+   }
+   ```
+   - 确保任何非零伤害至少造成 1 点
+
+4. **保护层（ProtectionLayer）判定**
+   ```swift
+   // 遍历所有命中形状（hitShapes）
+   for hitShape in hitShapes {
+     isProtectionLayer = hitShape.userData.m_isProtectionLayer
+     
+     // 如果命中保护层且未命中目标本体（12 个 hitShapes 限制）
+     if !targetHit && isProtectionLayer && ArraySize(hitShapes) < 12 {
+       attackValues[i] = 0.0                           // 伤害归零
+       hitEvent.attackData.RemoveFlag(hitFlag.Headshot) // 取消爆头
+       hitEvent.attackData.RemoveFlag(hitFlag.CriticalHit) // 取消暴击
+       hitEvent.attackData.SetHitType(gameuiHitType.Glance) // 设为擦伤
+     }
+   }
+   ```
+   - **保护层**：如护盾、玻璃等可被穿透的防护
+   - **例外**：快速破解（`gamedataAttackType.Hack`）可无视特定保护层
+   - **终结技**：`instigator.GetIsInFastFinisher()` 时无视保护层
+
+5. **局部化伤害应用**（命中特定部位）
+   ```swift
+   if StatPoolsManager.GetBodyPartStatPool(target, bodyPartName, poolType) {
+     StatPoolsManager.ApplyLocalizedDamageSingle(
+       hitEvent, attackValues[i], dmgType, poolType, forReal, tempLost
+     )
+   }
+   ```
+   - **部位血量池**：`LeftArm/RightArm/LeftLeg/RightLeg` 等
+   - **逻辑**：先扣部位血量，再扣主血量
+   - **效果**：部位损毁后影响 NPC 行动（如腿部损毁降低移动速度）
+
+6. **主伤害应用**
+   ```swift
+   StatPoolsManager.ApplyDamageSingle(
+     hitEvent, dmgType, attackValues[i], forReal, tempLost
+   )
+   ```
+   - 按优先级扣除：`Overshield（护盾）` → `CPO_Armor（装甲）` → `Health（血量）`
+
+**ApplyDamageSingle 内部流程**
+
+```
+1. 检查当前血量 > 0
+2. 依次扣除：
+   - ApplyDamageToOverShieldSingle  // 护盾层
+   - ApplyDamageToArmorSingle       // 装甲层
+   - 扣除 Health（主血量）
+3. 特殊判定：
+   - 致命一击保护（IsFinisherGrace）：玩家近战/投掷武器有几率触发
+   - 不可杀死玩家标记（hitFlag.CannotKillPlayer）
+   - 流血 DoT + 反射大师天赋：保留 1 点血
+4. 如果伤害 >= 剩余血量：
+   - 添加 hitFlag.WasKillingBlow
+   - 标记为致命伤
+```
+
+**关键细节**
+
+- **forReal 参数**：
+  - `true`：实际修改 StatPool（真实扣血）
+  - `false`：只计算不扣血（用于伤害预测/UI 显示）
+
+- **valuesLost 输出**：
+  - 记录每个 StatPool 的损失值
+  - 结构：`SDamageDealt { affectedStatPool, value, type }`
+  - 用途：伤害数字显示、经验计算、成就统计
+
+- **攻击值修改会回写**：
+  ```swift
+  hitEvent.attackComputed.SetAttackValues(attackValues)
+  ```
+  - 保护层归零后的值会更新到 hitEvent 中
+
+**与近战相关的特殊逻辑**
+
+1. **终结技无视保护层**：`instigator.GetIsInFastFinisher()` 时跳过保护层判定
+2. **Boss 伤害上限**：近战单次伤害不能超过 Boss 血量的特定百分比
+3. **致命一击保护（Grace Chance）**：
+   - 条件：玩家使用近战/投掷武器 + NPC 血量高于阈值 + 有终结技可用
+   - 效果：伤害保留 1 点血（触发终结技提示）
+   - 概率：由 `NewPerks.Reflexes_Right_Milestone_3.graceChance` 控制
+
+**调试/MOD 关注点**
+
+- **修改伤害上限**：
+  ```lua
+  -- 提高 Boss 单次受伤上限（TweakDB）
+  TweakDB:SetFlat("NPCStatPreset.Boss.MaxPercentDamageTakenPerHit", 100.0)
+  ```
+
+- **监听实际扣血值**：
+  ```lua
+  -- 在 DamageSystem.Process 阶段注册监听器
+  -- 读取 hitEvent.attackComputed.GetAttackValues() 的最终值
+  ```
+
+- **绕过保护层**：
+  ```lua
+  -- 方法 1：添加 hitFlag（脚本侧不直接支持）
+  -- 方法 2：修改 HitShapeUserDataBase.m_isProtectionLayer
+  ```
 
 ### 5.3 目标侧的反应与反馈（ReactToHitProcess）
 
@@ -315,7 +465,7 @@ DamageSystem.ProcessPipeline(evt){
 
 ---
 
-## 6. 快速索引（按你的 3 个问题）
+## 6. 快速索引
 
 1) **命中判定/目标确定**
    - `MeleeAttackGenericDecisions.EnterCondition(...)`（是否进入攻击）

@@ -796,6 +796,577 @@ end
 
 ---
 
-**文档版本**: 1.0  
-**最后更新**: 2026年2月5日  
+## 九、玩家战斗状态机（PlayerStateMachine）深度解析
+
+### 玩家战斗状态枚举
+
+**位置**: `orphans.swift` 第6891-6896行
+
+```swift
+enum gamePSMCombat {
+  Default = 0,      // 默认状态（极少使用）
+  InCombat = 1,      // 在战斗中（被敌人追踪）
+  OutOfCombat = 2,   // 非战斗状态（未被追踪）
+  Stealth = 3,        // 潜行状态（蹲伏且未被追踪）
+}
+```
+
+### 状态转换核心逻辑
+
+**位置**: `playerCombatController.swift` → `VerifyActivation()` (第88-106行)
+
+```swift
+private final func VerifyActivation() -> Void {
+  // 条件1: 进入Stealth状态
+  if this.m_gameplayActiveFlags.m_crouchActive &&
+     !this.m_gameplayActiveFlags.m_isTracked &&
+     !this.m_gameplayActiveFlags.m_usingJhonnyReplacer {
+    if NotEquals(this.m_otherVars.m_state, PlayerCombatState.Stealth) {
+      this.InvalidateActivationState(PlayerCombatState.Stealth);
+    };
+  }
+  // 条件2: 进入OutOfCombat状态
+  else if !this.m_gameplayActiveFlags.m_crouchActive &&
+          !this.m_gameplayActiveFlags.m_isTracked {
+    if NotEquals(this.m_otherVars.m_state, PlayerCombatState.OutOfCombat) {
+      this.InvalidateActivationState(PlayerCombatState.OutOfCombat);
+    };
+  }
+  // 条件3: 进入InCombat状态（优先级最高）
+  else if this.m_gameplayActiveFlags.m_isTracked {
+    if NotEquals(this.m_otherVars.m_state, PlayerCombatState.InCombat) {
+      this.InvalidateActivationState(PlayerCombatState.InCombat);
+    };
+  };
+}
+```
+
+### 状态转换关键触发事件
+
+#### 1. 被敌人追踪事件
+
+**位置**: `playerCombatController.swift` (第168-176行)
+
+```swift
+// 开始被追踪 - 立即退出Stealth/OutOfCombat，进入InCombat
+public final func OnStartedBeingTrackedAsHostile(evt: ref<StartedBeingTrackedAsHostile>) -> Void {
+  this.m_gameplayActiveFlags.m_isTracked = true;
+  this.VerifyActivation();  // 立即切换到InCombat
+}
+
+// 停止被追踪 - 重新评估状态
+public final func OnStoppedBeingTrackedAsHostile() -> Void {
+  this.m_gameplayActiveFlags.m_isTracked = false;
+  this.VerifyActivation();  // 可能切换到Stealth或OutOfCombat
+}
+```
+
+**MOD监听示例**:
+```lua
+ObserveAfter('PlayerCombatController', 'OnStartedBeingTrackedAsHostile', function(self, evt)
+    print("玩家开始被敌人追踪")
+    -- 此时战斗状态将切换为 InCombat(1)
+end)
+
+ObserveAfter('PlayerCombatController', 'OnStoppedBeingTrackedAsHostile', function(self)
+    print("敌人停止追踪玩家")
+    -- 此时战斗状态可能切换到 Stealth(3) 或 OutOfCombat(2)
+end)
+```
+
+#### 2. 蹲伏状态变化事件
+
+**位置**: `playerCombatController.swift` (第144-166行)
+
+```swift
+private final func OnCrouchActiveChanged(value: Int32) -> Void {
+  let active: Bool = (value == 1);
+
+  if NotEquals(this.m_gameplayActiveFlags.m_crouchActive, active) {
+    this.m_gameplayActiveFlags.m_crouchActive = active;
+    if active {
+      // 蹲下：延迟0.15秒后验证状态
+      GameInstance.GetDelaySystem(this.m_owner.GetGame())
+        .DelayEvent(this.m_owner, crouchDelayEvent, 0.15);
+    } else {
+      // 站起：立即验证状态并可能退出Stealth
+      GameInstance.GetDelaySystem(this.m_owner.GetGame())
+        .CancelCallback(this.m_delayEventsIds.m_crouch);
+      this.m_gameplayActiveFlags.m_crouchTimerPassed = false;
+      this.VerifyActivation();
+    };
+  };
+}
+```
+
+**MOD监听示例**:
+```lua
+-- 通过黑板监听蹲伏状态
+local playerBB = Game.GetBlackboardSystem():GetLocalInstanced(
+    Game.GetPlayer():GetEntityID(),
+    GetAllBlackboardDefs().PlayerStateMachine
+)
+
+playerBB:RegisterListenerInt(
+    GetAllBlackboardDefs().PlayerStateMachine.Locomotion,
+    function(value)
+        if value == 1 then  -- Crouch
+            print("玩家蹲伏 - 0.15秒后可能进入Stealth")
+        else
+            print("玩家站起 - 立即退出Stealth")
+        end
+    end
+)
+```
+
+### 完整状态转换图
+
+```
+优先级规则: isTracked > crouchActive
+
+状态转换表:
+┌─────────────────────────────────────────────────────────────┐
+│                    状态转换条件                          │
+└─────────────────────────────────────────────────────────────┘
+
+当前状态 → 新状态 (需满足的条件):
+
+OutOfCombat(2)
+  ├─→ Stealth(3):   crouchActive=true && isTracked=false && 蹲伏0.15秒
+  └─→ InCombat(1):   isTracked=true (优先级最高)
+
+Stealth(3)
+  ├─→ InCombat(1):   isTracked=true (被敌人追踪)
+  └─→ OutOfCombat(2): crouchActive=false (站起)
+
+InCombat(1)
+  └─→ OutOfCombat(2): isTracked=false (敌人停止追踪)
+                           └─→ Stealth(3): crouchActive=true && 蹲伏0.15秒
+
+注意: InCombat(1) 不能直接转换到 Stealth(3)
+      必须先经过 OutOfCombat(2)
+```
+
+### 黑板值获取方法
+
+```lua
+-- 获取玩家战斗状态
+local function GetPlayerCombatState(player)
+    local bb = Game.GetBlackboardSystem():GetLocalInstanced(
+        player:GetEntityID(),
+        GetAllBlackboardDefs().PlayerStateMachine
+    )
+    return bb:GetInt(GetAllBlackboardDefs().PlayerStateMachine.Combat)
+    -- 返回值: 0=Default, 1=InCombat, 2=OutOfCombat, 3=Stealth
+end
+
+-- 获取玩家姿态状态
+local function GetPlayerLocomotionState(player)
+    local bb = Game.GetBlackboardSystem():GetLocalInstanced(
+        player:GetEntityID(),
+        GetAllBlackboardDefs().PlayerStateMachine
+    )
+    return bb:GetInt(GetAllBlackboardDefs().PlayerStateMachine.Locomotion)
+    -- 返回值: 0=Default, 1=Crouch, 2=Sprint, 3=Kereznikov, etc.
+end
+```
+
+### 状态转换时序示例
+
+**场景1: 从未被追赶到被敌人发现**
+```
+时刻 T0: 玩家在安全区域
+         → Combat = OutOfCombat(2)
+
+时刻 T1: 玩家靠近敌人，进入感知范围
+         → 检测值开始上升 (0 → 50)
+         → 触发 OnBeingNoticed 事件
+
+时刻 T2: 检测值继续上升 (50 → 90)
+         → 敌人开始瞄准玩家
+
+时刻 T3: 检测值达到100
+         → TargetTrackingExtension 注入威胁
+         → 触发 OnStartedBeingTrackedAsHostile
+         → Combat 立即切换为 InCombat(1)
+         → 播放战斗音效和UI更新
+```
+
+**场景2: 蹲伏潜行**
+```
+时刻 T0: 玩家在 OutOfCombat(2)
+时刻 T1: 玩家蹲伏
+         → crouchActive = true
+         → 启动0.15秒延迟定时器
+时刻 T2: 0.15秒后，检查状态
+         → isTracked = false → 进入 Stealth(3)
+         → 播放 stealth_mode 视觉效果
+```
+
+**场景3: 从战斗中脱出**
+```
+时刻 T0: 玩家在 InCombat(1)
+时刻 T1: 消灭所有敌人
+         → 敌人停止追踪
+         → 触发 OnStoppedBeingTrackedAsHostile
+时刻 T2: 状态重新验证
+         → isTracked = false, crouchActive = false
+         → 进入 OutOfCombat(2)
+```
+
+### MOD实现建议
+
+#### 监听战斗状态变化（最可靠）
+
+```lua
+-- 方法1: 监听追踪事件（推荐）
+local lastTrackedState = false
+
+ObserveAfter('PlayerCombatController', 'OnStartedBeingTrackedAsHostile', function(self, evt)
+    if not lastTrackedState then
+        print("玩家被敌人追踪 - 进入战斗")
+        lastTrackedState = true
+        -- 触发战斗相关MOD效果
+    end
+end)
+
+ObserveAfter('PlayerCombatController', 'OnStoppedBeingTrackedAsHostile', function(self)
+    if lastTrackedState then
+        print("敌人停止追踪 - 脱离战斗")
+        lastTrackedState = false
+        -- 触发脱战相关MOD效果
+    end
+end)
+
+-- 方法2: 通过黑板监听战斗状态
+local playerBB = nil
+local lastCombatState = nil
+
+registerForEvent("onInit", function()
+    local player = Game.GetPlayer()
+    playerBB = Game.GetBlackboardSystem():GetLocalInstanced(
+        player:GetEntityID(),
+        GetAllBlackboardDefs().PlayerStateMachine
+    )
+
+    playerBB:RegisterListenerInt(
+        GetAllBlackboardDefs().PlayerStateMachine.Combat,
+        function(newState)
+            if lastCombatState == nil then
+                lastCombatState = newState
+                return
+            end
+
+            -- 检测状态转换
+            if lastCombatState == 2 and newState == 1 then
+                print("OutOfCombat → InCombat")
+            elseif lastCombatState == 1 and newState == 2 then
+                print("InCombat → OutOfCombat")
+            elseif lastCombatState == 2 and newState == 3 then
+                print("OutOfCombat → Stealth")
+            elseif lastCombatState == 3 and newState == 1 then
+                print("Stealth → InCombat (被敌人发现)")
+            elseif lastCombatState == 3 and newState == 2 then
+                print("Stealth → OutOfCombat (站起)")
+            end
+
+            lastCombatState = newState
+        end
+    )
+end)
+```
+
+#### 判断是否适合潜行加成的条件
+
+```lua
+-- 对于第1个目标（潜行近战伤害加成）
+local function CanGetStealthMeleeBonus(player)
+    local combatState = GetPlayerCombatState(player)
+
+    -- 只要不在InCombat(1)，就视为"未触发敌人战斗状态"
+    -- 包括 OutOfCombat(2) 和 Stealth(3)
+    return (combatState ~= 1)
+end
+
+-- 使用示例
+function OnMeleeHit(evt)
+    local player = Game.GetPlayer()
+    if CanGetStealthMeleeBonus(player) then
+        -- 应用潜行伤害加成: +200% 近战, +500% 暴击
+        ApplyStealthMeleeBonus(evt.target)
+    end
+end
+```
+
+---
+
+## 十、总结与最佳实践
+
+### 核心机制总结
+
+#### NPC检测流程
+1. **检测覆盖判断**: 决定是否允许开始检测（态度、状态、设备等）
+2. **检测值累积**: 0-100的渐进过程，受多种因素影响
+3. **首次注意触发**: 检测值从0变化时的 `OnBeingNoticed` 事件
+4. **战斗状态切换**: 检测值达到100时的状态转换
+5. **检测归零退出**: 失去视线后的检测衰减
+
+#### 玩家战斗状态机
+1. **三种核心状态**: InCombat(1), OutOfCombat(2), Stealth(3)
+2. **状态转换规则**: isTracked（被追踪）> crouchActive（蹲伏）
+3. **Stealth本质**: 蹲伏 + 不被追踪，不是被动状态
+4. **触发事件**:
+   - `OnStartedBeingTrackedAsHostile`: 开始被追踪
+   - `OnStoppedBeingTrackedAsHostile`: 停止被追踪
+   - `OnCrouchActiveChanged`: 蹲伏状态变化
+
+### MOD开发关键点
+
+#### 检测相关
+| 目标 | 推荐方法 | 时机 | 可靠性 |
+|------|-----------|------|--------|
+| 首次被发现 | `OnBeingNoticed` | 检测值从0变化 | ⭐⭐⭐⭐⭐ |
+| 检测进度追踪 | Blackboard监听检测值 | 持续变化 | ⭐⭐⭐⭐ |
+| 完全被发现 | `OnStartedBeingTrackedAsHostile` | 被敌人追踪 | ⭐⭐⭐⭐⭐ |
+| 脱离战斗 | `OnStoppedBeingTrackedAsHostile` | 追踪停止 | ⭐⭐⭐⭐⭐ |
+
+#### 战斗状态相关
+| 目标 | 推荐方法 | 说明 |
+|------|-----------|------|
+| 判断是否在战斗 | `player:IsInCombat()` | 官方封装方法，基于m_inCombat缓存 |
+| 获取精确战斗状态 | 监听PlayerStateMachine.Combat黑板 | 可获取InCombat/OutOfCombat/Stealth三种状态 |
+| 检测战斗状态转换 | 监听追踪事件或黑板变化 | 事件驱动，高性能 |
+| 检测潜行状态 | 检查 Combat 值是否为 3 | 可用于潜行加成 |
+| 判断适合潜行加成 | Combat != 1 (非InCombat) | 包括Stealth和OutOfCombat |
+
+#### 性能优化建议
+1. **优先事件驱动**: 使用Observe监听事件而非每帧轮询
+2. **及时清理监听器**: 在onShutdown时注销所有监听器
+3. **避免频繁计算**: 缓存常用值（如lastCombatState）
+4. **条件提前返回**: 在函数开头进行空值和状态检查
+
+---
+
+## 十一、PlayerStateMachine黑板系统详解
+
+### 黑板系统概述
+
+**Blackboard** 是《赛博朋克2077》中用于游戏对象间共享数据和事件通知的核心框架。每个游戏对象可以拥有多个黑板实例，每个黑板存储特定类型的状态数据。
+
+### PlayerStateMachine黑板
+
+`PlayerStateMachine` 是玩家专用的状态机黑板，用于存储和管理玩家的各种状态信息。
+
+#### 关键字段
+
+| 字段名 | 类型 | 说明 | 取值 |
+|--------|------|------|------|
+| `Combat` | Int32 | 玩家战斗状态 | 1=InCombat, 2=OutOfCombat, 3=Stealth |
+| `Locomotion` | Int32 | 移动状态 | 2=Sprinting, 3=Kereznikov等 |
+| `Zones` | Int32 | 区域类型 | 4=DangerousZone等 |
+| `Vision` | Int32 | 视觉状态 | |
+| `Vehicle` | Int32 | 载具状态 | |
+| `UpperBody` | Int32 | 上半身状态 | |
+| `CrouchActive` | Bool | 是否蹲伏 | true/false |
+
+#### 获取黑板实例
+
+```lua
+local blackboardSystem = Game.GetBlackboardSystem()
+local playerSMBlackboard = blackboardSystem:GetLocalInstanced(
+    player:GetEntityID(),
+    GetAllBlackboardDefs().PlayerStateMachine
+)
+```
+
+#### 读取战斗状态
+
+```lua
+local combatState = playerSMBlackboard:GetInt(
+    GetAllBlackboardDefs().PlayerStateMachine.Combat
+)
+-- combatState: 1=InCombat, 2=OutOfCombat, 3=Stealth
+```
+
+#### 监听战斗状态变化
+
+```lua
+playerSMBlackboard:RegisterListenerInt(
+    GetAllBlackboardDefs().PlayerStateMachine.Combat,
+    listenerObject,
+    n"CallbackFunctionName",
+    true  -- immediate: 立即触发一次初始值
+)
+```
+
+### 战斗状态的黑板更新链路
+
+#### 链路1: 黑板 → m_inCombat缓存
+
+游戏内部通过黑板监听器自动同步:
+
+```swift
+// weaponTransitions.swift:932
+ArrayPush(this.m_callBackIDs,
+    scriptInterface.localBlackboard.RegisterListenerInt(
+        allBlackboardDef.PlayerStateMachine.Combat,
+        this,
+        n"OnCombatChanged",
+        true
+    )
+);
+
+// weaponTransitions.swift:987
+protected cb func OnCombatChanged(value: Int32) -> Bool {
+    this.m_inCombat = value == 1;
+    this.UpdateShouldOnEnterBeEnabled();
+}
+```
+
+#### 链路2: 状态机直接更新m_inCombat
+
+```swift
+// player.swift:3976
+protected cb func OnCombatStateChanged(newState: Int32) -> Bool {
+    let inCombat: Bool = newState == 1;
+    if NotEquals(inCombat, this.m_inCombat) {
+        if !inCombat {
+            this.GetPS().SetCombatExitTimestamp(
+                EngineTime.ToFloat(GameInstance.GetTimeSystem(this.GetGame()).GetSimTime())
+            );
+        };
+        this.m_inCombat = inCombat;
+        this.UpdateVisibility();
+        if !this.m_inCombat {
+            this.m_hasBeenDetected = false;
+        } else {
+            this.SetIsBeingRevealed(false);
+            this.GetPlayerPerkDataBlackboard().SetUint(
+                GetAllBlackboardDefs().PlayerPerkData.EntityNoticedPlayer,
+                0u
+            );
+            bboard = this.GetPlayerPerkDataBlackboard();
+            combatTimeStamp = EngineTime.ToFloat(GameInstance.GetSimTime(this.GetGame()));
+            bboard.SetFloat(
+                GetAllBlackboardDefs().PlayerPerkData.CombatStateTime,
+                combatTimeStamp
+            );
+        };
+        // ...更多处理
+    };
+}
+```
+
+### MOD开发中的黑板使用建议
+
+#### 场景1: 获取当前战斗状态（推荐方法）
+```lua
+local function IsPlayerInCombat(player)
+    return player:IsInCombat()  -- 基于m_inCombat缓存，性能最佳
+end
+```
+
+#### 场景2: 获取详细战斗状态（包括Stealth）
+```lua
+local function GetPlayerCombatState(player)
+    local blackboardSystem = Game.GetBlackboardSystem()
+    local playerSMBlackboard = blackboardSystem:GetLocalInstanced(
+        player:GetEntityID(),
+        GetAllBlackboardDefs().PlayerStateMachine
+    )
+    if not playerSMBlackboard then
+        return nil
+    end
+    return playerSMBlackboard:GetInt(GetAllBlackboardDefs().PlayerStateMachine.Combat)
+    -- 返回: 1=InCombat, 2=OutOfCombat, 3=Stealth
+end
+```
+
+#### 场景3: 监听战斗状态转换
+```lua
+local lastCombatState = nil
+
+registerForEvent("onInit", function()
+    local player = Game.GetPlayer()
+    local blackboardSystem = Game.GetBlackboardSystem()
+    local playerSMBlackboard = blackboardSystem:GetLocalInstanced(
+        player:GetEntityID(),
+        GetAllBlackboardDefs().PlayerStateMachine
+    )
+
+    playerSMBlackboard:RegisterListenerInt(
+        GetAllBlackboardDefs().PlayerStateMachine.Combat,
+        {
+            OnIntValueChanged = function(self, value)
+                if lastCombatState == nil then
+                    lastCombatState = value
+                    return
+                end
+
+                if lastCombatState == 2 and value == 1 then
+                    print("OutOfCombat → InCombat")
+                elseif lastCombatState == 1 and value == 2 then
+                    print("InCombat → OutOfCombat")
+                elseif lastCombatState == 2 and value == 3 then
+                    print("OutOfCombat → Stealth (蹲伏)")
+                elseif lastCombatState == 3 and value == 1 then
+                    print("Stealth → InCombat (被敌人发现)")
+                elseif lastCombatState == 3 and value == 2 then
+                    print("Stealth → OutOfCombat (站起)")
+                end
+
+                lastCombatState = value
+            end
+        },
+        true
+    )
+end)
+```
+
+#### 场景4: 监听蹲伏状态变化
+```lua
+local function OnCrouchActiveChanged(player, isCrouching)
+    print(isCrouching and "蹲伏状态: ON" or "蹲伏状态: OFF")
+end
+
+registerForEvent("onInit", function()
+    local player = Game.GetPlayer()
+    local blackboardSystem = Game.GetBlackboardSystem()
+    local playerSMBlackboard = blackboardSystem:GetLocalInstanced(
+        player:GetEntityID(),
+        GetAllBlackboardDefs().PlayerStateMachine
+    )
+
+    playerSMBlackboard:RegisterListenerBool(
+        GetAllBlackboardDefs().PlayerStateMachine.CrouchActive,
+        {
+            OnBoolValueChanged = function(self, value)
+                OnCrouchActiveChanged(player, value)
+            end
+        },
+        true
+    )
+end)
+```
+
+### 黑板系统优势
+
+1. **统一数据源**: 所有系统通过同一黑板共享数据，避免不一致
+2. **事件驱动**: 支持监听器机制，无需轮询
+3. **性能优化**: m_inCombat缓存减少黑板访问频率
+4. **灵活扩展**: 可轻松添加新的状态字段和监听器
+
+### 注意事项
+
+1. **黑板可能为空**: 在游戏加载早期，玩家黑板可能尚未初始化
+2. **Handle有效期**: 不要长期存储player句柄，每次使用时重新获取
+3. **监听器清理**: 在onShutdown时注销所有黑板监听器，避免内存泄漏
+4. **状态转换延迟**: 黑板更新和事件触发可能有1-2帧延迟
+
+---
+
+---
+
+**文档版本**: 2.0
+**最后更新**: 2026年2月6日
 **分析基于**: 赛博朋克2077 反编译脚本  

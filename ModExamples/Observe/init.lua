@@ -1,59 +1,60 @@
--- NoProtectionDamage: 记录近战伤害在 ProcessOneShotProtection 前后的数值
+-- Observe/init.lua
+local function IsPlayerDirectMeleeHit(hitEvent)
+    if not hitEvent.attackData then
+        return false
+    end
 
-local preCapByEvent = setmetatable({}, { __mode = "k" })
-local StatPoolType = gamedataStatPoolType
+    local weapon = hitEvent.attackData.weapon
+    if not IsDefined(weapon) then
+        return false
+    end
 
-local function isPlayerMelee(hitEvent)
-	if not hitEvent or not hitEvent.attackData then
-		return false
-	end
-	local attackType = hitEvent.attackData:GetAttackType()
-	if not AttackData.IsMelee(attackType) then
-		return false
-	end
-	local instigator = hitEvent.attackData:GetInstigator()
-	return instigator ~= nil and instigator:IsPlayer()
+    local itemData = weapon:GetItemData()
+    if itemData and itemData:HasTag(CName("Melee")) then
+        local instigator = hitEvent.attackData:GetInstigator()
+        if IsDefined(instigator) and instigator:IsPlayer() then
+            return true
+        end
+    end
+
+    return false
 end
+local function OnDealDamage(this, hitEvent)
+    if not IsPlayerDirectMeleeHit(hitEvent) then
+        return
+    end
+    
+    local instigator = hitEvent.attackData:GetInstigator()
 
-local function onPreCap(self, hitEvent)
-	if not isPlayerMelee(hitEvent) or not hitEvent.attackComputed then
-		return
-	end
-	if preCapByEvent[hitEvent] ~= nil then
-		return
-	end
-	local pre = hitEvent.attackComputed:GetTotalAttackValue(StatPoolType.Health)
-	preCapByEvent[hitEvent] = pre
-end
-
-local function onPostCap(self, hitEvent)
-	if not isPlayerMelee(hitEvent) or not hitEvent.attackComputed then
-		return
-	end
-	local pre = preCapByEvent[hitEvent]
-	if pre == nil then
-		return
-	end
-	local post = hitEvent.attackComputed:GetTotalAttackValue(StatPoolType.Health)
-	local target = hitEvent.target
-	local targetName = target and target:GetClassName() or "<nil>"
-	if post < pre then
-		print(string.format("[NoProtectionDamage] target=%s preCap=%.2f postCap=%.2f delta=%.2f", targetName, pre, post, pre - post))
-	else
-		print(string.format("[NoProtectionDamage] target=%s preCap=%.2f postCap=%.2f", targetName, pre, post))
-	end
-	preCapByEvent[hitEvent] = nil
+    if (instigator:GetIsInFastFinisher()) then
+        print("The damage dealer is in a fast finisher.")
+    else
+        print("The damage dealer is NOT in a fast finisher.")
+    end
 end
 
 local function registerDamageSystemHooks(className)
-	Observe(className, "ProcessOneShotProtection", onPreCap)
-	ObserveAfter(className, "ProcessOneShotProtection", onPostCap)
+
+    -- Observe("DamageSystem", "CalculateGlobalModifiers", ---@param this DamageSystem
+    -- ---@param hitEvent gameHitEvent
+    -- ---@param cache CacheData
+    -- function(this, hitEvent, cache)
+    --     -- method has just been called
+    -- end)
+    Observe(className, "DealDamages", OnDealDamage)
 end
 
 registerForEvent("onInit", function()
-	-- 兼容不同命名：原生类名通常为 DamageSystem；部分定义/环境可能为 gameDamageSystem
-	registerDamageSystemHooks("DamageSystem")
+    -- 兼容不同命名：原生类名通常为 DamageSystem；部分定义/环境可能为 gameDamageSystem
+    registerDamageSystemHooks("DamageSystem")
 end)
 
-
-
+registerForEvent("onUpdate", function()
+    local player = Game.GetPlayer()
+    if player then
+        local hasFastFinisherSE = player:GetIsInFastFinisher()
+        if not hasFastFinisherSE then
+            StatusEffectHelper.ApplyStatusEffect(player, "BaseStatusEffect.FastFinisherSE")
+        end
+    end
+end)

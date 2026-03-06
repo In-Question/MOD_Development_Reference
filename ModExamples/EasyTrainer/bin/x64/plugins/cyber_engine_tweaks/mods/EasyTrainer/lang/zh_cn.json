@@ -1,0 +1,2351 @@
+{
+  "loadmessage": "欢迎使用简体中文语言包！祝您使用愉快",
+  "mainmenu": {
+    "title": "主菜单",
+    "self": {
+      "label": "角色",
+      "tip": "修改玩家属性、移动、潜行和生命值表现。"
+    },
+    "development": {
+      "label": "开发",
+      "tip": "调整角色属性并切换个人技能。。"
+    },
+    "modifiers": {
+      "label": "修改",
+      "tip": "管理所有能力的冷却时间和恢复速率，如手榴弹、隐形和快速黑入。"
+    },
+    "teleport": {
+      "label": "传送",
+      "tip": "支持立刻传送到夜之城的各个预设点。"
+    },
+    "weapon": {
+      "label": "武器",
+      "tip": "访问各种武器相关功能，包括特殊能力、弹道行为和更多自定义。"
+    },
+    "vehicle": {
+      "label": "载具",
+      "tip": "管理载具，生成新载具，并控制载具元素。"
+    },
+    "facts": {
+      "label": "进度",
+      "tip": "设置故事标志、审查状态和进度事实。"
+    },
+    "time": {
+      "label": "时间",
+      "tip": "控制一天中的时间——时间跳跃、冻结、同步和速度倍率。"
+    },
+    "weather": {
+      "label": "天气",
+      "tip": "控制世界天气，强制生成风暴、雾等。"
+    },
+    "translations": {
+      "label": "语言",
+      "tip": "更改修改器界面使用的语言。"
+    },
+    "items": {
+      "label": "物品菜单(测试版)",
+      "tip": "按类别、消耗品、合成品和增益效果浏览物品。(物品浏览器目前处于测试阶段)"
+    },
+    "settingsmenu": {
+      "label": "菜单选项",
+      "tip": "配置个人化的 EasyTrainer 选项、导航和用户界面."
+    }
+  },
+  "self": {
+    "title": "角色菜单",
+    "godmode": {
+      "label": "无敌",
+      "tip": "使你对所有形式的伤害都无敌。"
+    },
+    "invisibility": {
+      "label": "隐身",
+      "tip": "应用光学隐形效果。如果主动攻击，敌人仍可能会发现你。"
+    },
+    "superspeed": {
+      "label": "超级速度",
+      "tip": "通过时间膨胀启用快速移动。\n提示：结合玩家速度倍率可取得更好效果。"
+    },
+    "infinitejump": {
+      "label": "连续跳跃",
+      "tip": "允许在空中无限起跳.\n\n 需要装备强化肌义体.\n 启用或者关闭效果需重新读取存档."
+    },
+    "infiniteairdash": {
+      "label": "无限空中冲刺",
+      "tip": "允许玩家在空中无限冲刺. \n\n 需要装备冲刺技能等级3。"
+    },
+    "playerspeedmultiplier": {
+      "label": "玩家速度",
+      "tip": "调整玩家的最高移动速度。"
+    },
+    "jumpheightmultiplier": {
+      "label": "跳跃高度倍率",
+      "tip": "调整玩家可以跳跃的高度。"
+    },
+    "quicksilversandevistan": {
+      "label": "快银级斯安威斯坦",
+      "tip": "修改你的斯安威斯坦，使其在激活时拥有快银超级速度。"
+    },
+    "noclip": {
+      "label": "自由穿梭",
+      "tip": "在世界中自由移动，无视阻拦和重力. 激活后会限制一些游戏功能.\n\n 键盘按键: W/S = 进/退, A/D = 平移, 空格 = 升起, Ctrl = 下降, Shift = 移动加速, 鼠标 = 四处查看 \n手柄按键: 左摇杆 = 移动, 右摇杆 = 四处查看, RB = 上升, LB = 下降, LS按下 = 加速"
+    },
+    "wanted": {
+      "label": "NCPD追捕"
+    },
+    "neverwanted": {
+      "label": "消除NCPD",
+      "tip": "阻止NCPD接近或追捕你。"
+    },
+    "wantedlevel": {
+      "label": "追捕强度",
+      "tip": "选择您当前需要的通缉强度并锁定."
+    },
+    "clearwanted": {
+      "label": "消除追捕",
+      "tip": "强制禁用NCPD并重置追捕等级."
+    },
+    "healthdefense": {
+      "label": "生命 & 安全"
+    },
+    "refillhealth": {
+      "label": "补充生命 (循环)",
+      "tip": "当生命值低于98%时，自动恢复到100%."
+    },
+    "healthregen": {
+      "label": "生命再生+增强",
+      "tip": "启用极强的被动恢复和额外的生命缓冲."
+    },
+    "armorboost": {
+      "label": "护甲增益",
+      "tip": "提供强大的护甲加强以提供超强防御."
+    },
+    "resistances": {
+      "label": "伤害抗性",
+      "tip": "最大化所有抗性特性."
+    },
+    "combatregen": {
+      "label": "战斗再生",
+      "tip": "允许在战斗中恢复生命."
+    },
+    "nofalldamage": {
+      "label": "无跌落损伤",
+      "tip": "无伤跳楼."
+    },
+    "stealthhacking": {
+      "label": "潜行 & 黑客"
+    },
+    "nonthreat": {
+      "label": "可疑人士",
+      "tip": "敌人会察觉并跟踪你，但除非你主动或攻击，否则不会进入战斗。"
+    },
+    "lowtracerate": {
+      "label": "低跟踪速率",
+      "tip": "降低敌方网络黑客的跟踪速度。"
+    },
+    "refillmemory": {
+      "label": "补满内存",
+      "tip": "如果内存系统内存低于98，则补满至100。"
+    },
+    "berserk": "赛博改造：狂战士",
+    "berserkeffect": {
+      "label": "效果强化",
+      "tip": "残血时提高近战伤害和暴击率,免疫负面效果"
+    },
+    "berserkvisual": {
+      "label": "视觉强化",
+      "tip": "狂暴将激活夜视觉"
+    }
+  },
+  "modifiers": {
+    "title": "玩家属性",
+    "custom": {
+      "label": "自定义修改器（未充分测试）",
+      "tip": "为玩家、武器或载具创建和管理自己的属性修改器。"
+    },
+    "infinitestamina": {
+      "label": "无限耐力",
+      "tip": "永久移除耐力限制。"
+    },
+    "refillstamina": {
+      "label": "补满耐力（循环）",
+      "tip": "自动将耐力恢复到100%（低于98%时）。"
+    },
+    "infiniteoxygen": {
+      "label": "无限氧气",
+      "tip": "允许无限水下呼吸。"
+    },
+    "refilloxygen": {
+      "label": "补满氧气（循环）",
+      "tip": "氧气下降时自动恢复。"
+    },
+    "cooldowns": "冷却时间",
+    "cooldownheal": {
+      "label": "治疗",
+      "tip": "移除治疗物品的充能冷却时间。"
+    },
+    "cooldowngrenade": {
+      "label": "手榴弹",
+      "tip": "消除手雷冷却时间."
+    },
+    "cooldownprojectile": {
+      "label": "弹射发射器",
+      "tip": "移除弹射发射器的冷却时间。"
+    },
+    "cooldowncloak": {
+      "label": "光学隐形",
+      "tip": "消除光学隐身的冷却时间并加速恢复."
+    },
+    "cooldownsande": {
+      "label": "斯安威斯坦",
+      "tip": "消除斯安威斯坦的冷却时间并加速恢复."
+    },
+    "cooldownberserk": {
+      "label": "狂暴",
+      "tip": "大幅提高狂暴再生速率."
+    },
+    "cooldownkeren": {
+      "label": "克伦齐科夫",
+      "tip": "将克伦齐科夫的冷却时间减少到接近零."
+    },
+    "cooldownoverclock": {
+      "label": "脑机超频",
+      "tip": "提升超频再生并消除冷却时间."
+    },
+    "cooldownquickhacks": {
+      "label": "快速黑入",
+      "tip": "大幅减少所有快速黑入的冷却时间."
+    },
+    "cooldowngroundslam": {
+      "label": "天崩地裂",
+      "tip": "大幅缩短天崩地裂技能的冷却时间。"
+    },
+    "memorystats": "内存 & 属性",
+    "reducequickhackcost": {
+      "label": "降低快速入侵成本",
+      "tip": "移除所有快速入侵的内存消耗。"
+    },
+    "memoryregen": {
+      "label": "内存再生",
+      "tip": "提高内存再生速率。"
+    },
+    "setmemorystat": {
+      "label": "设置内存属性",
+      "tip": "覆盖网络的基础内存属性。"
+    },
+    "mobility": "机动性",
+    "airthrusterboots": {
+      "label": "空气推进靴",
+      "tip": "在空中按住跳跃以减少坠落伤害."
+    },
+    "airhover": {
+      "label": "空中悬停",
+      "tip": "允许在跳跃后在空中悬停。"
+    },
+    "carrycapacity": {
+      "label": "负重容量",
+      "tip": "覆盖你的可负重上限。"
+    },
+    "sandevistan": "赛博进化：斯安威斯坦",
+    "sandevistanduration": {
+      "label": "斯安威斯坦持续时间",
+      "tip": "延长斯安威斯坦的持续时间。"
+    },
+    "sandevistanscale": {
+      "label": "斯安威斯坦时间缩放",
+      "tip": "控制斯安威斯坦激活时的时间膨胀。"
+    }
+  },
+  "playerdev": {
+    "title": "玩家调试",
+    "submenus": {
+      "proficiencies": {
+        "label": "熟练度等级",
+        "tip": "编辑每个熟练度的等级值和经验轨迹。"
+      },
+      "resources": {
+        "label": "资源",
+        "tip": "添加或移除金钱、技能点和属性点。"
+      }
+    },
+    "attributes": {
+      "label": "属性",
+      "setlevel": {
+        "label": "设置属性等级",
+        "tip": "设置此属性的基础等级。"
+      },
+      "body": "肉体",
+      "cool": "镇定",
+      "intelligence": "智力",
+      "reflexes": "反应",
+      "technical": "技术",
+      "relic": "灵魂杀手"
+    },
+    "perks": {
+      "header": "技能",
+      "tipsingle": "类别: {category}\n\n 此技能仅有1个等级。开启或关闭以应用或移除。",
+      "tipmulti": "类别: {category}\n\n 此技能仅有 {levels} 级。 使用箭头键调整等级。",
+      "filter": {
+        "label": "技能过滤器",
+        "tip": "选择要显示的技能：全部、仅激活的或仅非激活的.",
+        "all": "所有技能",
+        "active": "已激活的技能",
+        "inactive": "非激活的技能"
+      },
+      "equipped": "已获得",
+      "unequipped": "未获得",
+      "locked": "已锁定",
+      "notifications": {
+        "equipped": "{perk} 已经获得",
+        "unequipped": "{perk} 已经移除",
+        "equip_failed": "获取 {perk} 失败",
+        "unequip_failed": "取消获取 {perk} 失败",
+        "level_increased": "{perk} 技能已提升为 {level}",
+        "level_failed": "添加 {perk} 等级失败",
+        "reset": "{perk} 重置为 ({count} 等级移除)",
+        "reset_failed": "重置 {perk} 失败",
+        "requirement_failed": "无法获取 {perk}: 需要 {requirements}"
+      }
+    },
+    "eddies": {
+      "label": "欧金",
+      "add1k": {
+        "label": "添加1000欧金",
+        "tip": "钱包都饿瘦了？拿去吃早餐吧。"
+      },
+      "add10k": {
+        "label": "添加1,0000欧金",
+        "tip": "好好犒劳自己，你值得（也许）。"
+      },
+      "add100k": {
+        "label": "添加10,0000欧金",
+        "tip": "要赚大钱还得富贵险中求。"
+      },
+      "custom": {
+        "label": "自定义欧金数量",
+        "tip": "设置要添加/移除的自定义数量。"
+      },
+      "addcustom": {
+        "label": "添加欧金（自定义）",
+        "tip": "添加指定数量。"
+      },
+      "removecustom": {
+        "label": "移除欧金（自定义）",
+        "tip": "移除指定数量。"
+      }
+    },
+    "perkpoints": {
+      "label": "技能点",
+      "add1": "添加1个技能点",
+      "remove1": "移除1个技能点",
+      "custom": "自定义技能点",
+      "addcustom": "添加技能点（自定义）",
+      "removecustom": "移除技能点（自定义）",
+      "available": {
+        "label": "可用技能点：",
+        "tip": "可用于激活技能的点数。你可以使用下方选项添加或移除点数。"
+      }
+    },
+    "attributepoints": {
+      "label": "属性点",
+      "add1": "添加1个属性点",
+      "remove1": "移除1个属性点",
+      "custom": "自定义属性点",
+      "addcustom": "添加属性点（自定义）",
+      "removecustom": "移除属性点（自定义）",
+      "available": {
+        "label": "可用属性点：",
+        "tip": "可用于提升属性的点数。你可以使用下方选项添加或移除点数。"
+      }
+    },
+    "relicpoints": {
+      "label": "灵魂杀手点数",
+      "add1": "添加1个灵魂杀手点数",
+      "remove1": "移除1个灵魂杀手点数",
+      "available": {
+        "label": "可用遗物点：",
+        "tip": "用于解锁基于灵魂杀手的技能点。"
+      }
+    },
+    "perkattributes": "属性技能",
+    "proficiencies": {
+      "playerlevel": "玩家等级",
+      "streetcred": "街头声望",
+      "assault": "突击",
+      "athletics": "运动",
+      "brawling": "近身格斗",
+      "coldblood": "冷血",
+      "combathacking": "战斗入侵",
+      "cool": "镇定",
+      "crafting": "制造",
+      "demolition": "爆破",
+      "engineering": "工程",
+      "espionage": "间谍",
+      "gunslinger": "射击",
+      "hacking": "入侵",
+      "intelligence": "智力",
+      "kenjutsu": "刀剑",
+      "reflexes": "反射",
+      "stealth": "潜行",
+      "strength": "力量",
+      "technical": "技术能力"
+    }
+  },
+  "custommodifiers": {
+    "title": "自定义修改",
+    "modes1": "创建新修改",
+    "modes2": "查看现有修改",
+    "modes3": "最近使用的修改",
+    "filters1": "A to Z",
+    "filters2": "Z to A",
+    "filters3": "A",
+    "filters4": "B",
+    "filters5": "C",
+    "filters6": "D",
+    "filters7": "E",
+    "filters8": "F",
+    "filters9": "G",
+    "filters10": "H",
+    "filters11": "I",
+    "filters12": "J",
+    "filters13": "K",
+    "filters14": "L",
+    "filters15": "M",
+    "filters16": "N",
+    "filters17": "O",
+    "filters18": "P",
+    "filters19": "Q",
+    "filters20": "R",
+    "filters21": "S",
+    "filters22": "T",
+    "filters23": "U",
+    "filters24": "V",
+    "filters25": "W",
+    "filters26": "X",
+    "filters27": "Y",
+    "filters28": "Z",
+    "targets1": "Player",
+    "targets2": "Right Weapon",
+    "targets3": "Vehicle",
+    "types1": "Additive",
+    "types2": "Multiplier",
+    "types3": "Percentage",
+    "mode": {
+      "label": "模式",
+      "tip": "选择自定义修改的模式。"
+    },
+    "filter": {
+      "label": "筛选",
+      "tip": "筛选属性名称。"
+    },
+    "statmodifiers": {
+      "label": "属性修改器",
+      "tip": "已创建的修改列表"
+    },
+    "selectedmodifier": {
+      "label": "已选择的修改器",
+      "tip": "当前高亮显示的修改器"
+    },
+    "target": {
+      "label": "Target",
+      "tip": "Select the target to apply the modifier to."
+    },
+    "modifiertype": {
+      "label": "Modifier Type",
+      "tip": "Change the modifier calculation type."
+    },
+    "value": {
+      "label": "Value",
+      "tip": "Amount to apply."
+    },
+    "apply": {
+      "label": "Apply Modifier",
+      "tip": "Create and apply this modifier."
+    },
+    "active": {
+      "label": "Active",
+      "tip": "Enable or disable this modifier."
+    },
+    "remove": {
+      "label": "Remove Modifier",
+      "tip": "Delete this modifier."
+    },
+    "nomodifiers": {
+      "label": "No Modifiers Created",
+      "tip": "Switch to 'Create' mode to add new ones."
+    },
+    "norecent": {
+      "label": "No Recent Modifiers",
+      "tip": "Create or delete a modifier to track it here."
+    },
+    "edit": {
+      "label": "Edit Modifier",
+      "tip": "Edit or delete this modifier."
+    },
+    "create": {
+      "label": "编辑修改器",
+      "tip": "编辑或删除此修改器。"
+    },
+    "recreate": {
+      "label": "重新创建修改器",
+      "tip": "为此属性重新创建修改器。"
+    }
+  },
+  "vehiclelights": {
+    "title": "载具灯光控制",
+    "setallcolor": {
+      "label": "设置所有灯光颜色",
+      "tip": "将选定的颜色应用到所有灯光类型。"
+    },
+    "applyallcolor": {
+      "label": "应用所有灯光颜色",
+      "tip": "将所有灯光设置为已选定的颜色。"
+    },
+    "resetallcolor": {
+      "label": "重置所有灯光颜色",
+      "tip": "重置所有灯光的颜色。"
+    },
+    "disableall": {
+      "label": "禁用所有灯光",
+      "tip": "关闭所有载具灯光。"
+    },
+    "rgbfade": {
+      "label": "RGB流光灯光",
+      "tip": "自动播放RGB渐变效果循环颜色。"
+    },
+    "adjustselected": "调整选定的灯光",
+    "lighttype": {
+      "label": "灯光类型",
+      "tip": "选择要配置的灯光类型。"
+    },
+    "head": "前大灯",
+    "brake": "刹车灯",
+    "left": "左转向灯",
+    "right": "右转向灯",
+    "reverse": "倒车灯",
+    "interior": "内部灯",
+    "utility": "辅助灯",
+    "default": "默认灯光",
+    "blinkers": "转向灯 (全部)",
+    "color": {
+      "label": "颜色",
+      "tip": " {light} 的颜色"
+    },
+    "applycolor": {
+      "label": "应用颜色",
+      "tip": "将颜色应用 {light}"
+    },
+    "strength": {
+      "label": "亮度",
+      "tip": " {light} 的亮度"
+    },
+    "applystrength": {
+      "label": "应用亮度",
+      "tip": "设置 {light} 的亮度"
+    },
+    "resetcolor": {
+      "label": "重置颜色",
+      "tip": "重置 {light} 的颜色"
+    },
+    "resetstrength": {
+      "label": "重置亮度",
+      "tip": "重置 {light} 的亮度"
+    },
+    "resetall": {
+      "label": "重置参数",
+      "tip": "重置 {light} 的所有参数"
+    },
+    "toggleon": {
+      "label": "开启",
+      "tip": "打开 {light} "
+    },
+    "toggleoff": {
+      "label": "关闭",
+      "tip": "关闭 {light} "
+    }
+  },
+  "vehiclelist": {
+    "title": "载具列表",
+    "mode": {
+      "label": "筛选",
+      "tip": "，模式筛选:\n- 所有载具: 显示所有载具（可能会导致卡顿） \n- 玩家载具: 显示可被玩家拥有的载具 \n- 按类别: 按载具类型筛选 \n- 按制造商: 按载具品牌筛选 \n- 按阵营: 按势力或组织筛选"
+    },
+    "unknown": "Unknown",
+    "none": "None",
+    "categories": {
+      "addon": "添加式载具 (模组载具)",
+      "hypercars": "超级跑车",
+      "sports": "跑车",
+      "motorcycles": "摩托车",
+      "police": "警用/应急车辆",
+      "corpo": "公司车辆",
+      "pickups": "皮卡和SUV",
+      "vans": "货车和运输",
+      "compacts": "小型车",
+      "utility": "工作车",
+      "special": "特殊载具"
+    },
+    "mode_all": "所有载具",
+    "mode_player": "玩家载具",
+    "mode_category": "车辆类型",
+    "mode_manufacturer": "制造公司",
+    "mode_affiliation": "所属阵营",
+    "year": {
+      "label": "年份",
+      "tip": "按生产年份筛选。"
+    },
+    "year_all": "所有年份",
+    "visibility": {
+      "label": "可见",
+      "tip": "显示已解锁/锁定的载具。"
+    },
+    "visibility_all": "所有载具",
+    "visibility_unlocked": "仅解锁",
+    "visibility_locked": "仅锁定",
+    "spawndistance": {
+      "label": "生成距离",
+      "tip": "生成在距离玩家多远"
+    },
+    "filteredlist": {
+      "label": "筛选后的载具列表",
+      "tip": "符合所选筛选条件的载具列表。"
+    },
+    "nofound": {
+      "label": "未找到匹配的载具",
+      "tip": "当前筛选条件下没有匹配的载具。"
+    },
+    "deletelast": {
+      "label": "删除上一个载具",
+      "tip": "启用后，您之前乘坐的车辆将在您生成新车辆后自动移除."
+    },
+    "mountonspawn": {
+      "label": "生成时自动乘坐",
+      "tip": "启用后，您将在生成车辆后自动进入驾驶座."
+    },
+    "previewvehicle": {
+      "label": "车辆预览",
+      "tip": "启用后，车辆将在玩家面前显示。警告：碰撞仍然开启。"
+    },
+    "categoryprefix": "类别： {value} ",
+    "manufacturerprefix": "制造商： {value}",
+    "affiliationprefix": "阵营: {value}",
+    "unlockedtip": "注意：已启用的载具将解锁并出现在您的已拥有菜单中。点击可切换开启或关闭。 \n\n{details}",
+    "spawntip": "注意：您可能需要点击两次才能召唤载具。 \n\n{details}",
+    "vehicledetails": "TweakDBID: {id}\n 制造商: {manufacturer}\n 类别: {category}\n 阵营: {faction}\n 生产年份: {year}\n 更多细节: {description}"
+  },
+  "vehiclemenu": {
+    "title": "载具菜单",
+    "vehiclelist": {
+      "label": "载具列表",
+      "tip": "查看所有载具，并对载具切换解锁或锁定。"
+    },
+    "mountonroof": {
+      "label": "憨豆模式",
+      "tip": "将您从驾驶座上弹出，并将您的角色放置在当前车辆的顶部。"
+    },
+    "nitrous": {
+      "label": "氮气加速",
+      "tip": "按住左 Shift (键盘) 或 X (手柄) 提供超级推进力。调整冲击倍率以控制推进的强度。"
+    },
+    "freezequesttimer": {
+      "label": "冻结任务计时器",
+      "tip": "锁定车辆任务计时器，让它不再进行倒数."
+    },
+    "vehiclespawner": {
+      "label": "载具生成",
+      "tip": "直接在玩家前方召唤任何载具。不会将其添加到个人已解锁载具中。"
+    },
+    "vehicleheadlights": {
+      "label": "载具头灯",
+      "tip": "控制载具车头灯和灯光类型。"
+    },
+    "vehicledoors": {
+      "label": "载具车门",
+      "tip": "打开和关闭载具车门。"
+    },
+    "repairvehicle": {
+      "label": "修理载具",
+      "tip": "修理当前载具。"
+    },
+    "vehiclenoclip": {
+      "label": "车辆无碰撞",
+      "tip": "切换当前车辆的无碰撞模式."
+    },
+    "vehicledoormenu": {
+      "title": "载具车门控制",
+      "doorstate": {
+        "label": "车门状态",
+        "tip": "选择车门的期望状态。"
+      },
+      "selectdoor": "选择车门",
+      "doorstateoptions": {
+        "open": "打开",
+        "closed": "关闭",
+        "detached": "拆卸"
+      },
+      "doors": {
+        "frontleft": "左前门",
+        "frontright": "右前门",
+        "rearleft": "左后门",
+        "rearright": "右后门",
+        "hood": "引擎盖",
+        "trunk": "后备箱"
+      },
+      "doortips": {
+        "set": "设置 {door} 为 {state}"
+      }
+    }
+  },
+  "weaponsmenu": {
+    "title": "武器菜单",
+    "weaponitems": {
+      "label": "武器物品",
+      "tip": "将任何武器物品添加到您的物品栏中，包括标志性武器和公寓展示墙版本."
+    },
+    "weaponmanagement": {
+      "label": "武器管理"
+    },
+    "critandspray": {
+      "label": "暴击 & 冲击"
+    },
+    "accuracyrange": {
+      "label": "精准 & 射程"
+    },
+    "specialweapons": {
+      "label": "特殊武器"
+    },
+    "melee": {
+      "label": "近战增强"
+    },
+    "smartweapons": {
+      "label": "智能武器"
+    },
+    "ammomanager": {
+      "label": "弹药管理",
+      "tip": "添加或移除弹药类型"
+    },
+    "explosivebullets": {
+      "label": "爆炸子弹",
+      "tip": "在你准星瞄准的射击点位置产生爆炸，无论子弹类型或冲击如何。"
+    },
+    "explosiveknives": {
+      "label": "爆炸刀",
+      "tip": "我这把刀上可是被杀手皇后摸过了，吃我飞刀！"
+    },
+    "forcegun": {
+      "label": "冲击枪",
+      "tip": "在瞄准时发射强大的动能冲击波。对车辆效果最佳，能在冲击时将其推出。"
+    },
+    "giveallwallweapons": {
+      "label": "给予所有可展示墙武器",
+      "tip": "给予您所有可以安装在公寓墙上的武器。"
+    },
+    "givealliconicweapons": {
+      "label": "给予所有标志性武器",
+      "tip": "将所有标志性武器添加到您的库存。"
+    },
+    "removeallweapons": {
+      "label": "移除所有武器",
+      "tip": "每一件武器都将从您的库存中消失。"
+    },
+    "infiniteammo": {
+      "label": "无限弹药",
+      "tip": "您的弹药永不耗尽。每次射击后，子弹会立即恢复。"
+    },
+    "noreload": {
+      "label": "无需换弹",
+      "tip": "移除换弹时间。可以连续射击而无需等待换弹。"
+    },
+    "speedcola": {
+      "label": "快速换弹",
+      "tip": "大幅缩短换弹时间。"
+    },
+    "fastcharge": {
+      "label": "快速蓄力",
+      "tip": "将蓄力时间压缩至原来的10%，让蓄力武器几乎瞬间就绪。"
+    },
+    "norecoil": {
+      "label": "无后坐力",
+      "tip": "移除所有武器的后坐力。射击时不再有抖动。\n 提示：与问题解决者搭配效果极佳。"
+    },
+    "flyingthundergod": {
+      "label": "瞬移匕首",
+      "tip": "投掷小刀，在击中目标的瞬间传送到匕首所在位置"
+    },
+    "gravitygun": {
+      "label": "重力枪",
+      "tip": "通过瞄准可以拾起和移动载具或物体。"
+    },
+    "smartbladereturn": {
+      "label": "刀刃忠诚III",
+      "tip": "投掷的匕首或投射物击中目标或表面后会自动返回到你身边。"
+    },
+    "teleygun": {
+      "label": "传送枪",
+      "tip": "可以将你传送到子弹落地位置的子弹."
+    },
+    "alwayscrit": {
+      "label": "始终暴击",
+      "tip": "您每次攻击都升级为暴击."
+    },
+    "insanecritdmg": {
+      "label": "极高暴击伤害",
+      "tip": "为毁灭性打击增加极大的暴击伤害提升."
+    },
+    "rapidfire": {
+      "label": "快速射击",
+      "tip": "通过减少循环时间大幅提高武器射速."
+    },
+    "shotgunspray": {
+      "label": "霰弹枪喷射",
+      "tip": "每次射击增加额外弹丸，将任何枪械变为霰弹枪."
+    },
+    "melee_highblock": {
+      "label": "完美格挡",
+      "tip": "提升近战格挡系数，让您在格挡时吸收更多的伤害."
+    },
+    "melee_attackspeed": {
+      "label": "近战攻速",
+      "tip": "显著提升近战攻击速度，让每次挥砍之间的间隔更短。"
+    },
+    "melee_bladecarnage": {
+      "label": "刀刃屠戮",
+      "tip": "大幅提高使用刀具武器的肢解几率。"
+    },
+    "melee_infinitecombo": {
+      "label": "无限连击",
+      "tip": "移除近战武器的连击限制。可以不断进行攻击而不被打断。"
+    },
+    "smart_fastlock": {
+      "label": "智能武器：快速锁定",
+      "tip": "加快智能武器在瞄准和腰射模式下的锁定速度。"
+    },
+    "smart_widelock": {
+      "label": "智能武器：广锁定",
+      "tip": "扩大瞄准和腰射的锁定矩形，使追踪目标更容易。"
+    },
+    "smart_extratargets": {
+      "label": "智能武器：额外目标",
+      "tip": "允许智能武器同时锁定额外目标。"
+    },
+    "smart_perfectacc": {
+      "label": "智能武器：完美精准",
+      "tip": "确保一旦锁定，弹药绝不失误。消除锁定错误和失误半径。"
+    },
+    "smart_fastproj": {
+      "label": "智能武器：快速弹药",
+      "tip": "提高智能武器弹药的速度，以便更快命中。"
+    },
+    "smart_longrange": {
+      "label": "智能武器：远程",
+      "tip": "显著延长智能武器的锁定和目标获取范围。"
+    },
+    "unlimitedrange": {
+      "label": "超级射程",
+      "tip": "将武器的有效射程和最大射程乘以200倍，允许超出正常限制的命中。"
+    },
+    "penetrationrounds": {
+      "label": "穿透子弹",
+      "tip": "所有子弹忽略护甲并穿透掩体，类似于技术武器。"
+    },
+    "hipfireaccuracy": {
+      "label": "腰射大佬",
+      "tip": "在腰射时收紧武器散布。将枪械变为腰射激光。"
+    },
+    "adsaccuracy": {
+      "label": "瞄准大佬",
+      "tip": "在瞄准时收紧武器散布，实现近乎完美的精准度。"
+    },
+    "ammoitems": {
+      "title": "弹药物品",
+      "giveeach100": {
+        "label": "给予每种弹药100发",
+        "tip": "为每种弹药类型各添加100发"
+      },
+      "removeeach25": {
+        "label": "移除每种弹药25发",
+        "tip": "从每种弹药类型中各移除25发"
+      },
+      "addammo": "添加弹药",
+      "removeammo": "移除弹药",
+      "types": {
+        "handgun": "手枪弹药",
+        "shotgun": "霰弹枪弹药",
+        "rifle": "步枪弹药",
+        "sniper": "狙击枪弹药",
+        "special": "特殊弹药"
+      },
+      "addtip": "点击增加 {ammo}",
+      "removetip": "点击移除 {ammo}"
+    }
+  },
+  "weaponsitems": {
+    "title": "武器物品",
+    "iconic": "标志性武器",
+    "wallmount": "可壁挂",
+    "addweapon": "添加武器 (+1)",
+    "removeweapon": "移除武器 (-1)",
+    "quantityH": "数量（高到低）",
+    "quantityL": "数量（低到高）",
+    "rarity": "稀有度（高到低）",
+    "mode": {
+      "label": "模式",
+      "tip": "选择要显示或管理的武器内容."
+    },
+    "actionmode": {
+      "label": "物品栏修改",
+      "tip": "选择是要向库存中添加还是移除武器。"
+    },
+    "refreshinventory": {
+      "label": "刷新物品栏",
+      "tip": "从当前物品栏更新武器列表。"
+    },
+    "sortinventory": {
+      "label": "按照以下方式排序库存",
+      "tip": "选择物品栏武器的排序类型."
+    },
+    "categories": {
+      "label": "武器类别",
+      "tip": "查看按类型排序的所有武器，并应用技术、智能或动能武器过滤。"
+    },
+    "categorytoggle_tech": {
+      "label": "按技术武器",
+      "tip": "切换技术类型 {category} 武器的显示。"
+    },
+    "categorytoggle_smart": {
+      "label": "按照智能武器",
+      "tip": "切换智能类型 {category} 武器的显示。"
+    },
+    "categorytoggle_power": {
+      "label": "按动能武器",
+      "tip": "切换动能类型 {category} 武器的显示。"
+    },
+    "categorybreak": {
+      "label": "",
+      "tip": "{category} 武器"
+    },
+    "onlyiconic": {
+      "label": "仅显示标志性武器",
+      "tip": "列表中仅显示标志性武器。"
+    },
+    "onlywall": {
+      "label": "仅显示可壁挂武器",
+      "tip": "仅显示可以安装在墙上的武器。"
+    },
+    "onlyinventory": {
+      "label": "仅显示物品栏武器",
+      "tip": "仅显示你的物品栏中已存在的武器。"
+    },
+    "weaponentry": {
+      "label": "{weapon_name}",
+      "tip": "TweakDBID: {id}\n 类型: {type}\n 稀有度: {rarity}\n 制造来源: {manufacturer}{iconic}{wall}"
+    },
+    "giveallwall": {
+      "label": "获得所有壁挂武器",
+      "tip": "将所有可壁挂的武器添加到你的物品栏中。"
+    },
+    "removeall": {
+      "label": "移除所有武器",
+      "tip": "从你的物品栏中移除所有武器。"
+    },
+    "removeallrarity": {
+      "label": "按稀有度移除所有武器",
+      "tip": "移除所有稀有度为: {rarity} 的武器。"
+    },
+    "givealliconic": {
+      "label": "给予所有标志性武器",
+      "tip": "将所有标志性武器添加到你的库存中。"
+    },
+    "givebycategory": {
+      "label": "按类别给予武器",
+      "tip": "添加类别为: {category} 的所有武器。"
+    },
+    "givebyrarity": {
+      "label": "按稀有度给予武器",
+      "tip": "添加所有稀有度为: {rarity} 的武器。"
+    },
+    "removebase": {
+      "label": "移除基础武器",
+      "tip": "从你的库存中移除所有普通或基础稀有度的武器。"
+    },
+    "noweaponsfound": {
+      "label": "未找到武器",
+      "tip": "没有武器匹配当前筛选条件。"
+    },
+    "noinventoryweapons": {
+      "label": "物品栏中没有武器",
+      "tip": "你的物品栏中没有找到任何武器。"
+    }
+  },
+  "gamefacts": {
+    "title": "游戏事实管理器",
+    "category": {
+      "label": "类别",
+      "tip": "选择要查看的事实类别。"
+    },
+    "categories": {
+      "romance": "恋爱关系",
+      "storyoutcomes": "剧情结局",
+      "skippystates": "四季宝状态",
+      "gameplaytoggles": "游戏玩法开关",
+      "worldevents": "世界事件",
+      "censorship": "内容审查"
+    },
+    "flagsbreak": {
+      "label": " {category} 标志",
+      "tip": "切换 {category} 类别的事实标志。"
+    },
+    "relationshiptracking": {
+      "label": "关系追踪",
+      "tip": "显示当前的关系追踪事实。"
+    },
+    "factentry": {
+      "label": "{name}",
+      "tip": "{desc}"
+    },
+    "facttoggle": {
+      "label": "{name}",
+      "tip": "{desc}"
+    },
+    "factnotification": {
+      "enabled": "{name}: 开启",
+      "disabled": "{name}: 关闭"
+    },
+    "notavailable": {
+      "label": "N/A",
+      "tip": "该功能未查找到数值."
+    },
+    "romanceflags": {
+      "judy_romanceable": {
+        "name": "朱迪恋情",
+        "desc": "开启朱迪的浪漫可选项。"
+      },
+      "sq030_judy_lover": {
+        "name": "朱迪女友",
+        "desc": "标记朱迪为玩家的对象."
+      },
+      "panam_romanceable": {
+        "name": "帕南恋情",
+        "desc": "开启帕南的浪漫可选项."
+      },
+      "sq027_panam_lover": {
+        "name": "帕南女友",
+        "desc": "标记帕南为玩家的女友."
+      },
+      "river_romanceable": {
+        "name": "瑞佛恋情",
+        "desc": "开启瑞佛的浪漫可选."
+      },
+      "sq029_river_lover": {
+        "name": "瑞佛男友",
+        "desc": "标记瑞佛为玩家的男友."
+      },
+      "kerry_romanceable": {
+        "name": "Kerry Romanceable",
+        "desc": "Enables Kerry as a romance option."
+      },
+      "sq028_kerry_lover": {
+        "name": "Kerry Lover",
+        "desc": "Marks Kerry as your current lover."
+      }
+    },
+    "storyoutcomeflags": {
+      "q105_fingers_beaten": {
+        "name": "Fingers Beaten",
+        "desc": "Fingers was disabled but remains alive and accessible."
+      },
+      "q105_fingers_dead": {
+        "name": "Fingers Dead",
+        "desc": "Marks Fingers as killed."
+      },
+      "q005_jackie_stay_notell": {
+        "name": "Jackie Left in Car",
+        "desc": "Jackie's body was left in the car after the heist."
+      },
+      "q005_jackie_to_hospital": {
+        "name": "Jackie Sent to Vik",
+        "desc": "Jackie's body was sent to the ripperdoc."
+      },
+      "q005_jackie_to_mama": {
+        "name": "Jackie Sent to Mama Welles",
+        "desc": "Jackie's body was sent to Mama Welles."
+      },
+      "q112_takemura_dead": {
+        "name": "Takemura Dead",
+        "desc": "Takemura was killed during his mission."
+      },
+      "sq032_johnny_friend": {
+        "name": "Johnny Friendly Ending",
+        "desc": "Sets Johnny to the friend epilogue state (oil fields)."
+      }
+    },
+    "skippystates": {
+      "mq007_skippy_aim_at_head": {
+        "name": "Skippy: Stone Cold Killer",
+        "desc": "Skippy is in headshot (lethal) mode."
+      },
+      "mq007_skippy_goes_emo": {
+        "name": "Skippy: Emo Mode",
+        "desc": "Skippy has switched to non-lethal emo mode."
+      }
+    },
+    "gameplaytoggles": {
+      "holo_delamain_deep_vehicle_talk": {
+        "name": "Delamain Phone Portrait Fix",
+        "desc": "Disables buggy NPC phone portraits. Toggle if visuals are broken."
+      },
+      "q101_enable_side_content": {
+        "name": "Unlock Act 1 Side Jobs",
+        "desc": "Enables access to all Act 1 side content. Save and reload to take effect."
+      }
+    },
+    "lifepathflags": {
+      "q000_street_kid_background": {
+        "name": "Street Kid Life Path",
+        "desc": "Marks V's background as Street Kid."
+      },
+      "q000_corpo_background": {
+        "name": "Corporate Life Path",
+        "desc": "Marks V's background as Corporate."
+      },
+      "q000_nomad_background": {
+        "name": "Nomad Life Path",
+        "desc": "Marks V's background as Nomad."
+      }
+    },
+    "worldeventflags": {
+      "warden_amazon_airdropped": {
+        "name": "Amazon Airdrop: Warden",
+        "desc": "Marks the Warden weapon as already airdropped."
+      },
+      "ajax_amazon_airdropped": {
+        "name": "Amazon Airdrop: Ajax",
+        "desc": "Marks the Ajax weapon as already airdropped."
+      },
+      "crusher_amazon_airdropped": {
+        "name": "Amazon Airdrop: Crusher",
+        "desc": "Marks the Crusher weapon as already airdropped."
+      },
+      "kyubi_amazon_airdropped": {
+        "name": "Amazon Airdrop: Kyubi",
+        "desc": "Marks the Kyubi weapon as already airdropped."
+      },
+      "grit_amazon_airdropped": {
+        "name": "Amazon Airdrop: Grit",
+        "desc": "Marks the Grit weapon as already airdropped."
+      },
+      "nekomata_amazon_airdropped": {
+        "name": "Amazon Airdrop: Nekomata",
+        "desc": "Marks the Nekomata weapon as already airdropped."
+      },
+      "mws_wat_02_egg_placed": {
+        "name": "Iguana Egg Placed",
+        "desc": "Indicates the iguana egg has been placed in V's apartment."
+      },
+      "mws_wat_02_iguana_hatched": {
+        "name": "Iguana Hatched",
+        "desc": "Triggers the hatching of the iguana in V's home."
+      }
+    },
+    "censorshipflags": {
+      "chensorship_drugs": {
+        "name": "Remove: Drugs",
+        "desc": "Disables censorship for drug references."
+      },
+      "chensorship_gore": {
+        "name": "Remove: Gore",
+        "desc": "Disables censorship for gore and violence."
+      },
+      "chensorship_homosexuality": {
+        "name": "Remove: Homosexuality",
+        "desc": "Disables censorship for LGBTQ content."
+      },
+      "chensorship_nudity": {
+        "name": "Remove: Nudity",
+        "desc": "Disables censorship for nudity."
+      },
+      "chensorship_oversexualized": {
+        "name": "Remove: Oversexualization",
+        "desc": "Disables oversexualized content filters."
+      },
+      "chensorship_religion": {
+        "name": "Remove: Religion",
+        "desc": "Disables censorship for religious references."
+      },
+      "chensorship_suggestive": {
+        "name": "Remove: Suggestive Content",
+        "desc": "Disables censorship for sexually suggestive content."
+      }
+    },
+    "relationshipfacts": {
+      "judy_relationship": {
+        "name": "Judy Relationship Progress"
+      },
+      "panam_relationship": {
+        "name": "Panam Relationship Progress"
+      },
+      "river_relationship": {
+        "name": "River Relationship Progress"
+      },
+      "sq028_kerry_relationship": {
+        "name": "Kerry Relationship Progress"
+      }
+    }
+  },
+  "worldtime": {
+    "title": "世界时间",
+    "currenttime24": {
+      "label": "当前时间（24小时制）",
+      "tip": "以24小时制显示游戏中的当前时间。"
+    },
+    "currenttime12": {
+      "label": "当前时间（12小时制）",
+      "tip": "以12小时制显示游戏中的当前时间，并标注上午/下午。"
+    },
+    "hour": {
+      "label": "小时",
+      "tip": "自定义当前小时值。 ({formatted_time})"
+    },
+    "minute": {
+      "label": "分钟",
+      "tip": "自定义当前分钟值。"
+    },
+    "second": {
+      "label": "秒钟",
+      "tip": "自定义当前秒钟值。"
+    },
+    "synctopc": {
+      "label": "同步为本地时间",
+      "tip": "将游戏内时间与你的现实世界时间匹配。"
+    },
+    "quickset": {
+      "label": "快速设置",
+      "tip": "快速将游戏时间调整为预设的时间."
+    },
+    "setmorning": {
+      "label": "设置时间：早晨",
+      "tip": "将时间设置为上午6:00"
+    },
+    "setnoon": {
+      "label": "设置时间：正午",
+      "tip": "将时间设置为中午12:00"
+    },
+    "setafternoon": {
+      "label": "设置时间：下午",
+      "tip": "将时间设置为下午3:00"
+    },
+    "setevening": {
+      "label": "设置时间：傍晚",
+      "tip": "将时间设置为下午6:00"
+    },
+    "setnight": {
+      "label": "设置时间：夜晚",
+      "tip": "将时间设置为晚上10:00"
+    },
+    "skipmultiplier": {
+      "label": "时间跳转与加速",
+      "tip": "跳过游戏内的天数或调整时间流动速度。"
+    },
+    "skipdays": {
+      "label": "跳过天数",
+      "tip": "要跳过的游戏内天数。"
+    },
+    "skipstepspeed": {
+      "label": "跳转步进速度",
+      "tip": "控制时间跳转的速度。数值越高，跳转越快。"
+    },
+    "startskipping": {
+      "label": "开始跳转",
+      "tip": "确认跳转天数并开始跳转"
+    },
+    "freezefast": {
+      "label": "停止与快进",
+      "tip": "停止时间或调整昼夜流动倍率。"
+    },
+    "freezetime": {
+      "label": "停止时间",
+      "tip": "时间停止流动。"
+    },
+    "fasterdayspeed": {
+      "label": "白天加速",
+      "tip": "开启并设置白天时间变化速度。"
+    },
+    "fasternightspeed": {
+      "label": "夜晚加速",
+      "tip": "开启并设置夜间时间变化速度。"
+    },
+    "timelapse": {
+      "label": "时间流逝",
+      "tip": "持续推进游戏内时间。"
+    },
+    "enabletimelapse": {
+      "label": "启用时间流逝",
+      "tip": "启用连续时间推进。"
+    },
+    "timelapsemultiplier": {
+      "label": "时间流逝倍率",
+      "tip": "启用时间流逝后时间的前进速度。"
+    }
+  },
+  "worldweather": {
+    "title": "世界天气",
+    "current": {
+      "label": "当前天气：",
+      "tip": "显示游戏中当前使用的天气预设。"
+    },
+    "freeze": {
+      "label": "静止天气",
+      "tip": "阻止天气自然变化。"
+    },
+    "random": {
+      "label": "随机天气",
+      "tip": "随机应用一个天气预设。"
+    },
+    "reset": {
+      "label": "重置天气",
+      "tip": "重置为默认动态天气系统"
+    },
+    "transitionduration": {
+      "label": "推进持续时间（秒）",
+      "tip": "天气推进时间（以秒为单位）。"
+    },
+    "weathertypebreak": {
+      "label": "天气类型",
+      "tip": "选择并应用特定的天气类型。"
+    },
+    "weathertype": {
+      "label": "天气类型",
+      "tip": "更改为此天气类型。"
+    },
+    "options": {
+      "sunny": "晴天",
+      "lightclouds": "轻云",
+      "cloudy": "多云",
+      "heavyclouds": "厚云",
+      "fog": "雾天",
+      "rain": "雨天",
+      "toxicrain": "酸雨",
+      "pollution": "污染",
+      "sandstorm": "沙尘暴",
+      "deebblue": "深蓝",
+      "lightRain": "小雨",
+      "squatmorning": "破晓",
+      "cloudymorning": "阴云（清晨）",
+      "rainnight": "夜雨",
+      "cloudscourier": "云层"
+    }
+  },
+  "teleport": {
+    "title": "传送菜单",
+    "Auto": {
+      "AutoWaypointNotification": "自动传送到导航点.",
+      "AutoQuestNotification": "自动传送到任务标记."
+    },
+    "forwarddistance": {
+      "label": "向前距离",
+      "tip": "设置传送的前进距离（以米为单位）。"
+    },
+    "teleportforward": {
+      "label": "向前传送",
+      "tip": "根据当前方向向前传送。"
+    },
+    "quickteleports": {
+      "label": "快速传送",
+      "tip": "瞬间传送到常用位地点"
+    },
+    "questmarker": {
+      "label": "传送到任务标记",
+      "tip": "传送到当前跟踪的任务目标。"
+    },
+    "waypointmarker": {
+      "label": "传送到导航点",
+      "tip": "传送到当前设置的地图导航。"
+    },
+    "quickcycler": {
+      "label": "传送到：",
+      "tip": "循环浏览快速传送选项（商人、公寓等）。"
+    },
+    "creator": {
+      "label": "创建者",
+      "tip": "按创建者过滤传送位置。"
+    },
+    "creator_all": "All",
+    "district_all": "All Districts",
+    "area_all": "All Areas",
+    "quick_closest_vendor": "Closest",
+    "quick_apartment": "Apartment",
+    "quick_closest_vendor_notify": "Teleported to closest vendor:",
+    "quick_apartment_notify": "Teleported to apartment",
+    "filters": {
+      "label": "Filters",
+      "tip": "Filter teleport locations by creator, district, or area."
+    },
+    "district": {
+      "label": "District",
+      "tip": "Filter teleport locations by parent district."
+    },
+    "area": {
+      "label": "Area",
+      "tip": "Filter teleport locations by child area."
+    },
+    "categoriesbreak": {
+      "label": "传送类别",
+      "tip": "浏览可用的传送类别。"
+    },
+    "categorysubmenu": {
+      "label": "{category}",
+      "tip": "查看 {category} 类别中的传送位置。"
+    },
+    "selectedteleports": {
+      "label": "已选择的传送位置",
+      "tip": "选定类别和创建者的传送位置列表。"
+    },
+    "teleportoption": {
+      "label": "{location_name}",
+      "tip": "创建者: {creator} \n传送至 {category} 类的 {location_name} 。"
+    },
+    "settingssubmenu": {
+      "label": "传送设置",
+      "tip": "传送显示设置和自定义传送。"
+    },
+    "reloadteleports": {
+      "label": "重新加载传送",
+      "tip": "从JSON重新加载所有传送位置。在创建自定义传送后使用。"
+    },
+    "customteleports": {
+      "label": "自定义传送",
+      "tip": "在您当前的位置创建或管理自定义传送位置。"
+    },
+    "autoteleports": {
+      "label": "自动传送",
+      "tip": "任务和路标的自动传送选项。"
+    },
+    "autowaypoint": {
+      "label": "自动传送到路标",
+      "tip": "如果启用，自动传送到设置的路标。"
+    },
+    "autoquest": {
+      "label": "自动传送到任务标记",
+      "tip": "如果启用，自动传送到跟踪的任务标记. \n\n 重要：某些任务可能无法正确清除标记，导致循环。请谨慎使用！"
+    },
+    "miscsubmenu": {
+      "label": "杂项",
+      "tip": "传送显示设置和自定义传送。"
+    },
+    "settings": {
+      "label": "设置",
+      "tip": "切换传送部分和距离标签的可见性。"
+    },
+    "showforward": {
+      "label": "显示快速前进部分",
+      "tip": "切换菜单顶部的前进传送控制。"
+    },
+    "showquick": {
+      "label": "显示快速传送部分",
+      "tip": "切换快速传送部分（任务标记、路标、最近的商人等）。"
+    },
+    "showquickdistance": {
+      "label": "显示快速距离",
+      "tip": "在快速传送列表中显示或隐藏距离文本。"
+    },
+    "showcategorydistance": {
+      "label": "显示类别距离",
+      "tip": "在传送类别列表中显示或隐藏距离文本。"
+    },
+    "showdistrictfilter": {
+      "label": "显示区域过滤器",
+      "tip": "切换父/子区域过滤下拉菜单。"
+    },
+    "showcreatorfilter": {
+      "label": "显示创建者过滤器",
+      "tip": "切换创建者过滤下拉菜单（按创建者过滤传送）。"
+    },
+    "customteleportview": {
+      "title": "自定义传送",
+      "name": {
+        "label": "名称",
+        "tip": "输入此传送点的名称。"
+      },
+      "creator": {
+        "label": "创建人",
+        "tip": "输入创建人名称（默认使用者）"
+      },
+      "category": {
+        "label": "类别",
+        "tip": "选择类别（默认自定义）。"
+      },
+      "offset": {
+        "label": "微调位置",
+        "x": {
+          "label": "调整 X",
+          "tip": "调整 X 坐标偏移。"
+        },
+        "y": {
+          "label": "调整 Y",
+          "tip": "调整 Y 坐标偏移。"
+        },
+        "z": {
+          "label": "调整 Z",
+          "tip": "调整 Z 坐标偏移。"
+        }
+      },
+      "district": {
+        "parent": {
+          "label": "父区域",
+          "tip": "当前父区。"
+        },
+        "child": {
+          "label": "子区域",
+          "tip": "当前子区/区域。"
+        }
+      },
+      "save": {
+        "label": "保存当前位置",
+        "tip": "将此传送保存到 Teleports.json"
+      },
+      "notifications": {
+        "noname": "请输入要设置的传送点名称",
+        "saved": "已保存自定义传送点: {name} \n 距离: {parent} / {child}\n 坐标: ({x}, {y}, {z})"
+      },
+      "defaults": {
+        "name": "Custom Location",
+        "creator": "User",
+        "category": "Custom",
+        "parentDistrict": "Unknown District",
+        "childDistrict": "Unknown Area"
+      }
+    }
+  },
+  "settingsmenu": {
+    "title": "选项菜单",
+    "navigation": {
+      "label": "导航控制",
+      "tip": "调整导航绑定和速度."
+    },
+    "translations": {
+      "label": "翻译",
+      "tip": "更改需要使用的语言并管理已添加的翻译文件."
+    },
+    "ui": {
+      "label": "菜单界面修改"
+    },
+    "layout": {
+      "label": "布局与选项栏",
+      "tip": "调整整体布局和功能选项栏。"
+    },
+    "frame": {
+      "label": "页眉与页脚",
+      "tip": "调整顶部页眉和底部页脚。"
+    },
+    "notifications": {
+      "label": "通知",
+      "tip": "自定义通知。"
+    },
+    "infobox": {
+      "label": "信息框",
+      "tip": "调整菜单底部的信息提示框。"
+    },
+    "simplecontrols": {
+      "label": "动态按钮",
+      "tip": "配置分隔行、下拉菜单和字符串循环控制。"
+    },
+    "selectioncontrols": {
+      "label": "选择按钮",
+      "tip": "配置切换按钮和单选按钮。"
+    },
+    "inputcontrols": {
+      "label": "输入按钮",
+      "tip": "配置数字和颜色选择控制。"
+    },
+    "textinput": {
+      "label": "文本输入",
+      "tip": "调整文本输入对话框。"
+    },
+    "resetall": {
+      "label": "(注意!)重置所有设置",
+      "tip": "(注意!)将所有用户界面和导航（绑定）设置重置为默认值。"
+    },
+    "saveall": {
+      "label": "保存所有设置",
+      "tip": "将所有用户界面和导航设置保存到配置文件。"
+    }
+  },
+  "settings": {
+    "frame": {
+      "title": "页眉与页脚",
+      "reset": {
+        "label": "重置框架",
+        "tip": "将所有框架修改恢复到其原始值。"
+      },
+      "header": {
+        "label": "页眉",
+        "height": {
+          "label": "高度",
+          "tip": "顶部页眉栏的垂直显示高度。"
+        },
+        "fontsize": {
+          "label": "主标题字体大小",
+          "tip": "页眉中左侧标题的字体大小。"
+        },
+        "fontsizesub": {
+          "label": "副标题字体大小",
+          "tip": "页眉中右侧标题的字体大小。"
+        },
+        "background": {
+          "label": "背景",
+          "tip": "页眉栏的背景填充颜色。"
+        },
+        "textcolor": {
+          "label": "文本颜色",
+          "tip": "页眉标题使用的文本颜色。"
+        }
+      },
+      "footer": {
+        "label": "页脚",
+        "height": {
+          "label": "高度",
+          "tip": "底部页脚栏的垂直显示高度。"
+        },
+        "fontsize": {
+          "label": "字体大小",
+          "tip": "页脚文本的字体大小。"
+        },
+        "background": {
+          "label": "背景",
+          "tip": "页脚栏的背景填充颜色。"
+        },
+        "textcolor": {
+          "label": "文本颜色",
+          "tip": "页脚文本使用的文本颜色。"
+        }
+      }
+    },
+    "infobox": {
+      "title": "信息提示框",
+      "label": "信息提示框",
+      "reset": {
+        "label": "重置信息框",
+        "tip": "将信息框恢复到其原始值。"
+      },
+      "padding": {
+        "label": "内边距",
+        "tip": "文字与边框的边距。"
+      },
+      "spacing": {
+        "label": "间距",
+        "tip": "信息框与菜单本体之间的距离。"
+      },
+      "rounding": {
+        "label": "圆角",
+        "tip": "信息框的角落圆润程度。"
+      },
+      "cps": {
+        "label": "字符显示速",
+        "tip": "信息框内文本显示动画的速度。"
+      },
+      "rotate": {
+        "label": "旋转秒数",
+        "tip": "循环文本的备用旋转时间。"
+      },
+      "textcolor": {
+        "label": "文本颜色",
+        "tip": "信息框文本颜色。"
+      },
+      "background": {
+        "label": "背景",
+        "tip": "信息框的背景填充。"
+      },
+      "border": {
+        "label": "描边",
+        "tip": "信息框的描边颜色."
+      }
+    },
+    "inputcontrols": {
+      "title": "文本输入控件",
+      "reset": {
+        "label": "重置输入控件",
+        "tip": "将所有按键输入调整布局恢复为初始值。"
+      },
+      "numeric": {
+        "label": "数字",
+        "togglesize": {
+          "label": "切换大小",
+          "tip": "数字切换按钮的大小。"
+        },
+        "togglespacing": {
+          "label": "切换间距",
+          "tip": "数字切换与框之间的间距。"
+        },
+        "boxframepadding": {
+          "label": "框架内边距",
+          "tip": "数字框内部的框架边距。"
+        },
+        "boxtextpadding": {
+          "label": "框文本内边距",
+          "tip": "数字框内部的文本边距。"
+        },
+        "decimals": {
+          "label": "小数位",
+          "tip": "浮点数显示的小数位数。"
+        },
+        "defaultintstep": {
+          "label": "默认整数步长",
+          "tip": "整数输入的步长值。"
+        },
+        "defaultfloatstep": {
+          "label": "默认浮点步长",
+          "tip": "浮点输入的步长值。"
+        },
+        "framebg": {
+          "label": "框架背景",
+          "tip": "数字框的背景填充。"
+        },
+        "textcolor": {
+          "label": "文本颜色",
+          "tip": "数字框内部的文本颜色。"
+        },
+        "disabledcolor": {
+          "label": "禁用颜色",
+          "tip": "输入禁用时的文本颜色。"
+        }
+      },
+      "numericexample": {
+        "label": "数字示例",
+        "example": {
+          "label": "示例数字",
+          "tip": "数字输入的预览。"
+        }
+      },
+      "colorpicker": {
+        "label": "颜色选择器",
+        "channelboxsize": {
+          "label": "通道框大小",
+          "tip": "RGBA通道框的大小。"
+        },
+        "channelpadding": {
+          "label": "通道内边距",
+          "tip": "RGBA通道框之间的间距。"
+        },
+        "previewboxsize": {
+          "label": "预览框大小",
+          "tip": "预览颜色框的大小。"
+        },
+        "rowspacing": {
+          "label": "行间距",
+          "tip": "颜色选择器行之间的间距。"
+        },
+        "rounding": {
+          "label": "圆角",
+          "tip": "颜色选择器框的角落圆润程度。"
+        },
+        "framebg": {
+          "label": "框架背景",
+          "tip": "颜色通道后面的背景。"
+        },
+        "textcolor": {
+          "label": "文本颜色",
+          "tip": "RGBA标签的文本颜色。"
+        },
+        "bordercolor": {
+          "label": "边框颜色",
+          "tip": "通道框周围的轮廓颜色。"
+        }
+      },
+      "colorpickerexample": {
+        "label": "颜色选择器示例",
+        "example": {
+          "label": "示例颜色",
+          "tip": "颜色选择器样式的预览。"
+        }
+      }
+    },
+    "layout": {
+      "title": "界面布局与功能选项栏",
+      "reset": {
+        "label": "重置布局",
+        "tip": "将界面和功能选项恢复为默认状态。"
+      },
+      "layout": {
+        "label": "布局",
+        "optionheight": {
+          "label": "选项高度",
+          "tip": "每个功能选项行的垂直高度。"
+        },
+        "frameheight": {
+          "label": "框架高度",
+          "tip": "滑块和数字框等小部件的高度。"
+        },
+        "paddingx": {
+          "label": "左右页边距",
+          "tip": "菜单左右两侧边缘内边距。"
+        },
+        "paddingy": {
+          "label": "上下页边距",
+          "tip": "菜单顶底与内容的显示边距。"
+        },
+        "labeloffsetx": {
+          "label": "标签偏移 X",
+          "tip": "行开始与左对齐标签之间的距离。"
+        },
+        "framerounding": {
+          "label": "高亮圆角",
+          "tip": "选中的行和小部件的边角圆润半径。"
+        },
+        "itemspacingx": {
+          "label": "项间距 X",
+          "tip": "行内项目之间的横向间隙。"
+        },
+        "itemspacingy": {
+          "label": "项间距 Y",
+          "tip": "堆叠项目之间的纵向间隙。"
+        },
+        "framepaddingx": {
+          "label": "框架内边距 X",
+          "tip": "框架小部件的内部横向内边距。"
+        },
+        "framepaddingy": {
+          "label": "框架内边距 Y",
+          "tip": "框架小部件的内部纵向内边距。"
+        }
+      },
+      "optionrow": {
+        "label": "滑动选择行",
+        "smoothspeed": {
+          "label": "平滑速度",
+          "tip": "更改选择时高亮栏的平滑速度。"
+        },
+        "text": {
+          "label": "文本颜色",
+          "tip": "选项标签的主要文本颜色。"
+        },
+        "mutedtext": {
+          "label": "次要文本颜色",
+          "tip": "次要文本颜色（分隔行、非活动条目）。"
+        },
+        "hoverbg": {
+          "label": "悬停背景",
+          "tip": "悬停行时的背景颜色。"
+        },
+        "highlightbg": {
+          "label": "高亮背景",
+          "tip": "选定行的背景颜色。"
+        }
+      }
+    },
+    "navigation": {
+      "title": "导航热键",
+      "save": {
+        "label": "保存导航",
+        "tip": "保存当前导航速度设置。"
+      },
+      "load": {
+        "label": "加载导航",
+        "tip": "加载之前保存的导航速度设置。"
+      },
+      "reset": {
+        "label": "重置导航",
+        "tip": "将导航速度设置重置为默认值。"
+      },
+      "resetbindings": {
+        "label": "重置所有绑定",
+        "tip": "将所有键盘和控制器绑定恢复为默认值。"
+      },
+      "bindings": {
+        "label": "绑定",
+        "openmenu": {
+          "label": "打开菜单",
+          "tip": "重新绑定用于打开或关闭菜单的键。"
+        },
+        "togglemouse": {
+          "label": "显示鼠标",
+          "tip": "重新绑定用于是否开启鼠标控制的键。"
+        },
+        "up": {
+          "label": "向上导航",
+          "tip": "重新绑定向上导航的键。"
+        },
+        "down": {
+          "label": "向下导航",
+          "tip": "重新绑定向下导航的键。"
+        },
+        "left": {
+          "label": "向左导航",
+          "tip": "重新绑定向左导航的键。"
+        },
+        "right": {
+          "label": "向右导航",
+          "tip": "重新绑定向右导航的键。"
+        },
+        "select": {
+          "label": "选择",
+          "tip": "重新绑定用于选择或确认选项的键。"
+        },
+        "back": {
+          "label": "返回",
+          "tip": "重新绑定用于返回或关闭菜单的键。"
+        },
+        "misc": {
+          "label": "杂项",
+          "tip": "重新绑定杂项/额外功能键。"
+        }
+      },
+      "speed": {
+        "label": "导航速度",
+        "scrolldelay": {
+          "label": "滚动延迟基础",
+          "tip": "按住导航键时，重复输入之间的基本延迟（毫秒）。"
+        },
+        "scrollmindelay": {
+          "label": "滚动最小延迟",
+          "tip": "加速滚动启动后（毫秒）的最小延迟。"
+        },
+        "accelthreshold": {
+          "label": "加速阈值",
+          "tip": "必须按住一个键的时间（毫秒）才能开始加速。"
+        },
+        "accelstep": {
+          "label": "加速步进",
+          "tip": "按住一个键时，每一步减少的延迟量。"
+        }
+      }
+    },
+    "notifications": {
+      "title": "通知",
+      "reset": {
+        "label": "重置通知",
+        "tip": "将通知设置恢复为默认值。"
+      },
+      "layout": {
+        "label": "布局",
+        "width": {
+          "label": "宽度",
+          "tip": "通知窗口的宽度。"
+        },
+        "padding": {
+          "label": "内边距",
+          "tip": "通知文本的内部边距。"
+        },
+        "spacing": {
+          "label": "间距",
+          "tip": "堆叠通知之间的间距。"
+        },
+        "rounding": {
+          "label": "圆角",
+          "tip": "通知框的角落圆润程度。"
+        },
+        "slidedistance": {
+          "label": "滑动距离",
+          "tip": "通知滑入/滑出的距离。"
+        },
+        "animationduration": {
+          "label": "动画持续时间",
+          "tip": "滑动动画的持续时间。"
+        }
+      },
+      "progress": {
+        "label": "进度条",
+        "height": {
+          "label": "高度",
+          "tip": "进度条的高度。"
+        },
+        "offsety": {
+          "label": "纵向偏移",
+          "tip": "进度条在通知内部的垂直偏移。"
+        }
+      },
+      "colors": {
+        "label": "颜色",
+        "background": {
+          "label": "背景",
+          "tip": "通知框的背景填充颜色。"
+        },
+        "border": {
+          "label": "边框",
+          "tip": "通知边框颜色。"
+        },
+        "progress": {
+          "default": {
+            "label": "默认进度",
+            "tip": "进度条默认颜色。"
+          },
+          "info": {
+            "label": "信息进度",
+            "tip": "信息类型的进度条颜色。"
+          },
+          "success": {
+            "label": "成功进度",
+            "tip": "成功类型的进度条颜色。"
+          },
+          "warning": {
+            "label": "警告进度",
+            "tip": "警告类型的进度条颜色。"
+          },
+          "error": {
+            "label": "错误进度",
+            "tip": "错误类型的进度条颜色。"
+          }
+        },
+        "text": {
+          "info": {
+            "label": "信息文本",
+            "tip": "信息通知的文本颜色。"
+          },
+          "success": {
+            "label": "成功文本",
+            "tip": "成功通知的文本颜色。"
+          },
+          "warning": {
+            "label": "警告文本",
+            "tip": "警告通知的文本颜色。"
+          },
+          "error": {
+            "label": "错误文本",
+            "tip": "错误通知的文本颜色。"
+          }
+        }
+      },
+      "position": {
+        "label": "位置",
+        "dropdown": {
+          "label": "通知位置",
+          "tip": "通知将出现的位置。"
+        }
+      },
+      "test": {
+        "label": "测试通知",
+        "info": {
+          "label": "发送信息",
+          "tip": "显示一个信息通知。"
+        },
+        "success": {
+          "label": "发送成功",
+          "tip": "显示一个成功通知。"
+        },
+        "warning": {
+          "label": "发送警告",
+          "tip": "显示一个警告通知。"
+        },
+        "error": {
+          "label": "发送错误",
+          "tip": "显示一个错误通知。"
+        }
+      }
+    },
+    "selectioncontrols": {
+      "title": "选择控件",
+      "reset": {
+        "label": "重置选择控件",
+        "tip": "将选择控制设置恢复为默认值。"
+      },
+      "toggle": {
+        "label": "切换",
+        "size": {
+          "label": "大小",
+          "tip": "切换框的整体大小。"
+        },
+        "rounding": {
+          "label": "圆角",
+          "tip": "切换框的角落圆润程度。"
+        },
+        "inset": {
+          "label": "内凹",
+          "tip": "切换开启时的内凹填充。"
+        },
+        "statepadding": {
+          "label": "状态内边距",
+          "tip": "切换状态指示器内部的边距。"
+        },
+        "statespacing": {
+          "label": "状态间距",
+          "tip": "切换与标签之间的间距。"
+        },
+        "oncolor": {
+          "label": "开启颜色",
+          "tip": "切换开启时的填充颜色。"
+        },
+        "offcolor": {
+          "label": "关闭颜色",
+          "tip": "切换关闭时的填充颜色。"
+        },
+        "bordercolor": {
+          "label": "边框颜色",
+          "tip": "切换的轮廓颜色。"
+        },
+        "framebg": {
+          "label": "框架背景",
+          "tip": "切换框后面的背景。"
+        },
+        "textcolor": {
+          "label": "文本颜色",
+          "tip": "切换标签的文本颜色。"
+        }
+      },
+      "toggleexample": {
+        "label": "切换示例",
+        "example": {
+          "label": "示例切换",
+          "tip": "切换样式的预览。"
+        }
+      },
+      "radio": {
+        "label": "单选",
+        "radius": {
+          "label": "半径",
+          "tip": "单选圆圈的半径。"
+        },
+        "linethickness": {
+          "label": "线条粗细",
+          "tip": "未选中圆圈的线条粗细。"
+        },
+        "segments": {
+          "label": "分段",
+          "tip": "圆的平滑度（更多分段 = 更平滑）。"
+        },
+        "selectedcolor": {
+          "label": "选中颜色",
+          "tip": "选中的单选按钮的填充颜色。"
+        },
+        "unselectedcolor": {
+          "label": "未选中颜色",
+          "tip": "未选中单选按钮的轮廓颜色。"
+        }
+      },
+      "radioexample": {
+        "label": "单选示例",
+        "example": {
+          "label": "示例单选",
+          "tip": "单选按钮样式的预览。"
+        }
+      }
+    },
+    "simplecontrols": {
+      "title": "动态控件",
+      "reset": {
+        "label": "重置动态控件",
+        "tip": "将动态控制设置恢复为默认值。"
+      },
+      "breakrow": {
+        "label": "分隔行",
+        "text": {
+          "label": "文本颜色",
+          "tip": "分隔行标签的颜色。"
+        },
+        "highlightbg": {
+          "label": "高亮背景",
+          "tip": "分隔行的背景高亮颜色。"
+        }
+      },
+      "dropdown": {
+        "label": "下拉菜单",
+        "framesperoption": {
+          "label": "每个选项的帧数",
+          "tip": "在显示下一个选项之前需要等待的帧数。"
+        },
+        "revealdelay": {
+          "label": "显示帧延迟",
+          "tip": "选项显示之间的额外延迟（以帧为单位）。"
+        },
+        "textcolor": {
+          "label": "文本颜色",
+          "tip": "下拉条目正常文本颜色。"
+        },
+        "selectedcolor": {
+          "label": "选中颜色",
+          "tip": "选中下拉条目的文本颜色。"
+        },
+        "rowprefix": {
+          "label": "行前缀",
+          "tip": "显示在每个下拉选项前的前缀。"
+        }
+      },
+      "dropdownexample": {
+        "label": "下拉示例",
+        "example": {
+          "label": "示例下拉",
+          "tip": "下拉样式的预览。"
+        }
+      },
+      "stringcycler": {
+        "label": "字符串循环器",
+        "framepadding": {
+          "label": "框架内边距",
+          "tip": "循环框周围的横向/纵向内边距。"
+        },
+        "textpadding": {
+          "label": "文本内边距",
+          "tip": "循环框边缘与文本之间的边距。"
+        },
+        "boxrounding": {
+          "label": "框圆角",
+          "tip": "循环框的角落圆润程度。"
+        },
+        "framebg": {
+          "label": "框架背景",
+          "tip": "循环框的背景填充。"
+        },
+        "valuecolor": {
+          "label": "值颜色",
+          "tip": "选定循环值的颜色。"
+        }
+      },
+      "stringcyclerexample": {
+        "label": "字符串循环器示例",
+        "example": {
+          "label": "示例循环器",
+          "tip": "字符串循环器样式的预览。"
+        }
+      }
+    },
+    "textinput": {
+      "title": "文本输入",
+      "label": "文本输入",
+      "reset": {
+        "label": "重置文本输入",
+        "tip": "将文本输入对话框设置恢复为默认值。"
+      },
+      "width": {
+        "label": "宽度",
+        "tip": "文本输入对话框的窗口宽度。"
+      },
+      "height": {
+        "label": "高度",
+        "tip": "文本输入对话框的窗口高度。"
+      },
+      "rounding": {
+        "label": "圆角",
+        "tip": "文本输入窗口的角落圆润程度。"
+      },
+      "padding": {
+        "label": "内边距",
+        "tip": "文本输入窗口的内部边距。"
+      },
+      "spacing": {
+        "label": "按钮间距",
+        "tip": "确定/取消按钮之间的间距。"
+      },
+      "textcolor": {
+        "label": "文本颜色",
+        "tip": "文本输入窗口内的文本颜色。"
+      },
+      "background": {
+        "label": "背景",
+        "tip": "文本输入窗口的背景填充。"
+      },
+      "border": {
+        "label": "边框",
+        "tip": "文本输入窗口的边框颜色。"
+      },
+      "example": {
+        "label": "示例",
+        "input": {
+          "label": "示例输入",
+          "tip": "点击编辑示例文本。"
+        }
+      }
+    }
+  },
+  "languagemenu": {
+    "label": "选择语言",
+    "tip": "选择你喜欢的界面显示语言。",
+    "reload": {
+      "label": "刷新列表",
+      "tip": "刷新可用语言列表，包括新添加的语言文件。"
+    }
+  },
+  "optionmanager": {
+    "dropdown_tip": "提示：按回车或点击以展开并选择选项。",
+    "float_toggle_tip": "提示：使用左右箭头键切换数值。",
+    "color_tip": "按回车或点击以展开。\n使用箭头键调整颜色通道。",
+    "stringcycler_tip": "提示：使用左右箭头键切换数值。",
+    "inttoggle_tip": "提示：使用左右箭头键切换数值。",
+    "none": "无",
+    "on": "开启",
+    "off": "关闭"
+  },
+  "inputkeys": {
+    "8": "Backspace",
+    "9": "Tab",
+    "13": "Enter",
+    "16": "Shift",
+    "17": "Ctrl",
+    "18": "Alt",
+    "20": "CapsLock",
+    "27": "Escape",
+    "32": "Space",
+    "33": "Page Up",
+    "34": "Page Down",
+    "35": "End",
+    "36": "Home",
+    "37": "Left Arrow",
+    "38": "Up Arrow",
+    "39": "Right Arrow",
+    "40": "Down Arrow",
+    "45": "Insert",
+    "46": "Delete",
+    "48": "0",
+    "49": "1",
+    "50": "2",
+    "51": "3",
+    "52": "4",
+    "53": "5",
+    "54": "6",
+    "55": "7",
+    "56": "8",
+    "57": "9",
+    "65": "A",
+    "66": "B",
+    "67": "C",
+    "68": "D",
+    "69": "E",
+    "70": "F",
+    "71": "G",
+    "72": "H",
+    "73": "I",
+    "74": "J",
+    "75": "K",
+    "76": "L",
+    "77": "M",
+    "78": "N",
+    "79": "O",
+    "80": "P",
+    "81": "Q",
+    "82": "R",
+    "83": "S",
+    "84": "T",
+    "85": "U",
+    "86": "V",
+    "87": "W",
+    "88": "X",
+    "89": "Y",
+    "90": "Z",
+    "112": "F1",
+    "113": "F2",
+    "114": "F3",
+    "115": "F4",
+    "116": "F5",
+    "117": "F6",
+    "118": "F7",
+    "119": "F8",
+    "120": "F9",
+    "121": "F10",
+    "122": "F11",
+    "123": "F12"
+  },
+  "inputbuttons": {
+    "1": "D-Pad Up",
+    "2": "D-Pad Down",
+    "4": "D-Pad Left",
+    "8": "D-Pad Right",
+    "16": "Start/Options",
+    "32": "Back/Share",
+    "64": "Left Stick (Press/L3)",
+    "128": "Right Stick (Press/R3)",
+    "256": "Left Bumper (LB/L1)",
+    "512": "Right Bumper (RB/R1)",
+    "1024": "Left Trigger (LT/L2)",
+    "2048": "Right Trigger (RT/R2)",
+    "4096": "A/Cross",
+    "8192": "B/Circle",
+    "16384": "X/Square",
+    "32768": "Y/Triangle"
+  }
+}
