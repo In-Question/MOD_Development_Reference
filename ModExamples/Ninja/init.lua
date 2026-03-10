@@ -1,4 +1,5 @@
 local Ninja = {}
+local Buff = require("Buff")
 local dashTimeDilationDuration = 3.5 -- 冲刺（Dash/AirDash）触发的时间减缓时长（秒）
 local switchWeaponTimeDilationDuration = 2.0 -- 切换武器触发的时间减缓时长（秒）
 local equipAttackDamageMultiplier = 9.0 -- 拔刀攻击的伤害倍率（可选）
@@ -13,6 +14,7 @@ local RangedWeaponStates = {
     Overheat = 7,
     Shoot = 8
 }
+
 local MeleeWeaponStates = {
     NotReady = 0,
     Equipping = 1,
@@ -38,19 +40,20 @@ local MeleeWeaponStates = {
     EquipAttack = 21,
     Default = 22
 }
+
 local EquipStates = {
     Unarmed = 0,
     Melee = 1,
     Ranged = 2
 }
+
 local playerStates = {
     lastRangedWeaponState = RangedWeaponStates.Default,
     currentRangedWeaponState = RangedWeaponStates.Default,
     lastMeleeWeaponState = MeleeWeaponStates.Default,
     currentMeleeWeaponState = MeleeWeaponStates.Default,
     previousEquipState = EquipStates.Unarmed,
-    currentEquipState = EquipStates.Unarmed,
-    currentWeaponSlotIndex = -1
+    currentEquipState = EquipStates.Unarmed
 }
 
 local Qi = {
@@ -61,38 +64,7 @@ local Qi = {
     isConsumed = true
 }
 
-local QiBuff = {
-    isApplied = false,
-    runtime = {}
-}
-
--- 触发型（带UI）buff配置：保留空手蓄力/拔刀消耗机制，但采用 config/runtime/state 管理
-local QiBuffConfig = {
-    enabled = true,
-    entries = {
-        meleeDamage = {
-            enabled = true,
-            statTypeName = "MeleeDamagePercentBonus",
-            modifierTypeName = "Additive",
-            value = 1.0
-        },
-        critChance = {
-            enabled = true,
-            statTypeName = "CritChance",
-            modifierTypeName = "Additive",
-            value = 100.0
-        },
-        critDamage = {
-            enabled = true,
-            statTypeName = "CritDamage",
-            modifierTypeName = "Additive",
-            value = 0.0,
-            useOverflowFromCritChance = true
-        }
-    }
-}
-
-local timeDilationState = {
+local timeDilationContext = {
     isActive = false,
     timer = 0.0,
     duration = 0.0,
@@ -101,128 +73,39 @@ local timeDilationState = {
     unarmedStopDelay = 0.8
 }
 
-local sessionBuffSessionState = {
+local SessionState = {
     isLoaded = false
 }
 
-local sessionBuffState = {
-    enabled = true,
-    applied = false
-}
-
-local blockBuffState = {
-    enabled = true,
-    applied = false,
-    isInBlockState = false
-}
-
-local weaponBuffState = {
+local sessionWeaponBuffState = {
     enabled = true,
     applied = false,
     appliedTargetID = nil,
     appliedCategory = nil
 }
 
+local currentWeaponContext = {
+    itemID = nil,
+    category = nil, -- melee/throwableMelee/ranged
+    slotIndex = -2 -- -2表示未检测过，-1表示手臂义体，0-3表示对应武器位
+}
+
 -- 会话Buff定义（与触发型 QiBuff 分离）
 -- 注意：gamedataStatType/gameStatModifierType 在脚本加载早期可能尚不可用
 -- 因此 definitions 在 onInit 中初始化
-local sessionBuffDefinitions = {}
-local weaponBuffConfig = {}
-local blockBuffDefinitions = {}
-local weaponBuffRuntime = {
-    melee = {},
-    ranged = {}
+local weaponBuff = {
+    Config = {},
+    Runtime = {
+        melee = {},
+        throwableMelee = {},
+        ranged = {}
+    }
 }
 
-local function InitializeSessionBuffDefinitions()
-    sessionBuffDefinitions = {
-        moveSpeed = {
-            enabled = true,
-            statType = gamedataStatType.MaxSpeed,
-            modifierType = gameStatModifierType.Additive,
-            value = 1.5,
-            modifier = nil
-        },
-        stealthHitDamageBonus = {
-            enabled = true,
-            statType = gamedataStatType.StealthHitDamageBonus,
-            modifierType = gameStatModifierType.Additive,
-            value = 100.0,
-            modifier = nil
-        },
-        dotDamageBonus = {
-            enabled = true,
-            statType = gamedataStatType.DamageOverTimePercentBonus,
-            modifierType = gameStatModifierType.Additive,
-            value = 2.0,
-            modifier = nil
-        },
-        headshotDamageMultiplierBonus = {
-            enabled = true,
-            statType = gamedataStatType.HeadshotDamageMultiplier,
-            modifierType = gameStatModifierType.Additive,
-            value = 1.5,
-            modifier = nil
-        },
-        weakspotDamageMultiplierBonus = {
-            enabled = true,
-            statType = gamedataStatType.WeakspotDamageMultiplier,
-            modifierType = gameStatModifierType.Additive,
-            value = 1.5,
-            modifier = nil
-        },
-        silentWalk = {
-            enabled = true,
-            statType = gamedataStatType.CanWalkSilently,
-            modifierType = gameStatModifierType.Additive,
-            value = 1.0,
-            modifier = nil
-        },
-        silentRun = {
-            enabled = true,
-            statType = gamedataStatType.CanRunSilently,
-            modifierType = gameStatModifierType.Additive,
-            value = 1.0,
-            modifier = nil
-        },
-        staminaAddition = {
-            enabled = true,
-            statType = gamedataStatType.Stamina,
-            modifierType = gameStatModifierType.Additive,
-            value = 100.0,
-            modifier = nil
-        },
-        baseBlocking = {
-            enabled = true,
-            statType = gamedataStatType.IsBlocking,
-            modifierType = gameStatModifierType.Additive,
-            value = 1.0,
-            modifier = nil
-        }
-    }
-end
-
-local function InitializeBlockBuffDefinitions()
-    blockBuffDefinitions = {
-        deflecting = {
-            enabled = true,
-            statType = gamedataStatType.IsDeflecting,
-            modifierType = gameStatModifierType.Additive,
-            value = 1.0,
-            modifier = nil
-        },
-        blockSuppression = {
-            enabled = true,
-            statType = gamedataStatType.IsBlocking,
-            modifierType = gameStatModifierType.Additive,
-            value = -2.0,
-            modifier = nil
-        }
-    }
-end
+local isNeedRefreshCurrentWeaponContext = false
 
 local function InitializeWeaponBuffConfig()
-    weaponBuffConfig = {
+    weaponBuff.Config = {
         melee = {
             attackSpeed = {
                 enabled = true,
@@ -236,6 +119,9 @@ local function InitializeWeaponBuffConfig()
                 modifierTypeName = "Additive",
                 value = 6
             }
+        },
+        throwableMelee = {
+            --
         },
         ranged = {
             -- 预留：远程武器专属加成
@@ -351,254 +237,121 @@ local function StartTimeDilation(duration)
         return
     end
 
-    if timeDilationState.isActive then
-        timeDilationState.duration = math.max(timeDilationState.duration, timeDilationState.timer + duration)
+    if timeDilationContext.isActive then
+        timeDilationContext.duration = math.max(timeDilationContext.duration, timeDilationContext.timer + duration)
         return
     end
 
     timeSystem:SetIgnoreTimeDilationOnLocalPlayerZero(true)
     timeSystem:SetTimeDilation(CName.new("sandevistan"), 0.1, 999.0)
     StatusEffectHelper.ApplyStatusEffect(player, "BaseStatusEffect.KerenzikovPlayerBuff")
-    timeDilationState.isActive = true
-    timeDilationState.timer = 0.0
-    timeDilationState.duration = duration
-    timeDilationState.pendingStopOnUnarmed = false
-    timeDilationState.unarmedStopTimer = 0.0
+    timeDilationContext.isActive = true
+    timeDilationContext.timer = 0.0
+    timeDilationContext.duration = duration
+    timeDilationContext.pendingStopOnUnarmed = false
+    timeDilationContext.unarmedStopTimer = 0.0
 end
 
-local function ClearStaticBuffDefinitionModifiers(definitions)
-    for _, buff in pairs(definitions) do
-        buff.modifier = nil
-    end
-end
-local function RemoveStaticBuffDefinitions(definitions, targetID, stats)
-    for _, buff in pairs(definitions) do
-        if buff.modifier then
-            if stats and targetID then
-                stats:RemoveAndUncacheModifier(targetID, buff.modifier)
-            end
-            buff.modifier = nil
-        end
-    end
-end
-local function ApplyStaticBuffDefinitions(definitions, targetID, stats)
-    local hasAnyEnabled = false
-    local ok = true
-
-    for _, buff in pairs(definitions) do
-        if buff.enabled and buff.statType and buff.modifierType and buff.value and buff.value ~= 0.0 then
-            hasAnyEnabled = true
-
-            if not buff.modifier then
-                buff.modifier = RPGManager.CreateStatModifier(buff.statType, buff.modifierType, buff.value)
-            end
-
-            if buff.modifier then
-                ok = ok and stats:AddModifier(targetID, buff.modifier)
-            else
-                ok = false
-            end
-        end
-    end
-
-    return hasAnyEnabled and ok
+local function getItemById(owner, itemID)
+    local transactionSystem = Game.GetTransactionSystem() -- ref<TransactionSystem>
+    return transactionSystem:GetItemInSlotByItemID(owner, itemID)
 end
 
-local function removeSessionBuffs()
-    local player = Game.GetPlayer()
-    local stats = Game.GetStatsSystem()
-    if not player or not stats then
-        ClearStaticBuffDefinitionModifiers(sessionBuffDefinitions)
-        sessionBuffState.applied = false
-        return true
-    end
-
-    RemoveStaticBuffDefinitions(sessionBuffDefinitions, player:GetEntityID(), stats)
-
-    sessionBuffState.applied = false
-    return true
-end
-
-local function applySessionBuffs()
-    if sessionBuffState.applied then
-        return true
-    end
-
-    local player = Game.GetPlayer()
-    local stats = Game.GetStatsSystem()
-    if not player or not stats then
-        return false
-    end
-
-    local playerID = player:GetEntityID()
-    if not playerID then
-        return false
-    end
-
-    sessionBuffState.applied = ApplyStaticBuffDefinitions(sessionBuffDefinitions, playerID, stats)
-    if not sessionBuffState.applied then
-        removeSessionBuffs()
-    end
-
-    return sessionBuffState.applied
-end
-
-local function GetCurrentWeaponContext()
+local function GetCurrentWeaponContext() -- > bool
     local player = Game.GetPlayer()
     local ts = Game.GetTransactionSystem()
+    local equipmentSystemPlayerData = EquipmentSystem.GetData(player)
     if not player or not ts then
-        return nil, nil
+        return false
     end
-
-    local item = ts:GetItemInSlot(player, "AttachmentSlots.WeaponRight")
-    if not item then
-        return nil, nil
+    local itemObject = ts:GetItemInSlot(player, "AttachmentSlots.WeaponRight")
+    if not itemObject then
+        return false
     end
-
-    local itemData = item:GetItemData()
-    if not itemData then
-        return nil, nil
+    local itemID = itemObject:GetItemID()
+    if not itemID then
+        return false
     end
-
-    local targetID = itemData:GetStatsObjectID()
-    if not targetID then
-        return nil, nil
-    end
-
-    local isRanged = itemData:HasTag(CName("RangedWeapon"))
-    local isMelee = itemData:HasTag(CName("MeleeWeapon")) or itemData:HasTag(CName("Melee"))
-
-    if isRanged then
-        return targetID, "ranged"
-    end
-    if isMelee then
-        return targetID, "melee"
-    end
-
-    if playerStates.currentEquipState == EquipStates.Ranged then
-        return targetID, "ranged"
-    end
-    if playerStates.currentEquipState == EquipStates.Melee then
-        return targetID, "melee"
-    end
-
-    return targetID, nil
-end
-
-local function getWeaponWheelActiveSlot()
-    local player = Game.GetPlayer()
-    if not player then
-        return nil
-    end
-
-    local data = EquipmentSystem.GetData(player)
-    if not data then
-        return nil
-    end
-
-    local eq = data:GetEquipment()
-    if not eq or not eq.equipAreas then
-        return nil
-    end
-
-    for _, area in ipairs(eq.equipAreas) do
-        if area.areaType == gamedataEquipmentArea.WeaponWheel then
-            local activeIndex0 = area.activeIndex -- 0-based
-            local luaIndex = activeIndex0 + 1             -- Lua数组是1-based
-            local slot = area.equipSlots[luaIndex]
-            local itemID = slot and slot.itemID or nil
-            return activeIndex0, itemID
-        end
-    end
-
-    return nil
-end
-
-local function GetActiveWeaponWheelIndex(owner)
-    local es = Game.GetScriptableSystemsContainer():Get("EquipmentSystem")
-    if not es or not owner then
-        return -1, nil
-    end
-
-    local activeItem = es:GetActiveItem(owner, gamedataEquipmentArea.WeaponWheel)
-    if not activeItem or not ItemID.IsValid(activeItem) then
-        return -1, nil
-    end
-
-    -- WeaponWheel 通常 4 槽，索引一般是 0..3（按游戏内部 Int32 习惯）
-    for i = 0, 4 do
-        local slotItem = es:GetItemInEquipSlot(owner, gamedataEquipmentArea.WeaponWheel, i)
-        if slotItem == activeItem then
-            return i, activeItem
-        end
-    end
-
-    return -1, activeItem
-end
-
-local function ResolveStatType(statTypeName)
-    return statTypeName and gamedataStatType[statTypeName] or nil
-end
-
-local function ResolveModifierType(modifierTypeName)
-    return modifierTypeName and gameStatModifierType[modifierTypeName] or nil
-end
-
-local function ResolveDamageBuffValue(buffName, cfg, playerID, stats)
-    local value = cfg.value or 0.0
-    if cfg.useOverflowFromCritChance then
-        local currentCritChance = stats:GetStatValue(playerID, gamedataStatType.CritChance) or 0.0
-        local critChanceCfg = QiBuffConfig.entries.critChance
-        local critChanceBonus = 0.0
-        if critChanceCfg and critChanceCfg.enabled then
-            critChanceBonus = critChanceCfg.value or 0.0
-        end
-        local overflowCritChance = math.max(0.0, currentCritChance + critChanceBonus - 100.0)
-        value = value + overflowCritChance
-    end
-    return value
-end
-
-local function removeWeaponBuffs(category, targetID)
-    local stats = Game.GetStatsSystem()
-    local runtimeBucket = weaponBuffRuntime[category] or {}
-
-    if stats and targetID then
-        for _, entry in pairs(runtimeBucket) do
-            if entry.modifier then
-                stats:RemoveAndUncacheModifier(targetID, entry.modifier)
-            end
-            entry.modifier = nil
-            entry.lastStatType = nil
-            entry.lastModifierType = nil
-            entry.lastValue = nil
+    currentWeaponContext.itemID = itemID
+    currentWeaponContext.slotIndex = equipmentSystemPlayerData:GetSlotIndex(itemID, gamedataEquipmentArea.WeaponWheel)
+    if itemObject:IsMelee() then
+        if itemObject:IsThrowable() then
+            currentWeaponContext.category = "throwableMelee"
+        else
+            currentWeaponContext.category = "melee"
         end
     else
-        for _, entry in pairs(runtimeBucket) do
-            entry.modifier = nil
-            entry.lastStatType = nil
-            entry.lastModifierType = nil
-            entry.lastValue = nil
-        end
+        currentWeaponContext.category = "ranged"
     end
-
-    weaponBuffState.applied = false
-    weaponBuffState.appliedTargetID = nil
-    weaponBuffState.appliedCategory = nil
+    print("CurrentWeaponContext - itemID:", currentWeaponContext.itemID, "category:", currentWeaponContext.category,
+        "slotIndex:", currentWeaponContext.slotIndex)
     return true
 end
 
-local function applyWeaponBuffs(category, targetID)
+local function getWeaponWheelActiveSlot(owner)
+    if not owner then
+        return nil
+    end
+
+    -- local equipmentSystem = EquipmentSystem.GetInstance(player)
+    local equipmentSystemPlayerData = EquipmentSystem.GetData(owner)
+    if not equipmentSystemPlayerData then
+        return nil
+    end
+
+    local loadout = equipmentSystemPlayerData:GetEquipment()
+    if not loadout or not loadout.equipAreas then
+        return nil
+    end
+
+    local equipAreaIndex = equipmentSystemPlayerData:GetEquipAreaIndex(gamedataEquipmentArea.WeaponWheel)
+    local area = loadout.equipAreas[equipAreaIndex]
+    local activeIndex = area.activeIndex
+    local itemID = area.equipSlots[activeIndex].itemID
+    if not itemID then
+        return nil
+    end
+
+    return activeIndex, itemID
+end
+
+local function removeWeaponBuffs(targetID, category)
+    local stats = Game.GetStatsSystem()
+    local effectiveTargetID = targetID or sessionWeaponBuffState.appliedTargetID
+    local categories = {}
+
+    if category then
+        categories[1] = category
+    else
+        for categoryName, _ in pairs(weaponBuff.Runtime) do
+            table.insert(categories, categoryName)
+        end
+    end
+
+    for _, categoryName in ipairs(categories) do
+        local runtimeBucket = weaponBuff.Runtime[categoryName] or {}
+        for _, entry in pairs(runtimeBucket) do
+            if stats and effectiveTargetID and entry.modifier then
+                stats:RemoveAndUncacheModifier(effectiveTargetID, entry.modifier)
+            end
+            entry.modifier = nil
+        end
+    end
+
+    sessionWeaponBuffState.applied = false
+    sessionWeaponBuffState.appliedTargetID = nil
+    sessionWeaponBuffState.appliedCategory = nil
+    return true
+end
+
+local function applyWeaponBuffs(targetID, category)
     local stats = Game.GetStatsSystem()
     if not stats or not targetID or not category then
         return false
     end
 
-    local configBucket = weaponBuffConfig[category] or {}
-    local runtimeBucket = weaponBuffRuntime[category] or {}
-
-    local hasAnyEnabled = false
-    local ok = true
+    local configBucket = weaponBuff.Config[category] or {}
+    local runtimeBucket = weaponBuff.Runtime[category] or {}
 
     for buffName, cfg in pairs(configBucket) do
         local runtime = runtimeBucket[buffName]
@@ -607,179 +360,104 @@ local function applyWeaponBuffs(category, targetID)
             runtimeBucket[buffName] = runtime
         end
 
-        if cfg.enabled and cfg.statTypeName and cfg.modifierTypeName and cfg.value and cfg.value ~= 0.0 then
-            hasAnyEnabled = true
-
+        if cfg.enabled then
             local statType = ResolveStatType(cfg.statTypeName)
             local modifierType = ResolveModifierType(cfg.modifierTypeName)
-            local shouldCreate = false
-
-            if runtime.modifier == nil then
-                shouldCreate = true
-            elseif runtime.lastStatType ~= statType or runtime.lastModifierType ~= modifierType or runtime.lastValue ~=
-                cfg.value then
-                stats:RemoveAndUncacheModifier(targetID, runtime.modifier)
-                runtime.modifier = nil
-                shouldCreate = true
-            end
-
-            if shouldCreate and statType and modifierType then
+            if runtime.modifier == nil and statType and modifierType then
                 runtime.modifier = RPGManager.CreateStatModifier(statType, modifierType, cfg.value)
-                runtime.lastStatType = statType
-                runtime.lastModifierType = modifierType
-                runtime.lastValue = cfg.value
             end
-
             if runtime.modifier then
-                local shouldAdd = (not weaponBuffState.applied) or (weaponBuffState.appliedTargetID ~= targetID) or
-                                      shouldCreate
-                if shouldAdd then
-                    ok = ok and stats:AddModifier(targetID, runtime.modifier)
-                end
+                sessionWeaponBuffState.applied = stats:AddModifier(targetID, runtime.modifier)
             else
-                ok = false
+                if runtime.modifier then
+                    stats:RemoveAndUncacheModifier(targetID, runtime.modifier)
+                    runtime.modifier = nil
+                end
             end
-        else
-            if runtime.modifier then
-                stats:RemoveAndUncacheModifier(targetID, runtime.modifier)
-                runtime.modifier = nil
-            end
-            runtime.lastStatType = nil
-            runtime.lastModifierType = nil
-            runtime.lastValue = nil
         end
+        weaponBuff.Runtime[category] = runtimeBucket
+        if sessionWeaponBuffState.applied then
+            sessionWeaponBuffState.appliedTargetID = targetID
+            sessionWeaponBuffState.appliedCategory = category
+        else
+            removeWeaponBuffs(targetID, category)
+        end
+
+        return sessionWeaponBuffState.applied
     end
-
-    weaponBuffRuntime[category] = runtimeBucket
-
-    weaponBuffState.applied = hasAnyEnabled and ok
-    if weaponBuffState.applied then
-        weaponBuffState.appliedTargetID = targetID
-        weaponBuffState.appliedCategory = category
-    else
-        removeWeaponBuffs(category, targetID)
-    end
-
-    return weaponBuffState.applied
 end
 
-local function UpdateSessionBuffSessionState()
+local function UpdateSessionState()
     local player = Game.GetPlayer()
-    sessionBuffSessionState.isLoaded = player ~= nil
+    SessionState.isLoaded = player ~= nil
 end
 
 local function UpdateSessionBuffManagement()
-    UpdateSessionBuffSessionState()
-
-    local shouldApply = sessionBuffSessionState.isLoaded and sessionBuffState.enabled
-
-    if shouldApply then
-        if not sessionBuffState.applied then
-            applySessionBuffs()
+    UpdateSessionState()
+    if SessionState.isLoaded  then
+        if not Buff.isSessionPlayerBuffApplied() then
+            Buff.ApplySessionPlayerBuff()
         end
     else
-        if sessionBuffState.applied then
-            removeSessionBuffs()
+        if Buff.isSessionPlayerBuffApplied() then
+            Buff.RemoveOrDropSessionPlayerBuff()
         end
     end
-end
-
-local function removeBlockBuffs()
-    local player = Game.GetPlayer()
-    local stats = Game.GetStatsSystem()
-    if not player or not stats then
-        ClearStaticBuffDefinitionModifiers(blockBuffDefinitions)
-        blockBuffState.applied = false
-        return true
-    end
-
-    RemoveStaticBuffDefinitions(blockBuffDefinitions, player:GetEntityID(), stats)
-
-    blockBuffState.applied = false
-    return true
-end
-
-local function applyBlockBuffs()
-    if blockBuffState.applied then
-        return true
-    end
-
-    local player = Game.GetPlayer()
-    local stats = Game.GetStatsSystem()
-    if not player or not stats then
-        return false
-    end
-
-    local playerID = player:GetEntityID()
-    if not playerID then
-        return false
-    end
-
-    blockBuffState.applied = ApplyStaticBuffDefinitions(blockBuffDefinitions, playerID, stats)
-    if not blockBuffState.applied then
-        removeBlockBuffs()
-    end
-
-    return blockBuffState.applied
 end
 
 local function HandleMeleeBlockStateChange(isNowBlock)
-    if blockBuffState.isInBlockState == isNowBlock then
-        return
-    end
-
-    blockBuffState.isInBlockState = isNowBlock
     if isNowBlock then
-        applyBlockBuffs()
+        Buff.ApplyBlockPlayerBuff()
     else
-        removeBlockBuffs()
+        Buff.RemoveOrDropBlockPlayerBuff()
     end
 end
 
 local function UpdateWeaponBuffManagement()
     -- 会话不可用时，彻底移除（避免跨存档/跨会话残留）
-    if not sessionBuffSessionState.isLoaded or not weaponBuffState.enabled then
-        if weaponBuffState.applied then
-            removeWeaponBuffs(weaponBuffState.appliedCategory, weaponBuffState.appliedTargetID)
+    if not SessionState.isLoaded or not sessionWeaponBuffState.enabled then
+        if sessionWeaponBuffState.applied then
+            removeWeaponBuffs(sessionWeaponBuffState.appliedTargetID, sessionWeaponBuffState.appliedCategory)
         else
-            weaponBuffState.appliedTargetID = nil
-            weaponBuffState.appliedCategory = nil
+            sessionWeaponBuffState.appliedTargetID = nil
+            sessionWeaponBuffState.appliedCategory = nil
         end
         return
     end
-
-    local currentWeaponTargetID, currentWeaponCategory = GetCurrentWeaponContext()
-
-    -- 用户要求：单纯收起武器（Unarm）不移除，避免立刻再拔出时重复加/删
-    if not currentWeaponTargetID then
+    if not isNeedRefreshCurrentWeaponContext then
         return
     end
 
-    -- 无法识别武器类型时不处理
-    if not currentWeaponCategory then
+    if not GetCurrentWeaponContext() then
+        return
+    end
+    isNeedRefreshCurrentWeaponContext = false
+
+    if not currentWeaponContext.itemID then
+        print("GetCurrentWeaponContext failed to get valid itemID, skip weapon buff update")
         return
     end
 
-    -- 武器未变化且已施加：无需处理
-    if weaponBuffState.applied and weaponBuffState.appliedTargetID == currentWeaponTargetID and
-        weaponBuffState.appliedCategory == currentWeaponCategory then
-        -- 热配置场景：同武器同类别也允许刷新参数
-        applyWeaponBuffs(currentWeaponCategory, currentWeaponTargetID)
+    if not currentWeaponContext.category then
+        print("GetCurrentWeaponContext failed to get valid category, skip weapon buff update")
         return
     end
 
-    -- 仅在检测到“切换到新武器或类别变化”时才移除旧武器并重加到新武器
-    if weaponBuffState.applied and weaponBuffState.appliedTargetID and
-        (weaponBuffState.appliedTargetID ~= currentWeaponTargetID or weaponBuffState.appliedCategory ~=
-            currentWeaponCategory) then
-        removeWeaponBuffs(weaponBuffState.appliedCategory, weaponBuffState.appliedTargetID)
+    if sessionWeaponBuffState.applied then
+        -- buff已应用
+        if currentWeaponContext.itemID == sessionWeaponBuffState.appliedTargetID then
+            -- 已应用,未切换武器,直接返回
+            print("Weapon buff already applied for current weapon, skip refresh")
+            return
+        end
+        -- 武器被切换,旧武器buff清除
+        -- removeWeaponBuffs(sessionWeaponBuffState.appliedTargetID, sessionWeaponBuffState.appliedCategory)
     end
-
-    applyWeaponBuffs(currentWeaponCategory, currentWeaponTargetID)
+    -- applyWeaponBuffs(currentWeaponContext.itemID, currentWeaponContext.category)
 end
 
 local function StopTimeDilation()
-    if not timeDilationState.isActive then
+    if not timeDilationContext.isActive then
         return
     end
 
@@ -793,26 +471,26 @@ local function StopTimeDilation()
     timeSystem:SetIgnoreTimeDilationOnLocalPlayerZero(false)
     StatusEffectHelper.RemoveStatusEffect(player, "BaseStatusEffect.KerenzikovPlayerBuff")
 
-    timeDilationState.isActive = false
-    timeDilationState.timer = 0.0
-    timeDilationState.duration = 0.0
-    timeDilationState.pendingStopOnUnarmed = false
-    timeDilationState.unarmedStopTimer = 0.0
+    timeDilationContext.isActive = false
+    timeDilationContext.timer = 0.0
+    timeDilationContext.duration = 0.0
+    timeDilationContext.pendingStopOnUnarmed = false
+    timeDilationContext.unarmedStopTimer = 0.0
 end
 
 local function UpdateTimeDilationState(deltaTime)
-    if not timeDilationState.isActive then
+    if not timeDilationContext.isActive then
         return
     end
 
-    timeDilationState.timer = timeDilationState.timer + deltaTime
-    if timeDilationState.timer >= timeDilationState.duration then
+    timeDilationContext.timer = timeDilationContext.timer + deltaTime
+    if timeDilationContext.timer >= timeDilationContext.duration then
         StopTimeDilation()
     end
 end
 
 local function TryStartTimeDilationOnDash(scriptInterface)
-    if not QiBuff.isApplied then
+    if not Buff.isQiPlayerBuffApplied() then
         return
     end
     if scriptInterface:GetActionValue("CameraAim") > 0.00 then
@@ -832,104 +510,6 @@ local function TryStartTimeDilationOnDash(scriptInterface)
 
 end
 
-local function RemoveQiBuff()
-    local player = Game.GetPlayer()
-    local stats = Game.GetStatsSystem()
-    if not player or not stats then
-        for _, runtime in pairs(QiBuff.runtime) do
-            runtime.modifier = nil
-            runtime.lastStatType = nil
-            runtime.lastModifierType = nil
-            runtime.lastValue = nil
-        end
-        QiBuff.isApplied = false
-        return true
-    end
-
-    local playerID = player:GetEntityID()
-    for _, runtime in pairs(QiBuff.runtime) do
-        if runtime.modifier then
-            stats:RemoveAndUncacheModifier(playerID, runtime.modifier)
-        end
-        runtime.modifier = nil
-        runtime.lastStatType = nil
-        runtime.lastModifierType = nil
-        runtime.lastValue = nil
-    end
-
-    QiBuff.isApplied = false
-    return true
-end
-
-local function ApplyQiBuff()
-    if QiBuff.isApplied then
-        return true
-    end
-
-    local player = Game.GetPlayer()
-    local stats = Game.GetStatsSystem()
-    if not player or not stats then
-        return false
-    end
-
-    local playerID = player:GetEntityID()
-    if not playerID then
-        return false
-    end
-
-    if not QiBuffConfig.enabled then
-        QiBuff.isApplied = false
-        return true
-    end
-
-    local hasAnyEnabled = false
-    local ok = true
-
-    for buffName, cfg in pairs(QiBuffConfig.entries) do
-        local runtime = QiBuff.runtime[buffName]
-        if not runtime then
-            runtime = {}
-            QiBuff.runtime[buffName] = runtime
-        end
-
-        if cfg.enabled and cfg.statTypeName and cfg.modifierTypeName then
-            local statType = ResolveStatType(cfg.statTypeName)
-            local modifierType = ResolveModifierType(cfg.modifierTypeName)
-            local value = ResolveDamageBuffValue(buffName, cfg, playerID, stats)
-
-            if statType and modifierType and value ~= 0.0 then
-                hasAnyEnabled = true
-                runtime.modifier = RPGManager.CreateStatModifier(statType, modifierType, value)
-                runtime.lastStatType = statType
-                runtime.lastModifierType = modifierType
-                runtime.lastValue = value
-
-                if runtime.modifier then
-                    ok = ok and stats:AddModifier(playerID, runtime.modifier)
-                else
-                    ok = false
-                end
-            else
-                runtime.modifier = nil
-                runtime.lastStatType = nil
-                runtime.lastModifierType = nil
-                runtime.lastValue = nil
-            end
-        else
-            runtime.modifier = nil
-            runtime.lastStatType = nil
-            runtime.lastModifierType = nil
-            runtime.lastValue = nil
-        end
-    end
-
-    QiBuff.isApplied = hasAnyEnabled and ok
-    if not QiBuff.isApplied then
-        RemoveQiBuff()
-    end
-    return QiBuff.isApplied
-end
-
 local equipAttackExtraEffects = {"BaseStatusEffect.BleedingInfinite", "BaseStatusEffect.HeavyPoision"}
 local function OnDamageSystemPreProcess(this, hitEvent, cache)
     -- 检查攻击者是否为玩家
@@ -947,6 +527,7 @@ local function OnDamageSystemPreProcess(this, hitEvent, cache)
         end
     end
 end
+
 local function getSlotIndex(requestType)
     local returnValue = -1
     if requestType == EquipmentManipulationAction.RequestWeaponSlot1 then
@@ -964,7 +545,6 @@ end
 local function OnSendEquipmentSystemWeaponManipulationRequest(this, scriptInterface, requestType, equipAnimType)
     local slotIndex = getSlotIndex(requestType)
     if slotIndex > 0 then
-        playerStates.currentWeaponSlotIndex = slotIndex
         print("currentWeaponSlotIndex:", slotIndex)
     end
 end
@@ -988,24 +568,30 @@ local function OnMeleeWeaponStateChange(_, newState)
     if playerStates.currentEquipState ~= playerStates.previousEquipState then
         -- 处于时间减缓时恢复空手：提前结束
         if playerStates.previousEquipState ~= EquipStates.Unarmed and playerStates.currentEquipState ==
-            EquipStates.Unarmed and timeDilationState.isActive then
-            timeDilationState.pendingStopOnUnarmed = true
-            timeDilationState.unarmedStopTimer = 0.0
+            EquipStates.Unarmed then
+            if timeDilationContext.isActive then
+                timeDilationContext.pendingStopOnUnarmed = true
+                timeDilationContext.unarmedStopTimer = 0.0
+            end
         end
 
         if playerStates.previousEquipState == EquipStates.Unarmed and playerStates.currentEquipState ~=
             EquipStates.Unarmed then
-            timeDilationState.pendingStopOnUnarmed = false
-            timeDilationState.unarmedStopTimer = 0.0
+            if timeDilationContext.isActive then
+                timeDilationContext.pendingStopOnUnarmed = false
+                timeDilationContext.unarmedStopTimer = 0.0
+            end
+            isNeedRefreshCurrentWeaponContext = true
         end
 
         playerStates.previousEquipState = playerStates.currentEquipState
     end
 
-    local isNowBlock = newState == MeleeWeaponStates.Block and playerStates.currentEquipState == EquipStates.Melee
+    local isNowBlock = newState == MeleeWeaponStates.Block
     if wasBlock ~= isNowBlock then
         HandleMeleeBlockStateChange(isNowBlock)
     end
+
 end
 
 -- 监听: PlayerPuppet.OnWeaponStateChange (远程武器)
@@ -1024,23 +610,27 @@ local function OnWeaponStateChange(_, newState)
     end
 
     if playerStates.currentEquipState ~= playerStates.previousEquipState then
-        -- 处于时间减缓时恢复空手：提前结束
         if playerStates.previousEquipState ~= EquipStates.Unarmed and playerStates.currentEquipState ==
-            EquipStates.Unarmed and timeDilationState.isActive then
-            timeDilationState.pendingStopOnUnarmed = true
-            timeDilationState.unarmedStopTimer = 0.0
+            EquipStates.Unarmed then
+            if timeDilationContext.isActive then -- 处于时间减缓时恢复空手：提前结束
+                timeDilationContext.pendingStopOnUnarmed = true
+                timeDilationContext.unarmedStopTimer = 0.0
+            end
         end
 
         if playerStates.previousEquipState == EquipStates.Unarmed and playerStates.currentEquipState ~=
             EquipStates.Unarmed then
-            timeDilationState.pendingStopOnUnarmed = false
-            timeDilationState.unarmedStopTimer = 0.0
+            if timeDilationContext.isActive then
+                timeDilationContext.pendingStopOnUnarmed = false
+                timeDilationContext.unarmedStopTimer = 0.0
+            end
+            isNeedRefreshCurrentWeaponContext = true
         end
 
         playerStates.previousEquipState = playerStates.currentEquipState
     end
 
-    if playerStates.currentEquipState ~= EquipStates.Melee and blockBuffState.applied then
+    if playerStates.currentEquipState ~= EquipStates.Melee and Buff.isBlockPlayerBuffApplied() then
         HandleMeleeBlockStateChange(false)
     end
 end
@@ -1053,7 +643,7 @@ end
 
 local function OverrideAimingStateEnterCondition(this, stateContext, scriptInterface, wrappedMethod)
     -- 简化放行：时缓开启即允许进入 ADS
-    if timeDilationState.isActive and scriptInterface:GetActionValue("CameraAim") > 0.00 then
+    if timeDilationContext.isActive and scriptInterface:GetActionValue("CameraAim") > 0.00 then
         return true
     end
 
@@ -1062,7 +652,7 @@ end
 
 local function OverrideAimingStateToSingleWield(this, stateContext, scriptInterface, wrappedMethod)
     -- 时缓期间，右键按住时不允许从 aimingState 退回 singleWield
-    if timeDilationState.isActive and scriptInterface:GetActionValue("CameraAim") > 0.00 then
+    if timeDilationContext.isActive and scriptInterface:GetActionValue("CameraAim") > 0.00 then
         return false
     end
 
@@ -1078,27 +668,27 @@ local function OnDodgeAirEventsOnEnter(this, stateContext, scriptInterface)
 end
 
 local function OnQuestTrackerInitialize()
-    sessionBuffSessionState.isLoaded = true
+    SessionState.isLoaded = true
 end
 
 local function OnQuestTrackerUninitialize()
-    sessionBuffSessionState.isLoaded = false
-    blockBuffState.isInBlockState = false
-    removeBlockBuffs()
+    SessionState.isLoaded = false
+    Buff.RemoveOrDropSessionPlayerBuff()
+    Buff.RemoveOrDropBlockPlayerBuff()
 end
 
 local function UpdateTimeDilationManagement(deltaTime, isUnarmed)
     UpdateTimeDilationState(deltaTime)
 
-    if timeDilationState.isActive and timeDilationState.pendingStopOnUnarmed then
+    if timeDilationContext.isActive and timeDilationContext.pendingStopOnUnarmed then
         if isUnarmed then
-            timeDilationState.unarmedStopTimer = timeDilationState.unarmedStopTimer + deltaTime
-            if timeDilationState.unarmedStopTimer >= timeDilationState.unarmedStopDelay then
+            timeDilationContext.unarmedStopTimer = timeDilationContext.unarmedStopTimer + deltaTime
+            if timeDilationContext.unarmedStopTimer >= timeDilationContext.unarmedStopDelay then
                 StopTimeDilation()
             end
         else
-            timeDilationState.pendingStopOnUnarmed = false
-            timeDilationState.unarmedStopTimer = 0.0
+            timeDilationContext.pendingStopOnUnarmed = false
+            timeDilationContext.unarmedStopTimer = 0.0
         end
     end
 end
@@ -1109,10 +699,10 @@ local function UpdateQiBuffManagement(deltaTime, isUnarmed)
         if isUnarmed then
             -- 空手状态下自动回复Qi,回满时施加QiBuff
             Qi.current = Qi.current + deltaTime * Qi.rechargeRate
-            if Qi.current >= Qi.max and not QiBuff.isApplied then
+            if Qi.current >= Qi.max and not Buff.isQiPlayerBuffApplied() then
                 Qi.current = Qi.max
                 Qi.isConsumed = false
-                ApplyQiBuff()
+                Buff.ApplyQiPlayerBuff()
                 FlashBarHud(4, 0.12, barHudConfig.readyColor)
             end
         else
@@ -1131,10 +721,10 @@ local function UpdateQiBuffManagement(deltaTime, isUnarmed)
         else
             -- 持械状态下持续消耗Qi，当Qi耗尽时移除QiBuff
             Qi.current = Qi.current - deltaTime * Qi.dischargeRate
-            if Qi.current <= 0.0 and QiBuff.isApplied then
+            if Qi.current <= 0.0 and Buff.isQiPlayerBuffApplied() then
                 Qi.current = 0.0
                 Qi.isConsumed = true
-                RemoveQiBuff()
+                Buff.RemoveQiPlayerBuff()
                 FlashBarHud(6, 0.08, barHudConfig.exitColor)
             end
         end
@@ -1142,7 +732,7 @@ local function UpdateQiBuffManagement(deltaTime, isUnarmed)
 end
 
 local function MaintainTrueDamageEffect()
-    if not QiBuff.isApplied then
+    if not Buff.isQiPlayerBuffApplied() then
         return
     end
 
@@ -1159,10 +749,7 @@ local function MaintainTrueDamageEffect()
 end
 
 function Ninja.onInit()
-    InitializeSessionBuffDefinitions()
     InitializeWeaponBuffConfig()
-    InitializeBlockBuffDefinitions()
-
     -- 注册监听器
     -- Observe("PlayerPuppet", "OnAction", ---@param this PlayerPuppet
     -- ---@param action ListenerAction
@@ -1197,11 +784,6 @@ function Ninja.onUpdate(deltaTime)
     UpdateQiBuffManagement(deltaTime, isUnarmed)
     UpdateBarHudState(deltaTime)
     MaintainTrueDamageEffect()
-    local activeWeaponWheelIndex, ItemID = getWeaponWheelActiveSlot()
-    if activeWeaponWheelIndex ~= playerStates.currentWeaponSlotIndex then
-        playerStates.currentWeaponSlotIndex = activeWeaponWheelIndex
-        print("WeaponWheel active slot changed:", activeWeaponWheelIndex, "ItemID:", ItemID)
-    end
 end
 
 function Ninja.onDraw()
@@ -1211,3 +793,4 @@ end
 registerForEvent("onInit", Ninja.onInit)
 registerForEvent("onUpdate", Ninja.onUpdate)
 registerForEvent("onDraw", Ninja.onDraw)
+
