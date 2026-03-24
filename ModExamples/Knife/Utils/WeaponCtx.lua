@@ -39,7 +39,10 @@ local MeleeWeaponState = {
 WeaponCtx.current = {
     isArmed = false,
     isThrowable = false,
+    item = nil,
     itemID = nil,
+    itemData = nil,
+    statsObjectID = nil,
     category = nil,
     slotIndex = nil,
     state = nil
@@ -47,7 +50,10 @@ WeaponCtx.current = {
 WeaponCtx.last = {
     isArmed = false,
     isThrowable = false,
+    item = nil,
     itemID = nil,
+    itemData = nil,
+    statsObjectID = nil,
     category = nil,
     slotIndex = nil,
     state = nil
@@ -58,16 +64,15 @@ function WeaponCtx.GetEquippedRightHand(player)
     local player = player or Game.GetPlayer()
     local ts = Game.GetTransactionSystem()
     if not player or not ts then
-        return nil, nil, nil
+        return nil, nil, nil, nil
     end
 
     local item = ts:GetItemInSlot(player, "AttachmentSlots.WeaponRight")
     if not item then
-        return nil, nil, nil
+        return nil, nil, nil, nil
     end
-
-    local itemData = item:GetItemData()
     local itemID = item:GetItemID()
+    local itemData = item:GetItemData()
     local statsObjectID = itemData and itemData:GetStatsObjectID() or nil
     return item, itemData, itemID, statsObjectID
 end
@@ -80,21 +85,18 @@ local function RefreshCurrentWeaponInfo(player)
     if not equipmentSystemPlayerData then
         return false
     end
-    local item, itemData, itemID, _ = WeaponCtx.GetEquippedRightHand(player)
+    local item, itemData, itemID, statsObjectID = WeaponCtx.GetEquippedRightHand(player)
     if not item then
         return false
     end
-    if WeaponCtx.current.category == "melee" then
-        if item:IsThrowable() then
-            WeaponCtx.current.isThrowable = true
-        else
-            WeaponCtx.current.isThrowable = false
-        end
-    else
-        WeaponCtx.current.isThrowable = false
-    end
-
+    WeaponCtx.current.item = item
+    WeaponCtx.current.itemData = itemData
     WeaponCtx.current.itemID = itemID
+    WeaponCtx.current.statsObjectID = statsObjectID
+    WeaponCtx.current.isThrowable = false
+    if WeaponCtx.current.category == "melee" and item.IsThrowable and item:IsThrowable() then
+        WeaponCtx.current.isThrowable = true
+    end
     WeaponCtx.current.slotIndex = equipmentSystemPlayerData:GetSlotIndex(itemID, gamedataEquipmentArea.WeaponWheel)
     return true
 end
@@ -104,7 +106,10 @@ local function HandleWeaponInfoChange(player)
     end
     WeaponCtx.last.isArmed = WeaponCtx.current.isArmed
     WeaponCtx.last.isThrowable = WeaponCtx.current.isThrowable
+    WeaponCtx.last.item = WeaponCtx.current.item
     WeaponCtx.last.itemID = WeaponCtx.current.itemID
+    WeaponCtx.last.itemData = WeaponCtx.current.itemData
+    WeaponCtx.last.statsObjectID = WeaponCtx.current.statsObjectID
     WeaponCtx.last.category = WeaponCtx.current.category
     WeaponCtx.last.slotIndex = WeaponCtx.current.slotIndex
     WeaponCtx.last.state = WeaponCtx.current.state
@@ -173,8 +178,28 @@ function WeaponCtx.Init(customWeaponInfoChangeCB)
 end
 
 function WeaponCtx.Deinit()
-    WeaponCtx.current = nil
-    WeaponCtx.last = nil
+    WeaponCtx.current = {
+        isArmed = false,
+        isThrowable = false,
+        item = nil,
+        itemID = nil,
+        itemData = nil,
+        statsObjectID = nil,
+        category = nil,
+        slotIndex = nil,
+        state = nil
+    }
+    WeaponCtx.last = {
+        isArmed = false,
+        isThrowable = false,
+        item = nil,
+        itemID = nil,
+        itemData = nil,
+        statsObjectID = nil,
+        category = nil,
+        slotIndex = nil,
+        state = nil
+    }
     infoChangeCB = nil
 end
 

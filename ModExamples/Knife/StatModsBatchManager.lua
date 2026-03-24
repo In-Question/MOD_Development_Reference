@@ -8,10 +8,10 @@ local PassiveModId = {}
 local DeflectMod = {{"IsDeflecting", "Additive", 1.0}, {"IsBlocking", "Additive", -2.0}}
 local DeflectModId = {}
 
-local StaminaBasedRangedMod = {{"SpreadAdsMinX", "Multiplier", 0.5}, {"SpreadAdsMaxX", "Multiplier", 0.5},
-                               {"SpreadAdsMinY", "Multiplier", 0.5}, {"SpreadAdsMaxY", "Multiplier", 0.5},
-                               {"SpreadMinX", "Multiplier", 0.5}, {"SpreadMaxX", "Multiplier", 0.5},
-                               {"SpreadMinY", "Multiplier", 0.5}, {"SpreadMaxY", "Multiplier", 0.5}}
+local StaminaBasedRangedMod = {{"SpreadAdsMinX", "Multiplier", 0.05}, {"SpreadAdsMaxX", "Multiplier", 0.05},
+                               {"SpreadAdsMinY", "Multiplier", 0.05}, {"SpreadAdsMaxY", "Multiplier", 0.05},
+                               {"SpreadMinX", "Multiplier", 0.05}, {"SpreadMaxX", "Multiplier", 0.05},
+                               {"SpreadMinY", "Multiplier", 0.05}, {"SpreadMaxY", "Multiplier", 0.05}}
 local StaminaBasedRangedModId = {}
 
 local StaminaBasedMeleeMod = {}

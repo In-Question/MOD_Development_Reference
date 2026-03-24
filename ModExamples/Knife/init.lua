@@ -32,12 +32,11 @@ local function ListenWeaponInfoChange(player)
     if WeaponCtx.current.isArmed and not WeaponCtx.last.isArmed then
         if WeaponCtx.current.category == "ranged" then
             --拔枪时
-            local _,_,_,statsObjectID = WeaponCtx.GetEquippedRightHand()
-            if not statsObjectID then
-                print("无法获取武器statsObjectID,无法应用基于体力的远程武器mod")
+            if not WeaponCtx.current.statsObjectID then
+                print("无效statsObjectID")
                 return
             end
-            StatModsBatchManager.ApplyStaminaBasedRangedMod(statsObjectID)
+            StatModsBatchManager.ApplyStaminaBasedRangedMod(WeaponCtx.current.statsObjectID)
         end
     end
 end
