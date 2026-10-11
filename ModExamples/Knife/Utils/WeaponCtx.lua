@@ -50,7 +50,6 @@ WeaponCtx.current = {
 WeaponCtx.last = {
     isArmed = false,
     isThrowable = false,
-    item = nil,
     itemID = nil,
     itemData = nil,
     statsObjectID = nil,
@@ -89,7 +88,6 @@ local function RefreshCurrentWeaponInfo(player)
     if not item then
         return false
     end
-    WeaponCtx.current.item = item
     WeaponCtx.current.itemData = itemData
     WeaponCtx.current.itemID = itemID
     WeaponCtx.current.statsObjectID = statsObjectID
@@ -106,7 +104,6 @@ local function HandleWeaponInfoChange(player)
     end
     WeaponCtx.last.isArmed = WeaponCtx.current.isArmed
     WeaponCtx.last.isThrowable = WeaponCtx.current.isThrowable
-    WeaponCtx.last.item = WeaponCtx.current.item
     WeaponCtx.last.itemID = WeaponCtx.current.itemID
     WeaponCtx.last.itemData = WeaponCtx.current.itemData
     WeaponCtx.last.statsObjectID = WeaponCtx.current.statsObjectID
@@ -181,7 +178,6 @@ function WeaponCtx.Deinit()
     WeaponCtx.current = {
         isArmed = false,
         isThrowable = false,
-        item = nil,
         itemID = nil,
         itemData = nil,
         statsObjectID = nil,
@@ -192,7 +188,6 @@ function WeaponCtx.Deinit()
     WeaponCtx.last = {
         isArmed = false,
         isThrowable = false,
-        item = nil,
         itemID = nil,
         itemData = nil,
         statsObjectID = nil,
@@ -200,7 +195,6 @@ function WeaponCtx.Deinit()
         slotIndex = nil,
         state = nil
     }
-    infoChangeCB = nil
 end
 
 return WeaponCtx

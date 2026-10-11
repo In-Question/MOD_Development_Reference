@@ -22,26 +22,26 @@ local overshieldThreshold = {
     low = 1.0,
     high = 5.0
 }
-local function MonitorStateToggle()
+local function MonitorStateToggle(player)
     if PlayerCtx.current.stamina < staminaThreshold.low and PlayerCtx.current.staminaState == true then
         PlayerCtx.current.staminaState = false
         print("体力状态切换为低")
-        if infoChangeCB then infoChangeCB() end
+        if infoChangeCB then infoChangeCB(player) end
     end
     if PlayerCtx.current.stamina > staminaThreshold.high and PlayerCtx.current.staminaState == false then
         PlayerCtx.current.staminaState = true
         print("体力状态切换为高")
-        if infoChangeCB then infoChangeCB() end
+        if infoChangeCB then infoChangeCB(player) end
     end
     if PlayerCtx.current.Overshield < overshieldThreshold.low and PlayerCtx.current.OvershieldState == true then
         PlayerCtx.current.OvershieldState = false
         print("护盾状态切换为低")
-        if infoChangeCB then infoChangeCB() end
+        if infoChangeCB then infoChangeCB(player) end
     end
     if PlayerCtx.current.Overshield > overshieldThreshold.high and PlayerCtx.current.OvershieldState == false then
         PlayerCtx.current.OvershieldState = true
         print("护盾状态切换为高")
-        if infoChangeCB then infoChangeCB() end
+        if infoChangeCB then infoChangeCB(player) end
     end
 end
 
@@ -91,7 +91,7 @@ function PlayerCtx.Update(deltaTime,isLoaded) --delatTime 单位：秒
     if PlayerCtx.current.Overshield == nil then
         PlayerCtx.current.Overshield = 0.0
     end
-    MonitorStateToggle()
+    MonitorStateToggle(player)
     -- 更新最后状态
     PlayerCtx.last.stamina = PlayerCtx.current.stamina
     PlayerCtx.last.staminaState = PlayerCtx.current.staminaState

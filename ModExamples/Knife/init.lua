@@ -4,6 +4,7 @@ local Knife = require("Knife")
 local StatModsBatchManager = require("StatModsBatchManager")
 local WeaponCtx = require("Utils/WeaponCtx")
 local PlayerCtx = require("Utils/PlayerCtx")
+
 local lastLoadedState = false
 local isLoaded = false
 local function SyncModWithSession()
@@ -29,26 +30,37 @@ local function ListenWeaponInfoChange(player)
             StatModsBatchManager.RemoveDeflectMod()
         end
     end
-    if WeaponCtx.current.isArmed and not WeaponCtx.last.isArmed then
-        if WeaponCtx.current.category == "ranged" then
-            --拔枪时
-            if not WeaponCtx.current.statsObjectID then
-                print("无效statsObjectID")
-                return
+    if WeaponCtx.current.itemID ~= WeaponCtx.last.itemID then
+        if PlayerCtx.current.staminaState then
+            if WeaponCtx.last.category == "ranged" then
+                StatModsBatchManager.RemoveStaminaBasedRangedMod()
+            else
+                StatModsBatchManager.RemoveStaminaBasedMeleeMod()
             end
-            StatModsBatchManager.ApplyStaminaBasedRangedMod(WeaponCtx.current.statsObjectID)
+            if WeaponCtx.current.category == "ranged" then
+                StatModsBatchManager.ApplyStaminaBasedRangedMod(WeaponCtx.current.statsObjectID)
+            else
+                StatModsBatchManager.ApplyStaminaBasedMeleeMod(WeaponCtx.current.statsObjectID)
+            end
         end
     end
 end
 
-local function ListenPlayerInfoChange()
+local function ListenPlayerInfoChange(player)
     if PlayerCtx.current.staminaState and not PlayerCtx.last.staminaState then
+        StatModsBatchManager.ApplyStaminaBasedPlayerMod(player)
+        local _, _, _, statsObjectID = WeaponCtx.GetEquippedRightHand(player)
         if WeaponCtx.current.category == "ranged" then
-            -- StatModsBatchManager.ApplyStaminaBasedRangedMod()
+            StatModsBatchManager.ApplyStaminaBasedRangedMod(statsObjectID)
+        else
+            StatModsBatchManager.ApplyStaminaBasedMeleeMod(statsObjectID)
         end
     elseif not PlayerCtx.current.staminaState and PlayerCtx.last.staminaState then
+        StatModsBatchManager.RemoveStaminaBasedPlayerMod(player)
         if WeaponCtx.last.category == "ranged" then
-            -- StatModsBatchManager.RemoveStaminaBasedRangedMod()
+            StatModsBatchManager.RemoveStaminaBasedRangedMod()
+        else
+            StatModsBatchManager.RemoveStaminaBasedMeleeMod()
         end
     end
 end
@@ -64,9 +76,12 @@ local function Init()
     PlayerCtx.Init(ListenPlayerInfoChange)
     GameSession.Listen(ListenSessionStateChange)
 end
+local function tweak()
+    TweakDB:SetFlat("playerStateMachineMelee.meleeLeap.maxDistToTarget", 60.0)
+end
 
 local function Update(deltaTime)
-    PlayerCtx.Update(deltaTime,isLoaded)
+    PlayerCtx.Update(deltaTime, isLoaded)
     Cron.Update(deltaTime)
 end
 
@@ -78,5 +93,6 @@ local function Shutdown()
 end
 
 registerForEvent("onInit", Init)
+registerForEvent("onTweak", tweak)
 registerForEvent("onUpdate", Update)
 registerForEvent("onShutdown", Shutdown)
