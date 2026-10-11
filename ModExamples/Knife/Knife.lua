@@ -1,6 +1,7 @@
 -- 第一步找到生成飞行道具的游戏内部逻辑
 local Teleport = require("Utils/Teleport")
 local TimeDilation = require("Utils/TimaDilation")
+local SimpleLightning = require("Utils/SimpleLighting")
 local Knife = {}
 local meleeProjectileHandle = nil
 local couldTeleport = false
@@ -25,11 +26,10 @@ local function OnUpdateCB(this, timeDelta, stateContext, scriptInterface)
         print("MeleeProjectile has no valid position.")
         return
     end
-    if scriptInterface:IsActionJustPressed("MeleeAttack") and couldTeleport then
-        TimeDilation.Start(3.0)
-        Teleport.TeleportToDistanceFrom(pos, 2.0)
-    elseif scriptInterface:IsActionJustPressed("MeleeBlock") and couldTeleport then
+
+    if scriptInterface:IsActionJustPressed("MeleeBlock") and couldTeleport then
         couldTeleport = false
+        SimpleLightning.BetweenPlayerAndTarget(meleeProjectileHandle)
         StatusEffectHelper.ApplyStatusEffectOnSelf("BaseStatusEffect.JugglerPerkRemoveKnifeCooldownsSE",
             GetPlayer():GetEntityID());
     elseif scriptInterface:IsActionJustPressed("Reload") then
