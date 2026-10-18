@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dodge 程序框图</title>
+<style>
+:root {
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --muted: #f2f2f2;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground: #ececec;
+    --card: #161616;
+    --muted: #2a2a2a;
+    color-scheme: dark;
+  }
+}
+body {
+  margin: 0;
+  background: var(--card);
+  color: var(--foreground);
+  font: 14px/1.5 "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+h1 { font-size: 22px; font-weight: 600; margin: 0 0 8px; }
+.lead { margin: 0 0 28px; }
+.vis-section-stack { display: flex; flex-direction: column; gap: 28px; }
+.vis-column { display: flex; flex-direction: column; gap: 12px; }
+.vis-row { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; }
+.vis-chart-meta-copy { display: flex; flex-direction: column; gap: 2px; }
+.vis-chart-meta-copy h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.vis-chart-meta-copy span { font-size: 13px; opacity: 0.72; }
+.vis-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Dodge 程序框图</h1>
+<p class="lead">地面 dodge 与空中 dodgeAir。菱形是判断，出口只标是或否。圆圈里相同字母会再汇合。两侧带竖线的矩形是被调用的子程序。冲量数字是脚本缺省值。</p><div id="dodge-std" class="vis-section-stack">
+  <div class="vis-sr-only">玩家 Dodge 的标准程序框图。每个菱形是一个判断，出口标是或否。</div>
+  <style>
+    #dodge-std svg { width: 100%; height: auto; display: block; }
+    #dodge-std .flow-text { font-size: 12px; fill: var(--foreground); }
+    #dodge-std .sym { display: flex; align-items: center; gap: 8px; }
+    #dodge-std .sym svg { width: 72px; height: 32px; flex: 0 0 auto; }
+  </style>
+  <div class="vis-column">
+    <div class="vis-chart-meta">
+      <div class="vis-chart-meta-copy">
+        <h3>框图符号</h3>
+        <span>判断出口标是或否</span>
+      </div>
+    </div>
+    <div class="vis-row">
+      <div class="sym"><svg viewBox="0 0 72 32" aria-hidden="true"><rect x="1" y="1" width="70" height="30" rx="15" fill="var(--card)" stroke="var(--foreground)" stroke-width="1.5"></rect></svg><span>起止</span></div>
+      <div class="sym"><svg viewBox="0 0 72 32" aria-hidden="true"><rect x="1" y="1" width="70" height="30" fill="var(--card)" stroke="var(--foreground)" stroke-width="1.5"></rect></svg><span>处理</span></div>
+      <div class="sym"><svg viewBox="0 0 72 32" aria-hidden="true"><polygon points="36,1 71,16 36,31 1,16" fill="var(--card)" stroke="var(--foreground)" stroke-width="1.5"></polygon></svg><span>判断</span></div>
+      <div class="sym"><svg viewBox="0 0 72 32" aria-hidden="true"><circle cx="36" cy="16" r="12" fill="var(--muted)" stroke="var(--foreground)" stroke-width="1.5"></circle></svg><span>连接</span></div>
+      <div class="sym"><svg viewBox="0 0 72 32" aria-hidden="true"><rect x="1" y="1" width="70" height="30" fill="var(--card)" stroke="var(--foreground)" stroke-width="1.5"></rect><line x1="9" y1="1" x2="9" y2="31" stroke="var(--foreground)" stroke-width="1.5"></line><line x1="63" y1="1" x2="63" y2="31" stroke="var(--foreground)" stroke-width="1.5"></line></svg><span>预定义处理</span></div>
+    </div>
+  </div>
+  <div id="dodge-std-mount" class="vis-section-stack"></div>
+</div>
+<script>
+const CHARTS = [
+  {
+    title: "地面进入判定",
+    subtitle: "时停激活则不进入",
+    aria: "地面 EnterCondition。kereznikov 时停正在激活则不进入。没有瞄准许可且上半身正在瞄准并且装备远程武器，也不进入。",
+    steps: [
+      { k: "term", text: "开始：DodgeDecisions.EnterCondition", out: true },
+      { k: "proc", text: "若 m_shouldDisableEnterCondition 为真，则关闭以后的进入检查。这一帧的判断仍然执行" },
+      { k: "pre", text: "调用 WantsToDodge" },
+      { k: "dec", text: "WantsToDodge 返回真？", yes: "down", no: "stop", stop: "不进入 dodge" },
+      { k: "dec", text: "现在还有 HasDodge？", yes: "down", no: "stop", stop: "不进入 dodge" },
+      { k: "dec", text: "kereznikov 时停正在激活？", yes: "stop", no: "down", stop: "不进入 dodge" },
+      { k: "dec", text: "没有 CanAimWhileDodging，且上半身是 aimingState，且装备了远程武器？", yes: "stop", no: "down", stop: "不进入 dodge" },
+      { k: "term", text: "进入 DodgeEvents" }
+    ]
+  },
+  {
+    title: "WantsToDodge",
+    subtitle: "失败就返回假",
+    aria: "WantsToDodge 的判断顺序。没有 HasDodge、有 HealFood3、在冷却、离地但不满足空中条件、下坠过快，都返回假。",
+    steps: [
+      { k: "term", text: "开始：WantsToDodge", out: true },
+      { k: "dec", text: "有 HasDodge？", yes: "down", no: "stop", stop: "返回假" },
+      { k: "dec", text: "有 HealFood3？", yes: "stop", no: "down", stop: "返回假" },
+      { k: "dec", text: "有 DodgeCooldown 或 DodgeAirCooldown？", yes: "stop", no: "down", stop: "返回假" },
+      { k: "dec", text: "IsTouchingGround 为真？", yes: "join", no: "down", join: "A" },
+      { k: "dec", text: "Reflexes_Central_Milestone_3 的等级等于 3？", yes: "down", no: "stop", stop: "返回假" },
+      { k: "dec", text: "体力池大于 0？", yes: "down", no: "stop", stop: "返回假" },
+      { k: "dec", text: "disableAirDash 有效且值为真？", yes: "stop", no: "down", stop: "返回假" },
+      { k: "join", id: "A" },
+      { k: "dec", text: "人未着地，且垂直速度小于或等于 VeryHardLandingFallingSpeed？", yes: "stop", no: "down", stop: "返回假" },
+      { k: "dec", text: "Dodge 是 JustTapped？", yes: "down", no: "join", join: "B" },
+      { k: "dec", text: "IsMoveInputConsiderable 为真？", yes: "side", no: "down", side: [
+        { k: "proc", text: "DodgeDirection = 当前输入朝向" },
+        { k: "term", text: "返回真" }
+      ] },
+      { k: "dec", text: "静态参数 dodgeWithNoMovementInput 为真？", yes: "side", no: "down", side: [
+        { k: "proc", text: "DodgeDirection = -180" },
+        { k: "term", text: "返回真" }
+      ] },
+      { k: "join", id: "B" },
+      { k: "pre", text: "调用 WantsToDodgeFromMovementInput" },
+      { k: "dec", text: "方向键函数返回真？", yes: "down", no: "stop", stop: "返回假" },
+      { k: "dec", text: "GetMovementDodgeEnabled 为真？", yes: "stop", no: "stop", stopYes: "返回真", stopNo: "返回假" }
+    ]
+  },
+  {
+    title: "方向键朝向",
+    subtitle: "刚按下才写入",
+    aria: "四个方向键的 DodgeDirection。没按任何一个就返回假。",
+    steps: [
+      { k: "term", text: "开始：WantsToDodgeFromMovementInput", out: true },
+      { k: "dec", text: "DodgeForward 是 JustPressed？", yes: "down", no: "join", join: "R" },
+      { k: "proc", text: "方向 = 0" },
+      { k: "dec", text: "Left 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 + 45" }] },
+      { k: "dec", text: "Right 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 - 45" }] },
+      { k: "proc", text: "DodgeDirection = 方向" },
+      { k: "term", text: "返回真" },
+      { k: "join", id: "R" },
+      { k: "dec", text: "DodgeRight 是 JustPressed？", yes: "down", no: "join", join: "T" },
+      { k: "proc", text: "方向 = -90" },
+      { k: "dec", text: "Forward 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 + 45" }] },
+      { k: "dec", text: "Back 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 - 45" }] },
+      { k: "proc", text: "DodgeDirection = 方向" },
+      { k: "term", text: "返回真" },
+      { k: "join", id: "T" },
+      { k: "dec", text: "DodgeLeft 是 JustPressed？", yes: "down", no: "join", join: "L" },
+      { k: "proc", text: "方向 = 90" },
+      { k: "dec", text: "Forward 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 - 45" }] },
+      { k: "dec", text: "Back 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 + 45" }] },
+      { k: "proc", text: "DodgeDirection = 方向" },
+      { k: "term", text: "返回真" },
+      { k: "join", id: "L" },
+      { k: "dec", text: "DodgeBack 是 JustPressed？", yes: "down", no: "stop", stop: "返回假" },
+      { k: "proc", text: "方向 = -180" },
+      { k: "dec", text: "Left 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 = 135" }] },
+      { k: "dec", text: "Right 的键值大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "方向 + 45" }] },
+      { k: "proc", text: "DodgeDirection = 方向" },
+      { k: "term", text: "返回真" }
+    ]
+  },
+  {
+    title: "空中进入判定",
+    subtitle: "次数到顶则不进入",
+    aria: "DodgeAir 的 EnterCondition。没有 HasDodgeAir、正在瞄准且没有许可、有 HealFood3、下坠过快、空中次数已满，都不进入。通过后再调用 WantsToDodge。",
+    steps: [
+      { k: "term", text: "开始：DodgeAirDecisions.EnterCondition", out: true },
+      { k: "proc", text: "EnableOnEnterCondition(false)。这次按下只判断一次" },
+      { k: "dec", text: "有 HasDodgeAir？", yes: "down", no: "stop", stop: "不进入 dodgeAir" },
+      { k: "dec", text: "没有 CanAimWhileDodging，且上半身是 aimingState？", yes: "stop", no: "down", stop: "不进入 dodgeAir" },
+      { k: "dec", text: "有 HealFood3？", yes: "stop", no: "down", stop: "不进入 dodgeAir" },
+      { k: "dec", text: "人未着地，且垂直速度小于或等于 VeryHardLandingFallingSpeed？", yes: "stop", no: "down", stop: "不进入 dodgeAir" },
+      { k: "dec", text: "currentNumberOfAirDodges 大于或等于 numberOfAirDodges（缺省 1）？", yes: "stop", no: "down", stop: "不进入 dodgeAir" },
+      { k: "pre", text: "调用 WantsToDodge" },
+      { k: "dec", text: "WantsToDodge 返回真？", yes: "stop", no: "stop", stopYes: "进入 DodgeAirEvents", stopNo: "不进入 dodgeAir" }
+    ]
+  },
+  {
+    title: "地面 OnEnter",
+    subtitle: "先准备再分叉",
+    aria: "DodgeEvents.OnEnter 的准备和分叉。电梯外且里程碑 2 等于 2 进入强化位移，否则进入传统 Dodge。",
+    steps: [
+      { k: "term", text: "从滑铲进入：OnEnterFromSlide", out: true },
+      { k: "proc", text: "m_enteredFromSlide = 真" },
+      { k: "pre", text: "调用下面的 OnEnter" },
+      { k: "term", text: "滑铲入口结束" },
+      { k: "gap" },
+      { k: "term", text: "开始：DodgeEvents.OnEnter", out: true },
+      { k: "proc", text: "黑板 DodgeTimeStamp = 当前引擎时间" },
+      { k: "proc", text: "记住 currentNumberOfJumps，再调用父类 OnEnter。父类把该参数写成 0" },
+      { k: "dec", text: "进入前的 Locomotion 是 chargeJump？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "isGravityAffectedByChargedJump = 真" }] },
+      { k: "dec", text: "输入方案编号等于 0，且 PlayerLastUsedKBM 为假？", yes: "down", no: "join", join: "N" },
+      { k: "proc", text: "m_crouching = 真", then: "C" },
+      { k: "join", id: "N" },
+      { k: "dec", text: "进入前状态是 crouch、crouchSprint 或 slide？", yes: "down", no: "join", join: "F" },
+      { k: "dec", text: "方案编号等于 0，或 ToggleCrouch 不是 JustTapped，或 Crouch 不是 JustPressed？", yes: "down", no: "join", join: "F" },
+      { k: "proc", text: "m_crouching = 真", then: "C" },
+      { k: "join", id: "F" },
+      { k: "proc", text: "m_crouching = 假" },
+      { k: "join", id: "C" },
+      { k: "dec", text: "m_crouching 为真？", yes: "down", no: "join", join: "U" },
+      { k: "proc", text: "SetCrouch(真)，EnterCrouch，障碍系统进入蹲姿" },
+      { k: "proc", text: "黑板 Locomotion = 13，动画 crouch = 1", then: "P" },
+      { k: "join", id: "U" },
+      { k: "dec", text: "进入前状态是 crouch 或 crouchSprint？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "CrouchToggled = 假" }] },
+      { k: "proc", text: "黑板 Locomotion = 7" },
+      { k: "join", id: "P" },
+      { k: "proc", text: "DodgeWhileCrouching = m_crouching" },
+      { k: "proc", text: "读取准星 NPC，记下它是不是敌对" },
+      { k: "dec", text: "不在电梯内，且 Reflexes_Central_Milestone_2 的等级等于 2？", yes: "stop", no: "stop", stopYes: "进入强化位移", stopNo: "进入传统 Dodge" }
+    ]
+  },
+  {
+    title: "强化位移",
+    subtitle: "return 不做收尾",
+    aria: "强化位移。人在空中且里程碑 3 不等于 3 就 return。否则锁敌成功走 LeapToTarget，否则走 Dash。",
+    steps: [
+      { k: "term", text: "开始：强化位移", out: true },
+      { k: "dec", text: "人在空中，且 Reflexes_Central_Milestone_3 的等级不等于 3？", yes: "stop", no: "down", stop: "return。不执行共享收尾" },
+      { k: "proc", text: "TemporarySpeedLimitIgnore = 真" },
+      { k: "dec", text: "Reflexes_Central_Perk_2_1 至少 1 级？", yes: "down", no: "join", join: "M" },
+      { k: "proc", text: "搜索距离 = maxDistToTarget（缺省 5）× 2", then: "S" },
+      { k: "join", id: "M" },
+      { k: "proc", text: "搜索距离 = maxDistToTarget，缺省 5" },
+      { k: "join", id: "S" },
+      { k: "proc", text: "用搜索距离找远目标，用 minDistToTarget（缺省 1）找近目标" },
+      { k: "dec", text: "准星 NPC 是敌对？", yes: "down", no: "join", join: "D" },
+      { k: "dec", text: "DodgeDirection 的绝对值小于 60？", yes: "down", no: "join", join: "D" },
+      { k: "dec", text: "近目标存在，或远目标存在？", yes: "down", no: "join", join: "D" },
+      { k: "proc", text: "施加 PlayerMadDashLocomotionBuffer" },
+      { k: "pre", text: "调用 LeapToTarget" },
+      { k: "proc", text: "按闪避方向播放震动", then: "E" },
+      { k: "join", id: "D" },
+      { k: "dec", text: "人在空中？", yes: "down", no: "join", join: "G" },
+      { k: "pre", text: "isAirDash = TreatDashAsAirDash 的返回值" },
+      { k: "join", id: "G" },
+      { k: "pre", text: "调用 Dash(体力是否耗尽, isAirDash)" },
+      { k: "proc", text: "按方向播放震动。体力耗尽时用重震动" },
+      { k: "join", id: "E" },
+      { k: "dec", text: "进入时体力池等于 0？", yes: "join", no: "down", join: "H" },
+      { k: "proc", text: "音效 lcm_dash，特效 dash，施加 PlayerJustDashed" },
+      { k: "join", id: "H" },
+      { k: "proc", text: "推出动画事件 Dodge" },
+      { k: "term", text: "进入共享收尾" }
+    ]
+  },
+  {
+    title: "是否按空中冲量",
+    subtitle: "高度差超过阈值",
+    aria: "TreatDashAsAirDash。最小或最大高度差的绝对值大于阈值就返回真。",
+    steps: [
+      { k: "term", text: "开始：TreatDashAsAirDash", out: true },
+      { k: "proc", text: "阈值取 TweakDB：Perks.IsPlayerInAirDashElevation.elevationThreshold" },
+      { k: "dec", text: "MinElevation 的绝对值大于阈值？", yes: "stop", no: "down", stop: "返回真" },
+      { k: "dec", text: "MaxElevation 的绝对值大于阈值？", yes: "stop", no: "down", stop: "返回真" },
+      { k: "term", text: "返回假" }
+    ]
+  },
+  {
+    title: "Dash 冲量",
+    subtitle: "离地写下禁飞标志",
+    aria: "Dash。离地时写下 disableAirDash。treatDashAsAirDash 为真用空中冲量，否则用地面冲量。冲量 Z 为 0。",
+    steps: [
+      { k: "term", text: "开始：Dash", out: true },
+      { k: "dec", text: "IsTouchingGround 为假？", yes: "down", no: "join", join: "Q" },
+      { k: "proc", text: "disableAirDash = 真" },
+      { k: "dec", text: "记住的跳跃次数大于 0？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "次数加 1，写回 currentNumberOfJumps" }] },
+      { k: "join", id: "Q" },
+      { k: "dec", text: "treatDashAsAirDash 为真？", yes: "down", no: "join", join: "W" },
+      { k: "proc", text: "挂上空中减速修正，缺省 -0.71" },
+      { k: "dec", text: "体力已耗尽？", yes: "down", no: "join", join: "X" },
+      { k: "proc", text: "强度 = airDashImpulseNoStamina，缺省 6.50", then: "Y" },
+      { k: "join", id: "X" },
+      { k: "proc", text: "强度 = airDashImpulse，缺省 10.00" },
+      { k: "proc", text: "施加 DodgeAirBuff" },
+      { k: "join", id: "Y" },
+      { k: "dec", text: "Reflexes_Master_Perk_3 的等级等于 1？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "发送 ReflexesMasterPerk3Triggerd" }] },
+      { k: "proc", text: "施加 PlayerJustAirDashed", then: "Z" },
+      { k: "join", id: "W" },
+      { k: "proc", text: "挂上地面减速修正，缺省 -0.71" },
+      { k: "dec", text: "体力已耗尽？", yes: "down", no: "join", join: "V" },
+      { k: "proc", text: "强度 = dashImpulseNoStamina，缺省 7.80", then: "Z" },
+      { k: "join", id: "V" },
+      { k: "proc", text: "强度 = dashImpulse，缺省 10.00" },
+      { k: "join", id: "Z" },
+      { k: "proc", text: "冲量 = 镜头偏航加 DodgeDirection 的水平单位向量 × 强度。Z = 0" },
+      { k: "proc", text: "AddImpulse" },
+      { k: "dec", text: "体力已耗尽？", yes: "stop", no: "down", stop: "结束。不加经验" },
+      { k: "proc", text: "机动经验 +5" },
+      { k: "term", text: "结束" }
+    ]
+  },
+  {
+    title: "传统 Dodge",
+    subtitle: "未强化时走这里",
+    aria: "传统 Dodge 分支。蹲姿闪避不推 Dodge 动画。有 SecondChancePerkTimeDilation 才播 lcm_dash。",
+    steps: [
+      { k: "term", text: "开始：传统 Dodge", out: true },
+      { k: "pre", text: "调用传统冲量函数 Dodge" },
+      { k: "dec", text: "m_crouching 为真？", yes: "join", no: "down", join: "A" },
+      { k: "proc", text: "推出动画事件 Dodge" },
+      { k: "join", id: "A" },
+      { k: "dec", text: "有状态标签 SecondChancePerkTimeDilation？", yes: "down", no: "join", join: "B" },
+      { k: "proc", text: "音效 lcm_dash" },
+      { k: "join", id: "B" },
+      { k: "proc", text: "按闪避方向播放震动" },
+      { k: "term", text: "进入共享收尾" }
+    ]
+  },
+  {
+    title: "传统冲量函数",
+    subtitle: "只写一次水平冲量",
+    aria: "传统 Dodge 函数。耗尽用 5.50，否则用 7.80 并施加 PlayerJustDodged。",
+    steps: [
+      { k: "term", text: "开始：Dodge", out: true },
+      { k: "proc", text: "挂上减速修正，缺省 -0.71" },
+      { k: "dec", text: "体力已耗尽？", yes: "down", no: "join", join: "A" },
+      { k: "proc", text: "强度 = impulseNoStamina，缺省 5.50", then: "B" },
+      { k: "join", id: "A" },
+      { k: "proc", text: "强度 = impulse，缺省 7.80" },
+      { k: "proc", text: "施加 PlayerJustDodged" },
+      { k: "join", id: "B" },
+      { k: "proc", text: "冲量 = 镜头偏航加 DodgeDirection 的水平单位向量 × 强度。Z = 0" },
+      { k: "proc", text: "AddImpulse" },
+      { k: "dec", text: "体力已耗尽？", yes: "stop", no: "down", stop: "结束。不加经验" },
+      { k: "proc", text: "机动经验 +3" },
+      { k: "term", text: "结束" }
+    ]
+  },
+  {
+    title: "LeapToTarget",
+    subtitle: "按距离算贴靠时长",
+    aria: "LeapToTarget。俯仰超过上限就夹住。目标向量缩短 1.25 后请求位置调整。",
+    steps: [
+      { k: "term", text: "开始：LeapToTarget", out: true },
+      { k: "dec", text: "镜头俯仰大于 noTargetMaxPitch（缺省 45）？", yes: "down", no: "join", join: "A" },
+      { k: "proc", text: "把镜头俯仰夹到这个上限" },
+      { k: "join", id: "A" },
+      { k: "proc", text: "向量 = 目标位置减镜头位置，再沿该方向缩短 1.25" },
+      { k: "pre", text: "时长 = CalculateAdjustmentDuration(向量长度)" },
+      { k: "proc", text: "RequestPlayerPositionAdjustment，使用这个时长和目标点" },
+      { k: "term", text: "结束" }
+    ]
+  },
+  {
+    title: "调整时长",
+    subtitle: "远则接近 0.25 秒",
+    aria: "CalculateAdjustmentDuration。距离按最小和最大距离归一后，时长在 0.05 到 0.25 秒之间。这里的最大距离不乘专长。",
+    steps: [
+      { k: "term", text: "开始：CalculateAdjustmentDuration", out: true },
+      { k: "proc", text: "minDist 缺省 1，maxDist 缺省 5。这个 maxDist 不乘 Perk 2_1" },
+      { k: "proc", text: "比例 = (距离减 minDist) 除以 (maxDist 减 minDist)，再夹到 0 和 1" },
+      { k: "proc", text: "时长在最短 0.05 秒和最长 0.25 秒之间按比例取值" },
+      { k: "term", text: "返回时长" }
+    ]
+  },
+  {
+    title: "共享收尾",
+    subtitle: "侧向超 45 度才无敌",
+    aria: "共享收尾。体力未耗尽且朝向小于 -45 或大于 45 才施加闪避无敌。",
+    steps: [
+      { k: "term", text: "开始：共享收尾", out: true },
+      { k: "proc", text: "任务事实 gmpl_player_dodged 加 1" },
+      { k: "proc", text: "施加 DodgeBuff、JustDodgedBuffer、PlayerJustDodgedLocomotionBuffer" },
+      { k: "dec", text: "体力未耗尽，且 DodgeDirection 小于 -45 或大于 45？", yes: "down", no: "join", join: "A" },
+      { k: "proc", text: "施加 DodgeInvulnerability" },
+      { k: "join", id: "A" },
+      { k: "proc", text: "按当前运动状态扣体力" },
+      { k: "proc", text: "IsDodging 修饰加 1" },
+      { k: "proc", text: "详细运动状态 = Dodge，并写遥测" },
+      { k: "term", text: "OnEnter 结束" }
+    ]
+  },
+  {
+    title: "地面四个出口",
+    subtitle: "四个函数分别判断",
+    aria: "ToStand、ToCrouch、ToSlide、ToFall 各自判断。脚本没有写四者同时成立时谁优先。",
+    steps: [
+      { k: "term", text: "开始：ToStand", out: true },
+      { k: "dec", text: "IsTouchingGround 为真？", yes: "down", no: "stop", stop: "不能转到 Stand" },
+      { k: "dec", text: "身上还有 DodgeBuff？", yes: "stop", no: "down", stop: "不能转到 Stand" },
+      { k: "dec", text: "DodgeWhileCrouching 为真？", yes: "stop", no: "down", stop: "不能转到 Stand" },
+      { k: "dec", text: "CrouchToggled 为真？", yes: "stop", no: "down", stop: "不能转到 Stand" },
+      { k: "dec", text: "Crouch 键值大于 0？", yes: "stop", no: "down", stop: "不能转到 Stand" },
+      { k: "term", text: "可以转到 Stand" },
+      { k: "gap" },
+      { k: "term", text: "开始：ToCrouch", out: true },
+      { k: "dec", text: "IsTouchingGround 为真？", yes: "down", no: "stop", stop: "不能转到 Crouch" },
+      { k: "dec", text: "身上还有 DodgeBuff？", yes: "stop", no: "down", stop: "不能转到 Crouch" },
+      { k: "dec", text: "DodgeWhileCrouching 为真，或 CrouchToggled 为真，或 Crouch 键值大于 0？", yes: "down", no: "stop", stop: "不能转到 Crouch" },
+      { k: "term", text: "可以转到 Crouch" },
+      { k: "gap" },
+      { k: "term", text: "开始：ToSlide", out: true },
+      { k: "dec", text: "IsTouchingGround 为真？", yes: "down", no: "stop", stop: "不能转到 Slide" },
+      { k: "dec", text: "身上还有 DodgeBuff？", yes: "stop", no: "down", stop: "不能转到 Slide" },
+      { k: "dec", text: "DodgeWhileCrouching 为真？", yes: "stop", no: "down", stop: "不能转到 Slide" },
+      { k: "dec", text: "CrouchToggled 为真，或 Crouch 键值大于 0？", yes: "down", no: "stop", stop: "不能转到 Slide" },
+      { k: "term", text: "可以转到 Slide" },
+      { k: "gap" },
+      { k: "term", text: "开始：ToFall", out: true },
+      { k: "dec", text: "kerenzikov 正在激活，且未着地，且上半身是 aimingState，且 Reflexes_Inbetween_Left_3 至少 1 级？", yes: "stop", no: "down", stop: "不能转到 Fall" },
+      { k: "dec", text: "IsTouchingGround 为真？", yes: "stop", no: "down", stop: "不能转到 Fall" },
+      { k: "dec", text: "身上还有 DodgeBuff？", yes: "stop", no: "down", stop: "不能转到 Fall" },
+      { k: "dec", text: "身上还有 DodgeAirBuff？", yes: "stop", no: "down", stop: "不能转到 Fall" },
+      { k: "term", text: "可以转到 Fall" }
+    ]
+  },
+  {
+    title: "退出清理",
+    subtitle: "卸掉进入时的副作用",
+    aria: "OnExit 先清理再交父类。OnForcedExit 顺序相反。清理会移除 Buff、减速和存档锁。",
+    steps: [
+      { k: "term", text: "从 OnExit 进入", out: true },
+      { k: "pre", text: "CleanUpOnExit" },
+      { k: "pre", text: "父类 OnExit" },
+      { k: "term", text: "OnExit 结束" },
+      { k: "gap" },
+      { k: "term", text: "从 OnForcedExit 进入", out: true },
+      { k: "pre", text: "父类 OnForcedExit" },
+      { k: "pre", text: "CleanUpOnExit" },
+      { k: "term", text: "OnForcedExit 结束" },
+      { k: "gap" },
+      { k: "term", text: "开始：CleanUpOnExit", out: true },
+      { k: "proc", text: "m_pressureWaveCreated = 假" },
+      { k: "dec", text: "m_enteredFromSlide 为真？", yes: "down", no: "join", join: "A" },
+      { k: "proc", text: "停止滑铲音效，并把该标志写成假" },
+      { k: "join", id: "A" },
+      { k: "dec", text: "IsDodging 修饰存在？", yes: "down", no: "join", join: "B" },
+      { k: "proc", text: "移除 IsDodging 修饰" },
+      { k: "join", id: "B" },
+      { k: "proc", text: "移除 DodgeBuff 和 DodgeAirBuff" },
+      { k: "proc", text: "TemporarySpeedLimitIgnore = 假" },
+      { k: "proc", text: "卸下地面减速修正和空中减速修正" },
+      { k: "dec", text: "m_crouching 为真？", yes: "down", no: "join", join: "C" },
+      { k: "proc", text: "SetCrouch(假)，LeaveCrouch，黑板 Locomotion = 0，动画 crouch = 0" },
+      { k: "join", id: "C" },
+      { k: "dec", text: "曾经加上空中闪避存档锁？", yes: "down", no: "join", join: "D" },
+      { k: "proc", text: "移除 DisableSaveWhileAirDashing，标志写成假" },
+      { k: "join", id: "D" },
+      { k: "term", text: "清理结束" }
+    ]
+  },
+  {
+    title: "地面 OnUpdate",
+    subtitle: "离地才加存档锁",
+    aria: "DodgeEvents.OnUpdate。0.15 秒后发一次脚步刺激。未着地且还没锁过才加存档锁。",
+    steps: [
+      { k: "term", text: "开始：DodgeEvents.OnUpdate", out: true },
+      { k: "pre", text: "调用父类 OnUpdate" },
+      { k: "dec", text: "压力波还没发过，且本状态时间大于或等于 0.15 秒？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "标记已发送，并广播冲刺脚步刺激" }] },
+      { k: "dec", text: "还没加过存档锁，且现在未着地？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "加上 DisableSaveWhileAirDashing，标志写成真" }] },
+      { k: "dec", text: "Jump 是 JustPressed？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "JumpPressed = 真" }] },
+      { k: "dec", text: "ToggleSprint 是 JustPressed？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "SprintToggled = 真" }] },
+      { k: "dec", text: "ToggleCrouch 是 JustTapped 或 JustHeld？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "CrouchToggled = 进入时不是蹲姿" }] },
+      { k: "proc", text: "按参数 7 和 0.85 尝试去掉光学迷彩" },
+      { k: "term", text: "本帧结束" }
+    ]
+  },
+  {
+    title: "空中执行与退出",
+    subtitle: "无 Buff 才回下落",
+    aria: "DodgeAir 进入、每帧、ToFall 和 OnExit。次数先加 1。冲量缺省 10，Z 为 0。没有 DodgeAirBuff 且不在 kerenzikov 才转到 Fall。",
+    steps: [
+      { k: "term", text: "开始：DodgeAirEvents.OnEnter", out: true },
+      { k: "pre", text: "调用父类 LocomotionAirEvents.OnEnter" },
+      { k: "proc", text: "currentNumberOfAirDodges 加 1 并写回" },
+      { k: "proc", text: "水平冲量 = 镜头偏航加 DodgeDirection，强度缺省 10.00，Z = 0。然后 AddImpulse" },
+      { k: "proc", text: "详细状态 = DodgeAir。按方向震动，推出动画事件 Dodge" },
+      { k: "proc", text: "SprintToggled = 假，CrouchToggled = 假，免新输入起跑 = 假" },
+      { k: "proc", text: "施加 DodgeAirBuff，按运动状态扣体力" },
+      { k: "proc", text: "遥测记为 AirDodge，黑板 Locomotion = 8" },
+      { k: "term", text: "OnEnter 结束" },
+      { k: "gap" },
+      { k: "term", text: "开始：DodgeAirEvents.OnUpdate", out: true },
+      { k: "dec", text: "Jump 是 JustPressed？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "JumpPressed = 真" }] },
+      { k: "pre", text: "调用父类 OnUpdate" },
+      { k: "term", text: "本帧结束" },
+      { k: "gap" },
+      { k: "term", text: "开始：DodgeAirDecisions.ToFall", out: true },
+      { k: "dec", text: "身上还有 DodgeAirBuff？", yes: "join", no: "down", join: "K" },
+      { k: "dec", text: "TimeDilation 当前状态是 kerenzikov？", yes: "stop", no: "stop", stopYes: "留在 dodgeAir", stopNo: "转到 Fall" },
+      { k: "join", id: "K" },
+      { k: "dec", text: "kerenzikov 正在激活，且 KerenzikovPlayerBuff 已经没有？", yes: "stop", no: "stop", stopYes: "转到 Fall", stopNo: "留在 dodgeAir" },
+      { k: "gap" },
+      { k: "term", text: "开始：DodgeAirEvents.OnExit", out: true },
+      { k: "pre", text: "调用父类 OnExit" },
+      { k: "proc", text: "移除 DodgeAirBuff" },
+      { k: "term", text: "结束" }
+    ]
+  },
+  {
+    title: "输入监听",
+    subtitle: "按下才打开检查",
+    aria: "地面松开时只置禁用标志。空中只在按下时打开检查，EnterCondition 一进来就关掉。",
+    steps: [
+      { k: "term", text: "开始：地面 OnAttach", out: true },
+      { k: "proc", text: "注册 Dodge、DodgeDirection、DodgeForward、DodgeRight、DodgeLeft、DodgeBack" },
+      { k: "proc", text: "EnableOnEnterCondition(false)" },
+      { k: "term", text: "等待按键" },
+      { k: "gap" },
+      { k: "term", text: "开始：地面 OnAction", out: true },
+      { k: "dec", text: "这个动作是刚按下？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "禁用标志 = 假，并打开进入检查" }] },
+      { k: "dec", text: "这个动作是刚松开？", yes: "side", no: "down", rejoin: true, side: [{ k: "proc", text: "禁用标志 = 真" }] },
+      { k: "term", text: "本事件结束" },
+      { k: "gap" },
+      { k: "term", text: "开始：空中 OnAttach", out: true },
+      { k: "proc", text: "注册同样的五个动作，并先关闭进入检查" },
+      { k: "term", text: "等待按键" },
+      { k: "gap" },
+      { k: "term", text: "开始：空中 OnAction", out: true },
+      { k: "dec", text: "这个动作是刚按下？", yes: "down", no: "stop", stop: "不打开检查" },
+      { k: "proc", text: "EnableOnEnterCondition(true)" },
+      { k: "term", text: "结束。松开时没有处理" }
+    ]
+  }
+];
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function textWidth(s) {
+  let w = 0;
+  for (const ch of s) w += ch.codePointAt(0) > 255 ? 16 : 8;
+  return w;
+}
+function wrapText(s, maxW) {
+  const lines = [];
+  let line = "";
+  for (const ch of s) {
+    if (line && textWidth(line + ch) > maxW) {
+      lines.push(line);
+      line = ch;
+    } else line += ch;
+  }
+  if (line) lines.push(line);
+  return lines.length ? lines : [""];
+}
+function measureLines(text, maxW, innerRatio) {
+  const inner = Math.max(72, maxW * innerRatio);
+  const lines = wrapText(text, inner);
+  return { lines, inner };
+}
+
+function validate(charts) {
+  const errors = [];
+  const arms = new Set(["down", "stop", "join", "side"]);
+  charts.forEach((chart) => {
+    const ids = new Set(chart.steps.filter((s) => s.k === "join").map((s) => s.id));
+    chart.steps.forEach((s) => {
+      if (s.join && !ids.has(s.join)) errors.push(chart.title + " 缺少连接 " + s.join);
+      if (s.then && !ids.has(s.then)) errors.push(chart.title + " 缺少跳转 " + s.then);
+      if (s.k === "dec") {
+        if (!arms.has(s.yes) || !arms.has(s.no)) errors.push(chart.title + " 出口无效 " + s.text);
+        if (s.yes === "join" && !s.join) errors.push(chart.title + " 是缺少连接 " + s.text);
+        if (s.no === "join" && !s.join) errors.push(chart.title + " 否缺少连接 " + s.text);
+        if ((s.yes === "side" || s.no === "side") && (!s.side || !s.side.length)) errors.push(chart.title + " 缺少侧支 " + s.text);
+        if (s.yes === "stop" && s.no === "stop" && (!s.stopYes || !s.stopNo)) errors.push(chart.title + " 双侧结束缺少文字 " + s.text);
+        if ((s.yes === "stop") !== (s.no === "stop") && !s.stop && s.yes !== "stop") errors.push("stop text");
+        if (s.yes === "stop" && s.no !== "stop" && !s.stop) errors.push(chart.title + " 缺少结束文字 " + s.text);
+        if (s.no === "stop" && s.yes !== "stop" && !s.stop) errors.push(chart.title + " 缺少结束文字 " + s.text);
+      }
+    });
+  });
+  return errors;
+}
+
+function layout(chart, width) {
+  const W = Math.max(300, Math.round(width));
+  const LEFT = 76;
+  const boxes = [];
+  const wide = W >= 620;
+  const rightReserve = wide ? 214 : 28;
+  const budget = Math.max(150, W - LEFT - rightReserve);
+  const boxMax = Math.min(336, budget);
+  const cx = LEFT + boxMax / 2;
+  const aroundX = W - 14;
+  const nodes = [];
+  let y = 16;
+
+  function pushBox(b) { boxes.push(b); }
+
+  function measureStep(step, maxW) {
+    if (step.k === "join") return { w: 28, h: 28, lines: [step.id] };
+    if (step.k === "gap") return { w: 0, h: 0, lines: [] };
+    if (step.k === "term") {
+      const cap = 28;
+      const lines = wrapText(step.text, Math.max(56, maxW - cap * 2));
+      const textH = lines.length * 16;
+      const h = Math.max(40, textH + 20);
+      const textW = Math.max(...lines.map(textWidth));
+      const w = Math.min(maxW, Math.max(h + 8, textW + cap * 2));
+      return { w, h, lines };
+    }
+    const ratio = step.k === "dec" ? 0.46 : 0.9;
+    const fitted = measureLines(step.text, maxW - 24, ratio);
+    const textH = fitted.lines.length * 16;
+    if (step.k === "dec") {
+      const h = Math.max(78, textH * 2 + 40);
+      return { w: maxW, h, lines: fitted.lines };
+    }
+    const h = Math.max(40, textH + 22);
+    const w = Math.min(maxW, Math.max(148, Math.max(...fitted.lines.map(textWidth)) + 28));
+    return { w, h, lines: fitted.lines };
+  }
+
+  chart.steps.forEach((step, i) => {
+    if (step.k === "gap") {
+      nodes.push({ step, i, y, h: 0, box: null });
+      y += 28;
+      return;
+    }
+    const bothStop = step.k === "dec" && step.yes === "stop" && step.no === "stop";
+    const box = measureStep(step, boxMax);
+    let side = null;
+    if (step.side) {
+      const sideMax = wide ? Math.min(196, W - (cx + box.w / 2) - 36) : Math.min(220, boxMax);
+      let sy = 0;
+      const parts = step.side.map((part) => {
+        const mb = measureStep(part, sideMax);
+        const item = { step: part, y: sy, box: mb };
+        sy += mb.h + 18;
+        return item;
+      });
+      side = { parts, h: Math.max(0, sy - 18), w: sideMax };
+    }
+    let stopBox = null;
+    if (step.k === "dec" && (step.yes === "stop" || step.no === "stop") && !bothStop) {
+      const label = step.yes === "stop" ? step.stop : step.stop;
+      stopBox = measureStep({ k: "term", text: label }, wide ? Math.min(190, W - cx - box.w / 2 - 36) : Math.min(220, boxMax));
+    }
+    let yesStop = null;
+    let noStop = null;
+    if (bothStop) {
+      const colW = Math.max(120, Math.min(200, (boxMax - 16) / 2));
+      yesStop = measureStep({ k: "term", text: step.stopYes }, colW);
+      noStop = measureStep({ k: "term", text: step.stopNo }, colW);
+    }
+    let rowH = box.h;
+    if (wide) rowH = Math.max(box.h, side ? side.h : 0, stopBox ? stopBox.h : 0);
+    else {
+      rowH = box.h;
+      if (stopBox) rowH += 22 + stopBox.h;
+      if (side) rowH += 22 + side.h;
+    }
+    if (bothStop) rowH = box.h + 26 + Math.max(yesStop.h, noStop.h);
+    const node = { step, i, y, h: rowH, box, side, stopBox, yesStop, noStop, bothStop, cx };
+    nodes.push(node);
+    y += rowH + 36;
+  });
+
+  const H = y + 8;
+  const joinAt = {};
+  nodes.forEach((n) => { if (n.step.k === "join") joinAt[n.step.id] = n; });
+
+  function placeMain(n) {
+    const b = n.box;
+    const x = n.cx - b.w / 2;
+    const top = n.y;
+    n.main = { x, y: top, w: b.w, h: b.h, cx: n.cx, cy: top + b.h / 2 };
+    pushBox({ x, y: top, w: b.w, h: b.h, text: n.step.text || n.step.id });
+  }
+
+  nodes.forEach((n) => {
+    if (!n.box) return;
+    placeMain(n);
+    if (n.side) {
+      if (wide) {
+        const x = n.main.x + n.main.w + 32;
+        let sy = n.y;
+        n.side.parts.forEach((p) => {
+          p.abs = { x, y: sy, w: p.box.w, h: p.box.h, cx: x + p.box.w / 2, cy: sy + p.box.h / 2 };
+          pushBox({ x, y: sy, w: p.box.w, h: p.box.h, text: p.step.text });
+          sy += p.box.h + 18;
+        });
+      } else {
+        let sy = n.main.y + n.main.h + 22 + (n.stopBox ? n.stopBox.h + 22 : 0);
+        n.side.parts.forEach((p) => {
+          const x = n.cx - p.box.w / 2;
+          p.abs = { x, y: sy, w: p.box.w, h: p.box.h, cx: n.cx, cy: sy + p.box.h / 2 };
+          pushBox({ x, y: sy, w: p.box.w, h: p.box.h, text: p.step.text });
+          sy += p.box.h + 18;
+        });
+      }
+    }
+    if (n.stopBox && !n.bothStop) {
+      if (wide) {
+        const x = n.main.x + n.main.w + 32;
+        const yy = n.main.cy - n.stopBox.h / 2;
+        n.stopAbs = { x, y: yy, w: n.stopBox.w, h: n.stopBox.h, cx: x + n.stopBox.w / 2, cy: n.main.cy };
+      } else {
+        const yy = n.main.y + n.main.h + 22;
+        const x = n.cx - n.stopBox.w / 2;
+        n.stopAbs = { x, y: yy, w: n.stopBox.w, h: n.stopBox.h, cx: n.cx, cy: yy + n.stopBox.h / 2 };
+      }
+      pushBox(Object.assign({ text: n.step.stop }, n.stopAbs));
+    }
+    if (n.bothStop) {
+      const gap = 16;
+      const total = n.yesStop.w + n.noStop.w + gap;
+      const left = n.cx - total / 2;
+      const yy = n.main.y + n.main.h + 26;
+      n.yesAbs = { x: left, y: yy, w: n.yesStop.w, h: n.yesStop.h, cx: left + n.yesStop.w / 2, cy: yy + n.yesStop.h / 2 };
+      const rx = left + n.yesStop.w + gap;
+      n.noAbs = { x: rx, y: yy, w: n.noStop.w, h: n.noStop.h, cx: rx + n.noStop.w / 2, cy: yy + n.noStop.h / 2 };
+      pushBox(Object.assign({ text: n.step.stopYes }, n.yesAbs));
+      pushBox(Object.assign({ text: n.step.stopNo }, n.noAbs));
+    }
+  });
+
+  function nextOf(i) {
+    const n = nodes[i + 1];
+    if (!n || n.step.k === "gap") return null;
+    return n;
+  }
+  function anchor(node, side) {
+    const m = node.main;
+    if (node.step.k === "dec") {
+      if (side === "top") return { x: m.cx, y: m.y };
+      if (side === "bottom") return { x: m.cx, y: m.y + m.h };
+      if (side === "left") return { x: m.x, y: m.cy };
+      return { x: m.x + m.w, y: m.cy };
+    }
+    if (node.step.k === "join") {
+      if (side === "left") return { x: m.cx - 14, y: m.cy };
+      if (side === "right") return { x: m.cx + 14, y: m.cy };
+      if (side === "top") return { x: m.cx, y: m.y };
+      return { x: m.cx, y: m.y + m.h };
+    }
+    if (side === "top") return { x: m.cx, y: m.y };
+    if (side === "bottom") return { x: m.cx, y: m.y + m.h };
+    if (side === "left") return { x: m.x, y: m.cy };
+    return { x: m.x + m.w, y: m.cy };
+  }
+
+  const lanes = [];
+  function laneX(y1, y2) {
+    const a = Math.min(y1, y2);
+    const b = Math.max(y1, y2);
+    let lane = 0;
+    while (lanes.some((l) => l.lane === lane && !(b < l.a - 6 || a > l.b + 6))) lane += 1;
+    lanes.push({ lane, a, b });
+    return 16 + lane * 16;
+  }
+
+  const paths = [];
+  const labels = [];
+  function addPath(d) { paths.push(d); }
+  function addLabel(x, y, text) { labels.push({ x, y, text }); }
+
+  function line(x1, y1, x2, y2) {
+    addPath("M " + x1 + " " + y1 + " L " + x2 + " " + y2);
+  }
+  function ortho(x1, y1, x2, y2) {
+    if (Math.abs(x1 - x2) < 1 || Math.abs(y1 - y2) < 1) line(x1, y1, x2, y2);
+    else addPath("M " + x1 + " " + y1 + " L " + x1 + " " + y2 + " L " + x2 + " " + y2);
+  }
+
+  nodes.forEach((n) => {
+    const step = n.step;
+    if (step.k === "gap" || step.k === "join") {
+      if (step.k === "join") {
+        const nxt = nextOf(n.i);
+        if (nxt && nxt.main) {
+          const a = anchor(n, "bottom");
+          const b = anchor(nxt, "top");
+          line(a.x, a.y, b.x, b.y);
+        }
+      }
+      return;
+    }
+    const downWord = step.k === "dec" ? (step.yes === "down" ? "是" : step.no === "down" ? "否" : "") : "";
+    const sideWord = step.k === "dec" ? (step.yes === "side" ? "是" : step.no === "side" ? "否" : "") : "";
+    const stopWord = step.k === "dec" ? (step.yes === "stop" ? "是" : step.no === "stop" ? "否" : "") : "";
+    const joinWord = step.k === "dec" ? (step.yes === "join" ? "是" : step.no === "join" ? "否" : "") : "";
+    const nxt = nextOf(n.i);
+
+    if (step.k === "dec" && n.bothStop) {
+      const bottom = anchor(n, "bottom");
+      const yb = bottom.y + 14;
+      addPath("M " + bottom.x + " " + bottom.y + " L " + bottom.x + " " + yb + " L " + n.yesAbs.cx + " " + yb + " L " + n.yesAbs.cx + " " + n.yesAbs.y);
+      addPath("M " + bottom.x + " " + yb + " L " + n.noAbs.cx + " " + yb + " L " + n.noAbs.cx + " " + n.noAbs.y);
+      addLabel((bottom.x + n.yesAbs.cx) / 2, yb - 8, "是");
+      addLabel((bottom.x + n.noAbs.cx) / 2, yb - 8, "否");
+      return;
+    }
+
+    if (step.then && joinAt[step.then]) {
+      const target = joinAt[step.then];
+      const a = anchor(n, "left");
+      const b = anchor(target, "left");
+      const x = laneX(a.y, b.y);
+      addPath("M " + a.x + " " + a.y + " L " + x + " " + a.y + " L " + x + " " + b.y + " L " + b.x + " " + b.y);
+    } else if ((step.k === "proc" || step.k === "pre" || (step.k === "term" && step.out)) && nxt && nxt.main) {
+      const a = anchor(n, "bottom");
+      const b = anchor(nxt, "top");
+      line(a.x, a.y, b.x, b.y);
+    }
+
+    if (step.k !== "dec") return;
+
+    if (downWord && nxt && nxt.main) {
+      const stacked = !wide && (n.side || n.stopBox);
+      if (!stacked) {
+        const a = anchor(n, "bottom");
+        const b = anchor(nxt, "top");
+        line(a.x, a.y, b.x, b.y);
+        addLabel(a.x + 14, a.y + 14, downWord);
+      } else {
+        const a = anchor(n, "right");
+        const b = anchor(nxt, "right");
+        addPath("M " + a.x + " " + a.y + " L " + aroundX + " " + a.y + " L " + aroundX + " " + b.y + " L " + b.x + " " + b.y);
+        addLabel(a.x + 18, a.y - 8, downWord);
+      }
+    }
+    if (stopWord && n.stopAbs) {
+      if (wide) {
+        const a = anchor(n, "right");
+        line(a.x, a.y, n.stopAbs.x, n.stopAbs.cy);
+        addLabel((a.x + n.stopAbs.x) / 2, a.y - 10, stopWord);
+      } else {
+        const a = anchor(n, "bottom");
+        line(a.x, a.y, n.stopAbs.cx, n.stopAbs.y);
+        addLabel(a.x + 14, a.y + 12, stopWord);
+      }
+    }
+    if (joinWord && joinAt[step.join]) {
+      const target = joinAt[step.join];
+      const a = anchor(n, "left");
+      const b = anchor(target, "left");
+      const x = laneX(a.y, b.y);
+      addPath("M " + a.x + " " + a.y + " L " + x + " " + a.y + " L " + x + " " + b.y + " L " + b.x + " " + b.y);
+      addLabel(a.x - 18, a.y - 8, joinWord);
+    }
+    if (sideWord && n.side) {
+      const first = n.side.parts[0];
+      const last = n.side.parts[n.side.parts.length - 1];
+      if (wide) {
+        const a = anchor(n, "right");
+        line(a.x, a.y, first.abs.x, first.abs.cy);
+        addLabel((a.x + first.abs.x) / 2, a.y - 10, sideWord);
+        for (let p = 0; p < n.side.parts.length - 1; p += 1) {
+          const cur = n.side.parts[p];
+          const nx = n.side.parts[p + 1];
+          line(cur.abs.cx, cur.abs.y + cur.abs.h, nx.abs.cx, nx.abs.y);
+        }
+        if (step.rejoin && nxt && nxt.main) {
+          const gapY = n.y + n.h + 14;
+          const from = { x: last.abs.cx, y: last.abs.y + last.abs.h };
+          const to = anchor(nxt, "top");
+          addPath("M " + from.x + " " + from.y + " L " + from.x + " " + gapY + " L " + to.x + " " + gapY + " L " + to.x + " " + to.y);
+        }
+      } else {
+        const a = anchor(n, "bottom");
+        line(a.x, a.y, first.abs.cx, first.abs.y);
+        addLabel(a.x + 14, a.y + 12, sideWord);
+        for (let p = 0; p < n.side.parts.length - 1; p += 1) {
+          const cur = n.side.parts[p];
+          const nx = n.side.parts[p + 1];
+          line(cur.abs.cx, cur.abs.y + cur.abs.h, nx.abs.cx, nx.abs.y);
+        }
+        if (step.rejoin && nxt && nxt.main) {
+          const fromY = last.abs.y + last.abs.h;
+          const to = anchor(nxt, "top");
+          line(last.abs.cx, fromY, to.x, to.y);
+        }
+      }
+    }
+  });
+
+  const overlaps = [];
+  for (let i = 0; i < boxes.length; i += 1) {
+    for (let j = i + 1; j < boxes.length; j += 1) {
+      const a = boxes[i];
+      const b = boxes[j];
+      const ix = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+      const iy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+      if (ix > 6 && iy > 6) overlaps.push((a.text || "") + " | " + (b.text || ""));
+    }
+  }
+
+  return { W, H, nodes, paths, labels, overlaps, boxes, cx };
+}
+
+function drawNode(n) {
+  if (!n.main) return "";
+  const step = n.step;
+  const m = n.main;
+  let body = "";
+  const common = ' fill="var(--card)" stroke="var(--foreground)" stroke-width="1.5" vector-effect="non-scaling-stroke"';
+  if (step.k === "dec") {
+    const pts = m.cx + "," + m.y + " " + (m.x + m.w) + "," + m.cy + " " + m.cx + "," + (m.y + m.h) + " " + m.x + "," + m.cy;
+    body += '<polygon points="' + pts + '"' + common + "></polygon>";
+  } else if (step.k === "term") {
+    body += '<rect x="' + m.x + '" y="' + m.y + '" width="' + m.w + '" height="' + m.h + '" rx="' + (m.h / 2) + '"' + common + "></rect>";
+  } else if (step.k === "join") {
+    body += '<circle cx="' + m.cx + '" cy="' + m.cy + '" r="14" fill="var(--muted)" stroke="var(--foreground)" stroke-width="1.5" vector-effect="non-scaling-stroke"></circle>';
+  } else {
+    body += '<rect x="' + m.x + '" y="' + m.y + '" width="' + m.w + '" height="' + m.h + '"' + common + "></rect>";
+    if (step.k === "pre") {
+      body += '<line x1="' + (m.x + 8) + '" y1="' + m.y + '" x2="' + (m.x + 8) + '" y2="' + (m.y + m.h) + '" stroke="var(--foreground)" stroke-width="1.5" vector-effect="non-scaling-stroke"></line>';
+      body += '<line x1="' + (m.x + m.w - 8) + '" y1="' + m.y + '" x2="' + (m.x + m.w - 8) + '" y2="' + (m.y + m.h) + '" stroke="var(--foreground)" stroke-width="1.5" vector-effect="non-scaling-stroke"></line>';
+    }
+  }
+  body += textOf(n.box.lines, m.cx, m.cy);
+  (n.side ? n.side.parts : []).forEach((p) => {
+    body += shapeOf(p.step.k, p.abs, p.box.lines);
+  });
+  if (n.stopAbs) body += shapeOf("term", n.stopAbs, n.stopBox.lines);
+  if (n.yesAbs) body += shapeOf("term", n.yesAbs, n.yesStop.lines);
+  if (n.noAbs) body += shapeOf("term", n.noAbs, n.noStop.lines);
+  return body;
+}
+function shapeOf(kind, m, lines) {
+  const common = ' fill="var(--card)" stroke="var(--foreground)" stroke-width="1.5" vector-effect="non-scaling-stroke"';
+  let s = "";
+  if (kind === "term") s += '<rect x="' + m.x + '" y="' + m.y + '" width="' + m.w + '" height="' + m.h + '" rx="' + (m.h / 2) + '"' + common + "></rect>";
+  else s += '<rect x="' + m.x + '" y="' + m.y + '" width="' + m.w + '" height="' + m.h + '"' + common + "></rect>";
+  s += textOf(lines, m.cx, m.cy);
+  return s;
+}
+function textOf(lines, cx, cy) {
+  const lh = 16;
+  const start = cy - ((lines.length - 1) * lh) / 2;
+  return lines.map((ln, i) => '<text class="vis-chart-text flow-text" x="' + cx + '" y="' + (start + i * lh) + '" text-anchor="middle" dominant-baseline="central">' + esc(ln) + "</text>").join("");
+}
+
+function renderSvg(chart, width, index) {
+  const laid = layout(chart, width);
+  const marker = "mk" + index;
+  let svg = '<defs><marker id="' + marker + '" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 Z" fill="var(--foreground)"></path></marker></defs>';
+  laid.paths.forEach((d) => {
+    svg += '<path d="' + d + '" fill="none" stroke="var(--foreground)" stroke-width="1.5" vector-effect="non-scaling-stroke" marker-end="url(#' + marker + ')"></path>';
+  });
+  laid.nodes.forEach((n) => { svg += drawNode(n); });
+  laid.labels.forEach((lb) => {
+    svg += '<text class="vis-chart-text flow-text" x="' + lb.x + '" y="' + lb.y + '" text-anchor="middle" dominant-baseline="central">' + esc(lb.text) + "</text>";
+  });
+  return { viewBox: "0 0 " + laid.W + " " + Math.ceil(laid.H), body: svg, overlaps: laid.overlaps };
+}
+
+function header(chart) {
+  return '<div class="vis-chart-meta"><div class="vis-chart-meta-copy"><h3>' + esc(chart.title) + '</h3><span>' + esc(chart.subtitle) + "</span></div></div>";
+}
+
+function boot() {
+  const root = document.getElementById("dodge-std");
+  const mount = document.getElementById("dodge-std-mount");
+  const errors = validate(CHARTS);
+  CHARTS.forEach((chart) => {
+    const col = document.createElement("div");
+    col.className = "vis-column";
+    col.innerHTML = header(chart);
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", chart.aria);
+    col.appendChild(svg);
+    mount.appendChild(col);
+  });
+  const svgs = mount.querySelectorAll("svg");
+  function paint() {
+    const w = root.clientWidth || mount.clientWidth;
+    if (!w) return;
+    CHARTS.forEach((chart, i) => {
+      const drawn = renderSvg(chart, w, i);
+      svgs[i].setAttribute("viewBox", drawn.viewBox);
+      svgs[i].innerHTML = drawn.body;
+    });
+  }
+  paint();
+  if (typeof ResizeObserver !== "undefined") new ResizeObserver(paint).observe(root);
+  root.dataset.flowErrors = errors.join(" | ");
+}
+
+if (typeof document !== "undefined") boot();
+globalThis.CHARTS = CHARTS;
+globalThis.layout = layout;
+globalThis.validate = validate;
+</script>
+
+</main>
+</body>
+</html>

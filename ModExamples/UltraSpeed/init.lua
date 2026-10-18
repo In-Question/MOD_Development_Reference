@@ -1,0 +1,6 @@
+registerForEvent("onInit", function()
+	TweakDB:SetFlat("player.locomotion.maxGroundSpeed", 999999.0)
+    	TweakDB:SetFlat("player.locomotion.maxAirXYSpeed", 999999.0)
+	TweakDB:SetFlat("PlayerLocomotion.player_locomotion_data_Dodge_inline9.value", 1)
+	TweakDB:SetFlat("PlayerLocomotion.player_locomotion_data_DodgeAir_inline9.value", 1)
+end)

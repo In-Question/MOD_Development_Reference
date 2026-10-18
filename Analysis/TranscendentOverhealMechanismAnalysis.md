@@ -600,7 +600,7 @@ ModifyStatPoolCustomLimitEffector
 > - 原生（native）`StatPoolsSystem` 对 `Overshield` 的内部处理；
 > - UI 展示层与真实资源池上限之间的视觉差异。
 
-因此，在当前证据范围内，这一条应归入“**待外部数据确认**”，不能写成脚本已证实事实。
+因此，仅就反编译脚本而言，这一条不能写成脚本已证实事实。后续在 2.31 实机里已经确认上限存在，并且运行时就落在 `gamedataStatType.Overshield` 上。记录路径仍然没找到，见第 11 节。
 
 ### 9.0.1 关于“独狼技能达到一定等级后，`Overshield` 只衰减到某个比例就停止”的说明
 
@@ -647,11 +647,12 @@ ModifyStatPoolCustomLimitEffector
 - `Overshield` 承伤顺序在 `Armor` 和 `Health` 之前。
 - `ScaleOvershieldDecayOverTimeEffector` 通过 `OvershieldDecayRate` modifier 推进衰减。
 - `BloodlustHealingEffector`、`JuggernautEffector`、`UnstoppableEffector`、`SadismEffector` 都把 `Overshield > 0` 当作触发条件之一。
-- UI 将 `Health + Overshield` 叠加显示，并有单独 `Overshield` 条。
+- UI 将 `Health + Overshield` 叠加显示，并有单独 `Overshield` 条。生命数字用 `Ceil`，护盾数字用 `Round`，两者相加。见第 11.4 节。
 
 ### 9.2 待外部数据确认的内容
 
-- “`Overshield` 不能超过 50%” 是否为真实的系统上限。
+- 把 `gamedataStatType.Overshield` 设成 `0.5 × 最大生命` 的那条 TweakDB 记录路径。实机数值已经对上，但走查 perk 数据包没有找到它。
+- 治疗把护盾写成 50% 之后，又把它改回 30% 的那次写入来自哪条记录。现象已复现，来源未定位。
 - `Body_Central_Perk_3_1` 是否就是某个“延迟衰减” perk。
 - 该 perk 是否一定对应玩家界面中的 `Rapid Bloodflow`。
 - `JuggernautBuff` 的具体内容。
@@ -675,6 +676,8 @@ ModifyStatPoolCustomLimitEffector
 ```swift
 TweakDBInterface.GetFloat(t"NewPerks.Body_Central_Milestone_3.overshieldPercentage", 0.30)
 ```
+
+这个 flat 改成 `0.5` 之后，原函数会先加上 50%，但结果还会被改回 30%。只改这里不够，见第 11.2 节。
 
 ### 10.2 调整 Overshield 衰减速度
 
@@ -726,15 +729,13 @@ TweakDBInterface.GetFloat(t"NewPerks.Body_Central_Milestone_3.overshieldPercenta
 
 ### 10.3 当前最推荐的 Mod 策略
 
-基于现有证据，建议把开发优先级定成：
+第 11 节的实机结果已经补上了当时缺的上限证据。玩家护盾上限可以直接改 `gamedataStatType.Overshield`，不必再把它留到最后。衰减仍然是脚本路径最清楚的一部分。
 
-1. **先做衰减速度/衰减延迟 Mod**，因为实现路径最清楚；
-2. **再做衰减停止阈值 Mod**，前提是后续把对应的 TweakDB / proficiency 数据链再挖出来；
-3. **最后再碰 Overshield 上限**，因为这部分目前最像数据层或 native 层行为，脚本证据最不完整。
+若目标是“更持久，并且能铺满血条”：
 
-如果只是要做一个“更持久的 Transcendent 超量护盾”版本，那么就当前信息量来说，**只改衰减速度，确实是最好的第一入手点**。
-  - `OvershieldDecayStartDelay`
-  - `OvershieldDelayOnChange`
+1. 用 `OvershieldDecayRate` 的 Multiplier `0` 停掉自然衰减，同时把 `OvershieldDecayStartThreshold` 抬到 `101`，让衰减 effector 自己卸掉 modifier。
+2. 把 `gamedataStatType.Overshield` 抬到显示用的最大生命，并在刷新池子上限之后把当前护盾点数写回去。
+3. 不要只改 `overshieldPercentage`。治疗触发后还要按“使用前点数 + 比例”再写一次，否则结果会被改回 30%。
 
 ### 10.3 设计“有 Overshield 即生效”的额外被动
 
@@ -755,4 +756,81 @@ TweakDBInterface.GetFloat(t"NewPerks.Body_Central_Milestone_3.overshieldPercenta
 
 - 不将所有 `Overshield` 联动 perk 视为同一条机制链；
 - 不将延迟衰减的 perk 归属写成已证实事实；
-- 明确区分 **脚本实证** 与 **基于命名或设计意图的推断**。
+- 明确区分 **脚本实证**、**实机实证** 与 **基于命名或设计意图的推断**。第 11 节只写实机已经看到的行为；没定位到的记录路径仍标为未找到。
+
+---
+
+## 11. 实机验证（Overshield 模组，2.31）
+
+样本是一条存档：生命池最大点数 `229.40`，界面生命 `230`。下面的数字都来自 CET 日志，不是脚本推算。
+
+### 11.1 50% 上限就是 `gamedataStatType.Overshield` 的当前值
+
+进档、尚未治疗时：
+
+- `GetStatValue(Overshield) = 114.70`
+- `GetStatPoolMaxPointValue(Health) = 229.40`
+- `114.70 / 229.40 = 0.5`
+
+这和购买提示里的“最多 50%”一致。`StatPool_Record.Stat()` 决定池子最大点数，这里对上的就是这个同名 stat。它是上限，不是当前护盾。当前护盾要读 `GetStatPoolValue(Overshield, false)`，当时是 `0`。
+
+把这个 stat 用 Additive 补到最大生命之后，治疗可以叠到整条血槽，50% 上限被突破。`RequestSettingStatPoolMaxValue` 不接收新数字，它只按 stat 刷新池子上限，刷新这一步不能省。
+
+走查 `NewPerks.Body_Central_Milestone_3` 自身及其每一级 `DataPackage` 的 `Stats()`、`Effectors()`、effector 上的 stat modifier group、以及 `ModifyStatPoolValueEffector` 的 pool update，都没有找到 `StatType = Overshield`、`RefStat = Health`、`Value ≈ 0.5` 的 modifier。日志是 `no Health * 0.5 Overshield modifier found`。所以上限的**运行时数值**已经确认，**写入它的 TweakDB 记录还没找到**。下次不必再从 redscript 里找 `0.50` 判断；直接读这个 stat。记录路径要另查 TweakDB 导出。
+
+抬高这个 stat 会连带把当前护盾填上去。只加 Additive 再 `RequestSettingStatPoolMaxValue`，不治疗也会看到接近满槽的盾。正确顺序是：
+
+1. 先记下 `GetStatPoolValue(Overshield, false)`。
+2. 再改 stat 并刷新池子上限。
+3. 用 `RequestSettingStatPoolValue(..., 记下的点数, false, ignoreCustomLimit)` 写回去。
+
+刷新可能晚一拍才把池子撑满，所以写回之后还要在后续帧里把超过该点数的部分压回去。受伤导致的下降要跟着放行，否则扣掉的盾会被补上。日志里的 `pool held at 0.00` 表示这一步生效：进游戏时盾是空的。
+
+这次测试没有打出自定义上限被修改的日志。不能据此写成“没有 custom limit”，只能写成“这次没有观察到需要改它”。
+
+### 11.2 只改 `overshieldPercentage`，50% 加量停不住
+
+`TweakDB:SetFlat("NewPerks.Body_Central_Milestone_3.overshieldPercentage", 0.5)` 会生效，读回也是 `0.5`。原函数确实先按 50% 加上去，但同一下治疗里结果会马上变成 30%。50% 是新比例，30% 是原来的 `overshieldPercentage`。
+
+上面的数据包走查同样没有找到把 `Overshield` 池写成 `0.3` 或 `30` 的 `ModifyStatPoolValueEffector`。第二次写入的记录未定位。因此不要把“改 flat”当成完整做法。
+
+已经验证可用的做法：在 `PlayerPuppet.OnStatusEffectApplied` 之前，如果状态效果带 `UsedHealingItemOrCyberwareStatusEffect`，记下当前护盾点数；随后若干帧写成 `min(上限, 使用前点数 + 上限 × 0.5)`，并带 `ignoreCustomLimit`。这样仍然走原来的治疗触发，只是在原函数和其他写入之后把结果钉住。
+
+钉住之后的日志：
+
+- `heal 0.00 -> 114.70`：空盾时一次治疗，正好是 `229.40 × 0.5`。
+- `heal 114.70 -> 229.40`：第二次治疗叠到上限。
+- `heal 204.17 -> 229.40`：未满时再治疗，结果停在上限，不会超过。
+- `heal 101.93 -> 216.63`：`101.93 + 114.70`。受伤后再治疗，是在剩余护盾上加 50% 最大生命，不是把护盾设成 50%。
+
+### 11.3 停掉自然衰减时，不要拆掉衰减 effector
+
+实机确认：给 `OvershieldDecayRate` 挂 Multiplier `0` 之后，护盾不再自己掉。原版 effector 加的是 Additive；乘 `0` 后最终速率为 0。这一条原先在脚本里不能确定聚合顺序，现在有实机结果。
+
+`ScaleOvershieldDecayOverTimeEffector` 不是每次生成护盾时新建的对象。它跟技能一起活着，护盾掉光也不会销毁它。衰减率改成 0 不会让这个对象泄漏。
+
+会留下来的是它挂上的那一个 `m_decayModifier`。护盾百分比高于 `OvershieldDecayStartThreshold` 时它一直握着这个 modifier；`ActionOff` 自己还不调用 `RemoveModifier()`。池子百分比最高是 100，把阈值补到 `101` 后，下一拍 `ContinuousAction` 会移除 modifier 并且不再挂回去。不要把 `ContinuousAction` Override 成空函数，那会跳过 `ResetDecayModifier()`。
+
+模组自己挂的 DecayRate、阈值 modifier 要在退档和关闭时 `Remove` 再 `Destroy`。
+
+### 11.4 界面数字：生命向上取整，护盾四舍五入
+
+`healthbar.swift` 里：
+
+- 最大生命、当前生命用 `CeilF`。`229.40` 显示成 `230`。
+- 护盾用 `RoundF`。`229.40` 显示成 `229`。
+- 文本是这两个整数相加，所以满血满盾时是 `230 + 229 = 459`。
+- 护盾条长度是 `护盾点数 / m_maximumHealth`，分母也是 `Ceil` 之后的最大生命。
+
+条可以看起来已经铺满，数字仍少 1。要让数字变成 `460`，写入的护盾点数必须是 `Ceil(229.40) = 230`，这样 `Round(230) = 230`。50% 的一档同样向上取整，是 `115`，两档才是 `230`。池子上限也要抬到这个整数，否则写入 `230` 仍会被裁回 `229.40`。
+
+购买提示的 `UiData.floatValues` 实机是 `30, 50`，不是 `0.30, 0.50`。它和 `overshieldPercentage` 不是同一个字段。只改生成比例或上限，提示文字不会变。
+
+### 11.5 下次做同类修改时可以直接沿用的边界
+
+- 生成时机仍是治疗物品或治疗义体，且 `Body_Central_Milestone_3` 至少 3 级。不需要改 `player.swift`。
+- 当前护盾、上限、界面长度是三件事：池子点数、`gamedataStatType.Overshield`、`点数 / Ceil(最大生命)`。
+- 改上限之前先保存点数，改完写回。
+- 改单次加量时，在治疗状态加上之后再写一次目标点数。
+- 停衰减用 DecayRate Multiplier `0`，并用阈值 `101` 让 effector 放开 modifier。
+- `Overshield > 0` 时，`Juggernaut`、`Unstoppable`、`Sadism` 仍按原逻辑一直生效，直到盾被打掉。这不是衰减停掉带来的新系统。
