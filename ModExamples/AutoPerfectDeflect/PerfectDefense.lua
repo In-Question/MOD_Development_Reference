@@ -1,9 +1,10 @@
-local Config = require("Config")
 local Eligibility = require("Eligibility")
 local CounterAttack = require("CounterAttack")
 
 local PerfectDefense = {}
 
+-- Fallback only: IsDeflecting+1 / IsBlocking-2 for ModifyHitData path.
+-- Not equivalent to full A+B (see README).
 local fallbackMods = {
     deflecting = nil,
     blockingSuppress = nil,
@@ -27,7 +28,7 @@ local function ensureFallbackMods()
 end
 
 function PerfectDefense.ApplyFallbackStatWindow(player)
-    if not player then
+    if not player or fallbackMods.applied then
         return
     end
     ensureFallbackMods()
@@ -36,12 +37,10 @@ function PerfectDefense.ApplyFallbackStatWindow(player)
     if not stats or not id then
         return
     end
-    if not fallbackMods.applied then
-        stats:AddModifier(id, fallbackMods.deflecting)
-        stats:AddModifier(id, fallbackMods.blockingSuppress)
-        fallbackMods.applied = true
-        Eligibility.Log("Fallback IsDeflecting window applied")
-    end
+    stats:AddModifier(id, fallbackMods.deflecting)
+    stats:AddModifier(id, fallbackMods.blockingSuppress)
+    fallbackMods.applied = true
+    Eligibility.Log("Fallback IsDeflecting window applied")
 end
 
 function PerfectDefense.ClearFallbackStatWindow(player)
@@ -73,71 +72,63 @@ local function pushParryToInstigator(instigator)
     end)
 end
 
---- Force melee perfect parry branch (A) + trigger counter (B)
 local function forceMeleeParry(hitEvent, player)
     local attackData = hitEvent.attackData
     attackData:AddFlag(hitFlag.WasDeflected, "Parry")
     attackData:AddFlag(hitFlag.DontShowDamageFloater, "Parry")
-
-    local instigator = attackData:GetInstigator()
-    pushParryToInstigator(instigator)
-
+    pushParryToInstigator(attackData:GetInstigator())
     pcall(function()
         DamageManager.SendNameEventToPSM("successfulDeflect", hitEvent)
     end)
-
     CounterAttack.TryTrigger(player, hitEvent)
     Eligibility.Log("Forced melee WasDeflected + counter")
 end
 
---- Force bullet perfect parry flag (A); ProcessBulletDeflect runs later in pipeline
 local function forceBulletParry(hitEvent, player)
     local attackData = hitEvent.attackData
     attackData:AddFlag(hitFlag.WasBulletParried, "BulletParry")
     attackData:AddFlag(hitFlag.DontShowDamageFloater, "BulletDeflect")
-
     pcall(function()
         AnimationControllerComponent.PushEvent(player, "Deflect")
     end)
     pcall(function()
         AnimationControllerComponent.PushEvent(player, "MeleeBulletDeflect")
     end)
-
     Eligibility.Log("Forced WasBulletParried")
 end
 
---- Primary Override target: DamageManager.ProcessDefensiveState
+--- Override: DamageManager.ProcessDefensiveState
 function PerfectDefense.ProcessDefensiveState(hitEvent, wrappedMethod)
-    if not Config.enabled or not hitEvent or not hitEvent.attackData then
+    if not hitEvent or not hitEvent.attackData then
         return wrappedMethod(hitEvent)
     end
 
     local player = Game.GetPlayer()
-    if not Eligibility.IsLocalPlayerReady(player) then
-        return wrappedMethod(hitEvent)
-    end
-    if not Eligibility.IsPlayerTarget(hitEvent, player) then
+    if not Eligibility.IsLocalPlayerReady(player) or not Eligibility.IsPlayerTarget(hitEvent, player) then
         return wrappedMethod(hitEvent)
     end
 
     local weapon = Eligibility.GetRightWeapon(player)
     local attackData = hitEvent.attackData
 
-    -- Melee perfect parry / counter (skip QuickMelee — vanilla has no perfect path)
+    -- Melee: force A + B. Stat inject alone cannot drive MeleeDeflectAttack / slow-mo.
     if Eligibility.IsMeleeAttack(attackData) then
-        if Eligibility.IsQuickMelee(attackData) then
-            return wrappedMethod(hitEvent)
-        end
-        if not Eligibility.IsMeleeDeflectWeapon(weapon) then
+        if Eligibility.IsQuickMelee(attackData) or not Eligibility.IsMeleeDeflectWeapon(weapon) then
             return wrappedMethod(hitEvent)
         end
         forceMeleeParry(hitEvent, player)
         return
     end
 
-    -- Ranged blade perfect bullet parry (relax perk/stamina/facing; keep blade gate)
+    -- Ranged blade: keep vanilla perk purchase + stamina deflect gates; then force Parried.
     if Eligibility.IsRangedOnly(attackData) then
         if not Eligibility.IsBladeWeapon(weapon) then
+            return wrappedMethod(hitEvent)
+        end
+        if not Eligibility.MeetsBulletDeflectPerkLevels(player) then
+            return wrappedMethod(hitEvent)
+        end
+        if not Eligibility.HasStaminaToBulletDeflect(player) then
             return wrappedMethod(hitEvent)
         end
         forceBulletParry(hitEvent, player)
@@ -147,10 +138,9 @@ function PerfectDefense.ProcessDefensiveState(hitEvent, wrappedMethod)
     return wrappedMethod(hitEvent)
 end
 
---- Fallback if ProcessDefensiveState cannot be overridden (private/RTTI miss):
---- ObserveBefore ModifyHitData injects IsDeflecting and suppresses IsBlocking.
+--- Fallback if Override unavailable: inject IsDeflecting (A only; B patched in After for melee)
 function PerfectDefense.OnModifyHitDataBefore(hitEvent)
-    if not Config.enabled or not hitEvent or not hitEvent.attackData then
+    if not hitEvent or not hitEvent.attackData then
         return
     end
     local player = Game.GetPlayer()
@@ -160,21 +150,20 @@ function PerfectDefense.OnModifyHitDataBefore(hitEvent)
     local weapon = Eligibility.GetRightWeapon(player)
     local attackData = hitEvent.attackData
 
-    local wantWindow = false
     if Eligibility.IsMeleeAttack(attackData) and not Eligibility.IsQuickMelee(attackData)
         and Eligibility.IsMeleeDeflectWeapon(weapon) then
-        wantWindow = true
-    elseif Eligibility.IsRangedOnly(attackData) and Eligibility.IsBladeWeapon(weapon) then
-        wantWindow = true
+        PerfectDefense.ApplyFallbackStatWindow(player)
+        return
     end
 
-    if wantWindow then
+    if Eligibility.IsRangedOnly(attackData) and Eligibility.IsBladeWeapon(weapon)
+        and Eligibility.MeetsBulletDeflectPerkLevels(player)
+        and Eligibility.HasStaminaToBulletDeflect(player) then
         PerfectDefense.ApplyFallbackStatWindow(player)
     end
 end
 
 function PerfectDefense.OnModifyHitDataAfter(hitEvent)
-    -- Fallback path only: vanilla may have set WasDeflected after our IsDeflecting inject
     local player = Game.GetPlayer()
     if not player or not Eligibility.IsPlayerTarget(hitEvent, player) then
         return

@@ -1,13 +1,12 @@
 --[[
-  AutoPerfectDeflect — 思路二示例 CET mod
+  AutoPerfectDeflect — 思路二 CET mod（安装即生效，无热键）
 
-  A) Override DamageManager.ProcessDefensiveState → 强制 WasDeflected / WasBulletParried
-  B) CounterAttack (方案 2c) → deflect 慢动作 + MeleeDeflectAttack 出招
+  A) Override ProcessDefensiveState → WasDeflected / WasBulletParried
+  B) CounterAttack (2c) → deflect 慢动作 + MeleeDeflectAttack
 
-  仅改 IsDeflecting 只能完成 A 段免伤/震慑，不会有反击动画与慢动作。
+  IsDeflecting+1 / IsBlocking-2 不能替代本 mod：无 B 段，且近战仍受朝向门闩限制。
 ]]
 
-local Config = require("Config")
 local Eligibility = require("Eligibility")
 local PerfectDefense = require("PerfectDefense")
 local CounterAttack = require("CounterAttack")
@@ -48,25 +47,15 @@ local function registerFallbackObservers()
 end
 
 registerForEvent("onInit", function()
-    Eligibility.Log("init (enabled=%s)", tostring(Config.enabled))
-
+    Eligibility.Log("init (always on)")
     if not registerProcessOverride() then
         registerFallbackObservers()
     end
-
-    registerHotkey("AutoPerfectDeflect_Toggle", "Toggle Auto Perfect Deflect", function()
-        Config.enabled = not Config.enabled
-        Eligibility.Log("enabled -> %s", tostring(Config.enabled))
-        if not Config.enabled then
-            onShutdownCleanup()
-        end
-    end)
 end)
 
 registerForEvent("onUpdate", function(_dt)
     if fallbackClearPending and not useProcessOverride then
-        local player = Game.GetPlayer()
-        PerfectDefense.ClearFallbackStatWindow(player)
+        PerfectDefense.ClearFallbackStatWindow(Game.GetPlayer())
         fallbackClearPending = false
     end
 end)

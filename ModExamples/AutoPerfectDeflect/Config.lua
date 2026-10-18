@@ -1,19 +1,16 @@
 -- AutoPerfectDeflect configuration (思路二)
 
 local Config = {
-    -- Master switch
-    enabled = true,
-
     -- Melee counter-attack cooldown (seconds); prevents cleave multi-triggers
-    counterCooldown = 0.45,
+    counterCooldown = 0.5,
 
-    -- Align with MeleeDeflectAttackEvents defaults
+    -- Deflect slow-mo: base vanilla 0.10 + 0.50s so duration covers counterCooldown
     slowMoAmount = 0.10,
-    slowMoDuration = 0.10,
+    slowMoDuration = 0.60,
     slowMoEaseIn = "Linear",
     slowMoEaseOut = "Linear",
 
-    -- MeleeDeflectAttack record name prefixes to try
+    -- MeleeDeflectAttack record names to try
     deflectAttackNames = {
         "MeleeDeflectAttack0",
         "MeleeDeflectAttack1"
